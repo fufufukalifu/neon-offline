@@ -794,26 +794,37 @@ class Admin extends MX_Controller {
 
 
 
+// ======================== baru ======================
+function login(){
+            $data = array(
+            'judul_halaman' => 'Login - Neon',
+            'judul_header' => 'Welcome'
+        );
 
-    #START FUNCTION UNTUK BANK SOAL#
+        $data['files'] = array(
+            APPPATH . 'modules/templating/views/v-navbarlogin.php',
+            APPPATH . 'modules/login/views/vLogin-admin.php',
+            APPPATH . 'modules/homepage/views/v-footer.php',
+        );
+        
+        $this->parser->parse('templating/index', $data);
+}
 
-//     function listmp($tingkatID){
+    public function create_session_offline(){
+        if ($this->input->post()) {
+            $post = $this->input->post();
+            $this->session->set_userdata($post);
+            if ($this->session->userdata('HAKAKSES')=='adminOffline') {
+                echo json_encode(array("status_login"=>1));
+            }
+        }
 
-    //     $data = array(
+    }
 
-    //         'judul_halaman' => 'Dashboard Admin'
+    function test(){
+            var_dump($this->session->userdata());
 
-    //     );
-
-    //     $data['pelajaran'] =$this->mbanksoal->get_pelajaran($tingkatID);
-
-    //     $data['file'] =  APPPATH.'modules/banksoal/views/v-list-mp.php';
-
-    //     $this->parser->parse('v-index-admin', $data);
-
-//     }
-
-    #END FUNCTION UNTUK BANK SOAL#
+    }
 
 }
 

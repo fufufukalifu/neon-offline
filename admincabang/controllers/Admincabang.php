@@ -71,8 +71,8 @@ class Admincabang extends MX_Controller {
 	}
 
 	//laporan to ajax
-	public function laporanto($cabang="all",$tryout="all",$paket="all"){
-		$datas = ['cabang'=>$cabang,'tryout'=>$tryout,'paket'=>$paket];
+	public function laporanto($tryout="all",$paket="all"){
+		$datas = ['tryout'=>$tryout,'paket'=>$paket];
 
 		$all_report = $this->admincabang_model->get_report_paket($datas);
 
@@ -83,7 +83,6 @@ class Admincabang extends MX_Controller {
 			$row[] = $item ['id_report'];
 			$row[] = $item ['namaPengguna'];
 			$row[] = $item ['nm_paket'];
-			$row[] = $item ['namaCabang'];
 			$row[] = $item ['namaDepan']." ".$item ['namaBelakang'];
 			$row[] = $item ['jmlh_benar'];
 			$row[] = $item ['jmlh_salah'];
@@ -109,13 +108,11 @@ class Admincabang extends MX_Controller {
 		$data['files'] = array(
 			APPPATH . 'modules/admincabang/views/v-daftar-paket.php',
 			);
-		# get cabang
-		$data['cabang'] = $this->mcabang->get_all_cabang();
 		# get to
 		$data['to'] = $this->mtoback->get_To();
 		$hakAkses = $this->session->userdata['HAKAKSES'];
-		if ($hakAkses == 'admin_cabang') {
-			$this->parser->parse('v-index-admincabang', $data);
+		if ($hakAkses=='adminOffline') {
+			$this->parser->parse('admin/v-index-admin', $data);
 		} elseif ($hakAkses == 'guru') {
 			redirect(site_url('guru/dashboard/'));
 		} elseif ($hakAkses == 'siswa') {

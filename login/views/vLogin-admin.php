@@ -14,17 +14,17 @@
                 <div class="clear-both"></div>
 
                 <?php if ($this->session->flashdata('notif') != '') { ?>
-                    <div class="alert alert-warning">
-                        <span class="semibold">Note :</span><?php echo $this->session->flashdata('notif'); ?>
-                    </div>
+                <div class="alert alert-warning">
+                    <span class="semibold">Note :</span><?php echo $this->session->flashdata('notif'); ?>
+                </div>
                 <?php } else { ?>
-                    <div class="alert alert-warning">
-                        Siap berpetualang? Isi form, tekan Login!
-                    </div>
+                <div class="alert alert-warning">
+                    Siap berpetualang? Isi form, tekan Login!
+                </div>
                 <?php }; ?>
                 <hr>
                 <br>
-                <form class="login-form" action = "<?= base_url('index.php/login/validasiLogin'); ?>" method = "post">
+                <form class="form-login" method = "post">
                     <div class="form-group">
                         <input type="text" name="username" class="login-input" placeholder="Username / email" required>
                         <span class="input-icon">
@@ -47,15 +47,15 @@
 
                         <div class="text-right">
                             <p class="small">
-                                <a href="<?= base_url('index.php/admin/login'); ?>">Login Admin</a>
+                                <a href="<?= base_url('index.php/login'); ?>">Login Siswa</a>
                             </p>
-                        <!---->
+                            <!---->
                         </div>
 
                         <div class="clear-both"></div>
                     </div>
                     <div class="form-group nm">
-                        <button type="submit" class="button-fullwidth cws-button bt-color-3 alt"><span class="semibold">Login</span></button>
+                        <a class="button-fullwidth cws-button bt-color-3 alt login-btn"><span class="semibold">Login</span></a>
                     </div>
                 </form>
             </div>
@@ -64,3 +64,57 @@
     </section>
 </main>
 
+<script>
+$('.login-btn').click(function(){
+    site_url = "http://localhost:9090/neon/webservice/login";
+
+    datas = {
+     username: $('input[name=username]').val(),
+     password:$('input[name=password]').val()
+ };
+
+ $.ajax({
+    url : site_url,
+    type: "POST",
+    data:datas,
+    dataType: "JSON",
+    success: function(data)
+    {
+        if (data.status=='Gagal') {
+            sweetAlert("Oops...", "Username atau password Salah", "error");
+        }else{
+            // console.log(data);
+            // swal("Berhasil!", "Berhasil login", "success");
+            get_admin(data);
+        }
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+        sweetAlert("Oops...", "gagal konek ke server", "error");
+    }
+});
+});
+
+// ================================== # User Defined Function #===================================
+
+//lempar fungsi ke controller untuk di direct.
+function get_admin(data){
+    site_url = base_url+"admin/create_session_offline"
+ $.ajax({
+    url : site_url,
+    type: "POST",
+    data:data,
+    dataType: "json",
+    success: function(data)
+    {
+        if (data.status_login==1) {
+            window.location.replace(base_url+"toback/listto");
+        };
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+        sweetAlert("Oops...", "gagal konek ke server", "error");
+    }
+});
+}
+</script>

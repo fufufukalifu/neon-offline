@@ -6,7 +6,6 @@ class Admincabang_model extends CI_model {
 	//get report all
 	function get_report_paket($data){
 		$this->db->select('id_report,p.namaPengguna,
-			c.namaCabang,
 			s.namaBelakang,
 			s.namaDepan,
 			jmlh_benar,
@@ -23,11 +22,7 @@ class Admincabang_model extends CI_model {
 		$this->db->join('tb_pengguna p' , 'p.id = pk.id_pengguna');
 		$this->db->join('tb_mm-tryoutpaket mmto' , 'mmto.id = pk.id_mm-tryout-paket');
 		$this->db->join('tb_paket pkt' , 'pkt.id_paket = mmto.id_paket');
-		$this->db->join('tb_cabang c' , 'c.id = s.cabangID');
 
-		if ($data['cabang']!="all") {
-			$this->db->where('c.id', $data['cabang']);
-		}
 
 		if ($data['tryout']!="all") {
 			$this->db->where('mmto.id_tryout', $data['tryout']);

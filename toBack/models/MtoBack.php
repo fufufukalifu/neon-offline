@@ -1,31 +1,21 @@
 <?php
 defined( 'BASEPATH' ) or exit( 'No direct script access allowed' );
 class Mtoback extends CI_Model {
-
 	var $table = 'tb_paket';
 	var $column_order = array('id_paket','nm_paket','deskripsi');
 	var $column_search = array('nm_paket','deskripsi');
 	var $order = array('id_paket'=>'desc');
-
 	//insert to ke db
-	public function insert_to($dat_to)
-	{
-		$this->db->insert('tb_tryout',$dat_to);
-
-
-
-
-
-
-		
+	public function insert_to($dat_to){
+		$this->db->insert('tb_tryout',$dat_to);		
 	}
 
 	public function get_To()
 	{
 		$this->db->select('*');
 		$this->db->from('tb_tryout');
-		        $query = $this->db->get();
-        return $query->result_array();
+		$query = $this->db->get();
+		return $query->result_array();
 	}
 	//add paket Ke TO
 	public function insert_addPaket($dat_paket)
@@ -49,7 +39,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_hakakses-to ht','ht.id_siswa=siswa.id');
 		$this->db->where('ht.id_tryout',$id_to);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 
 	}
 
@@ -61,7 +51,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_mm-tryoutpaket mto','mto.id_paket = paket.id_paket');
 		$this->db->where('mto.id_tryout',$id_to);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 
 	}
 	//get data paket yg belum di add ke TO
@@ -72,7 +62,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_mm-tryoutpaket mto','mto.id_paket = paket.id_paket');
 		$this->db->where('mto.id_tryout',$id_to);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 
 	}
 
@@ -110,8 +100,8 @@ class Mtoback extends CI_Model {
 	public function ch_To($data)
 	{
 		$this->db->set($data['tryout']);
-        $this->db->where('id_tryout', $data['id_tryout']);
-        $this->db->update('tb_tryout');
+		$this->db->where('id_tryout', $data['id_tryout']);
+		$this->db->update('tb_tryout');
 	}
 
 	##opik##
@@ -121,7 +111,7 @@ class Mtoback extends CI_Model {
 		$this->db->from('tb_tryout');
 		$this->db->where('UUID', $uuid);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	//ambli data mahasiswa to by idto
@@ -131,7 +121,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_siswa siswa','hakakses.id_siswa=siswa.id');
 		$this->db->where('id_tryout', $id_to);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	function get_all_report($id_tryout){
@@ -142,7 +132,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_hakakses-to hto','hto.id_siswa=siswa.id');
 		$this->db->where('hto.id_tryout',$id_tryout);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	public function get_report_paket($data)
@@ -154,7 +144,7 @@ class Mtoback extends CI_Model {
 		$this->db->where('mto.id_tryout',$data['id_to']);
 		$this->db->where('id_pengguna',$data['idPengguna']);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	//untuk identitas report
@@ -164,7 +154,7 @@ class Mtoback extends CI_Model {
 		$this->db->from('tb_siswa');
 		$this->db->where('penggunaID',$penggunaID);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	public function get_all_report_paket($idpaket)
@@ -177,7 +167,7 @@ class Mtoback extends CI_Model {
 		$this->db->join('tb_siswa siswa','siswa.penggunaID=user.id');
 		$this->db->where('paket.id_paket',$idpaket);
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
 
 	public function get_report_peserta_to($data){
@@ -190,11 +180,91 @@ class Mtoback extends CI_Model {
 		$this->db->where('mmto.id_tryout',$data);
 		$this->db->group_by('rp.id_pengguna'); 
 		$query = $this->db->get();
-        return $query->result_array();
+		return $query->result_array();
 	}
+
+
+	#================================================================# WEB SERVICE #===============================================================================#
+## transaksi service  ##
+	# validate insert to
+	public function validate_to($data){
+		$this->db->from('tb_tryout');
+		$this->db->where('id_tryout',$data);
+		$query = $this->db->get();
+		$rowcount = $query->num_rows();
+
+		// kalo jumlah recordnya > 0 (ada recordnya) return true
+		$status = ($rowcount >0) ? true : false ;
+		return $status;
+	}
+
+	# validate paket
+	public function validate($data){
+		$this->db->from($data['tabel']);
+		$this->db->where($data['key'],$data['id']);
+		$query = $this->db->get();
+		$rowcount = $query->num_rows();
+
+		// kalo jumlah recordnya > 0 (ada recordnya) return true
+		$status = ($rowcount >0) ? true : false ;
+		return $status;
+	}
+
+		# validate paket
+	public function validate_mm($data){
+		$this->db->from('tb_mm-tryoutpaket');
+		$this->db->where('id',$data);
+
+		$query = $this->db->get();
+		$rowcount = $query->num_rows();
+
+		// kalo jumlah recordnya > 0 (ada recordnya) return true
+		$status = ($rowcount >0) ? true : false ;
+		return $status;
+	}	
+
+
+	## insert paket
+	public function insert_paket($data){
+		$this->db->insert('tb_paket',$data);
+	}	
+
+	## insert mm paket
+	public function insert_mm_paket($data){
+		$this->db->insert('tb_mm-tryoutpaket',$data);
+	}
+
+	## insert siswa
+	public function insert_siswa($data){
+		$this->db->insert('tb_siswa',$data);		
+	}
+
+	## insert hak akses
+	public function insert_pengguna($data){
+		$this->db->insert('tb_pengguna',$data);		
+	}
+
+	## insert hak akses
+	public function insert_hak_akses($data){
+		$this->db->insert('tb_hakakses-to',$data);		
+	}
+
+	## insert hak soal
+	public function insert_soal($data){
+		$this->db->insert('tb_banksoal',$data);		
+	}
+	
+	## insert mm
+	public function insert_mm($data){
+		$this->db->insert('tb_mm-paketbank',$data);		
+	}
+
+	## INSERT PILIHAN JAWABAN
+	public function insert_pilihan_jawaban($data){
+		$this->db->insert('tb_piljawaban',$data);		
+	}
+	#================================================================# WEB SERVICE #===============================================================================#
+
+
 }
 ?>
-
-
-
-

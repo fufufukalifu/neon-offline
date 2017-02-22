@@ -96,7 +96,6 @@
 	}
 
 	function load_grafik(data) {
-		console.log(data);
 		var report = {
 			durasi:0,
 			level:0,

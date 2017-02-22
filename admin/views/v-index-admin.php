@@ -321,6 +321,11 @@
   <span class="text">Daftar Try Out</span>
 </a>
 </li>
+<li>
+ <a href="<?= base_url('index.php/admincabang/laporanpaket');?>">
+  <span class="text">Laporan Try Out</span>
+</a>
+</li>
 
 </ul>
 </li>

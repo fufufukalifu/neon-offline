@@ -10,28 +10,28 @@ class Login extends MX_Controller {
         $this->load->helper('url');
         $this->load->model('Mlogin');
         $this->load->library('session');
-        if ($this->session->userdata('loggedin')==true) {
-            if ($this->session->userdata('HAKAKSES')=='siswa'){
-               redirect('welcome');
-            }else if($this->session->userdata('HAKAKSES')=='guru'){
-               redirect('guru/dashboard');
-            }else{
+    //     if ($this->session->userdata('loggedin')==true) {
+    //         if ($this->session->userdata('HAKAKSES')=='siswa'){
+    //            redirect('welcome');
+    //         }else if($this->session->userdata('HAKAKSES')=='guru'){
+    //            redirect('guru/dashboard');
+    //         }else{
 
-            }
+    //         }
+    // }
     }
-}
 
     public function index() {
         $data = array(
             'judul_halaman' => 'Login - Neon',
             'judul_header' => 'Welcome'
-        );
+            );
 
         $data['files'] = array(
             APPPATH . 'modules/templating/views/v-navbarlogin.php',
             APPPATH . 'modules/login/views/vLogin.php',
             APPPATH . 'modules/homepage/views/v-footer.php',
-        );
+            );
         
         $this->parser->parse('templating/index', $data);
     }
@@ -58,7 +58,7 @@ class Login extends MX_Controller {
                     'verifikasiCode' => $verifikasiCode,
                     'loggedin' => TRUE,
 
-                );
+                    );
                 $this->session->set_userdata($sess_array);
                 // cometchat cookie
                 setcookie("cc_userid", $row->id, time() + (86400 * 30), "/");
@@ -110,7 +110,7 @@ class Login extends MX_Controller {
         $facebook = new Facebook(array(
             'appId' => $appId,
             'secret' => $appSecret
-        ));
+            ));
 
         $fbuser = $facebook->getUser();
         if ($fbuser) {
@@ -142,6 +142,8 @@ class Login extends MX_Controller {
         $this->load->view('vLogin.php', $data);
     }
 
+
+
     public function createSession($userID) {
         if ($result = $this->Mlogin->cekUser3($userID)) {
             //variabelSession
@@ -155,7 +157,7 @@ class Login extends MX_Controller {
                     'USERNAME' => $row->namaPengguna,
                     'HAKAKSES' => $row->hakAkses,
                     'AKTIVASI' => $row->aktivasi
-                );
+                    );
                 $this->session->set_userdata($sess_array);
 
                 if ($hakAkses == 'admin') {
@@ -179,6 +181,8 @@ class Login extends MX_Controller {
             return TRUE;
         }
     }
+
+
 
 }
 

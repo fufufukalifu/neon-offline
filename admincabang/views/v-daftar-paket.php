@@ -6,12 +6,7 @@
         <div class="panel-toolbar text-right">
 
          <div class="col-sm-4">
-           <select class="form-control" name="cabang">
-            <option value="all">Semua Cabang</option>
-            <?php foreach ($cabang as $item): ?>
-            <option value="<?=$item->id ?>"><?=$item->namaCabang ?></option>
-          <?php endforeach ?>
-        </select>
+
       </div>
 
       <div class="col-sm-4">
@@ -42,7 +37,6 @@
         <th>id</th>
         <th>Username</th>
         <th>Nama Paket</th>
-        <th>Cabang</th>
         <th>Nama SIswa</th>
         <th>Benar</th>
         <th>Salah</th>
@@ -108,7 +102,7 @@ $('select[name=to]').change(function(){
   tryout = $('select[name=to]').val();
   paket = $('select[name=paket]').val();
 
-  url = base_url+"admincabang/admincabang/laporanto/"+cabang+"/"+tryout+"/"+paket;
+  url = base_url+"admincabang/admincabang/laporanto/"+tryout+"/"+paket;
 
   dataTableToken = $('.daftarpaket').DataTable({
     "ajax": {
@@ -119,6 +113,7 @@ $('select[name=to]').change(function(){
     "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
     "bDestroy": true,
   });
+console.log(url);
 
 load_paket(tryout);
 
@@ -147,7 +142,7 @@ $('select[name=paket]').change(function(){
   tryout = $('select[name=to]').val();
   paket = $('select[name=paket]').val();
 
-  url = base_url+"admincabang/admincabang/laporanto/"+cabang+"/"+tryout+"/"+paket;
+  url = base_url+"admincabang/admincabang/laporanto/"+tryout+"/"+paket;
 
   dataTableToken = $('.daftarpaket').DataTable({
     "ajax": {
@@ -158,7 +153,7 @@ $('select[name=paket]').change(function(){
     "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
     "bDestroy": true,
   });
-
+console.log(url);
 
 });
 </script>
