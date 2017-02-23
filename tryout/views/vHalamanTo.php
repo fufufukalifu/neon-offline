@@ -158,7 +158,7 @@
                                                                                         echo '';
                                                                                     } else {
                                                                                         ?>
-                                                                                        <img src="<?= base_url('./assets/image/soal/' . $row['pilgam']) ?>">
+                                                                                        <img src="<?= base_url('./assets/image/jawaban/' . $row['pilgam']) ?>">
                                                                                         <?php } ?>
                                                                                         <?= $row['piljaw'] ?>
                                                                                         <?php $indexpil++;?>

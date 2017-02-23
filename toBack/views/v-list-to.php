@@ -94,29 +94,29 @@ function daftar_tryout(){
 
 }
 // INSERT TO YANG UDAH DI GET
-function insert_to(data){
+function insert_to(obc){
+
   $('.indicator').removeClass('hide');
   $('.indicator').addClass('show');
-  datas = data;
-  download_paket(datas.UUID);
+  datas = obc;
+  // download_paket(datas.UUID);
   url = base_url+"toback/ajax_insert_to";
   $.ajax({
     url : url,
     type: "POST",
-    dataType: "JSON",
+    dataType: "json",
     data:datas,
     success: function(data)
     {
-      console.log(data);
      $('.indicator').removeClass('show');
      $('.indicator').addClass('hide');
      if (data.status==1) {
-      console.log(data.status);
       swal('Tryout Berhasil Di download');
       tblist_TO.ajax.reload();
     }else{
-      console.log(data.status);
       swal('Tryout sudah tersedia');
+      tblist_TO.ajax.reload();
+
     };
   },
   error: function (jqXHR, textStatus, errorThrown)
@@ -168,7 +168,6 @@ function download_tryout(id){
     {
       // console.log(data);
       $.each(data, function(index, value) {
-        console.log(value);
         insert_to(value);
       });
     },

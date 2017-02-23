@@ -6,7 +6,8 @@ class Toback extends MX_Controller{
 
 
 	public function __construct() {
-
+		
+		ini_set('max_execution_time', 0);
 		header('Access-Control-Allow-Origin: *');
 		$this->load->library('form_validation');
 		$this->load->library( 'parser' );
@@ -499,7 +500,6 @@ class Toback extends MX_Controller{
 			'wkt_berakhir'=>$post['wkt_berakhir'],	
 			'publish'=>$post['publish'],
 			'UUID' =>$post['UUID'],
-			'penggunaID' =>$post['penggunaID'],
 			);
 
 		$validate = $this->Mtoback->validate_to($post['id_tryout']);
@@ -618,8 +618,23 @@ class Toback extends MX_Controller{
 			// 	#data untuk di insert ke tb pengguna
 				$jumlah_soal++;
 				$gambar = $item->gambar_soal;
+				// COPY GAMBAR
 				if ($gambar!="") {
-					$this->copy_image_soal($gambar);
+					$copy_image = ['namaFile'=>$gambar,
+					'url'=>'http://neonjogja.com/assets/image/soal/'.$gambar,
+					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/soal/'
+					];
+					$this->copy_gambar($copy_image);
+				}
+
+				// COPY GAMBAR PEMBAHASAN
+				$gambar_pembahasan = $item->gambar_pembahasan;
+				if ($gambar_pembahasan!="") {
+					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
+					'url'=>'http://neonjogja.com/assets/image/pembahasan/'.$gambar_pembahasan,
+					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/pembahasan/'
+					];
+					$this->copy_gambar($copy_pembahasan);
 				}
 				$this->Mtoback->insert_soal($item);
 			}	
@@ -654,8 +669,15 @@ class Toback extends MX_Controller{
 
 		$json = file_get_contents($url);
 		$data_pilihan_jawaban = json_decode($json);
-
-		foreach ($data_pilihan_jawaban as $item) {
+		foreach ($data_pilihan_jawaban as $item) {				
+			if ($item->gambar!="") {
+					// panggil untuk ngopi pilihan jawaban
+				$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
+				'url'=>'http://neonjogja.com/assets/image/jawaban/'.$item->gambar,
+				'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/jawaban/'
+				];
+				$this->copy_gambar($copy_image_pilihan_jawaban);
+			}
 			$validate_data = ['id'=>$item->id_pilihan,'tabel'=>'tb_piljawaban','key'=>'id_pilihan'];
 			$validate = $this->Mtoback->validate($validate_data);
 			if (!$validate) {
@@ -668,10 +690,8 @@ class Toback extends MX_Controller{
 	## cacah untuk di datatable
 	function data_table_all_to(){
 		$url = $this->web_link.'get_all_to/'.$this->session->userdata('id');
-
 		$json = file_get_contents($url);
 		$data_to = json_decode($json);
-		// var_dump($data_to);
 
 		$data = array();
 
@@ -709,14 +729,37 @@ class Toback extends MX_Controller{
 
 	}
 	#================================================================# WEB END SERVICE #===============================================================================#
-	function copy_image_soal($data){
-		$url = 'http://neonjogja.com/assets/image/soal/'.$data;
-		$destination_folder = $_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/soal/';
-    	$newfname = $destination_folder .$data; //set your file ext
 
-    	$file = fopen ($url, "rb");
 
-	    if ($file) {
+
+	
+
+	  ## COPY IMAGE DARI SERVER LAIN
+	function copy_gambar($data){
+
+
+		$url = $data['url'];
+		$destination_folder = $data['target'];
+    	$newfname = $destination_folder .$data['namaFile']; //set your file ext
+
+    	// check filenya ada atau enggak
+    	$ch = curl_init($url);    
+    	curl_setopt($ch, CURLOPT_NOBODY, true);
+    	curl_exec($ch);
+    	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    	if($code == 200){
+    		$status = true;
+    	}else{
+    		$status = false;
+    	}
+    	curl_close($ch);
+    	// check filenya ada atau enggak
+
+    	if ($status) {
+    		$file = fopen ($url, "rb");
+
+    		if ($file) {
 	      $newf = fopen ($newfname, "a"); // to overwrite existing file
 
 	      if ($newf)
@@ -732,7 +775,9 @@ class Toback extends MX_Controller{
 	      if ($newf) {
 	      	fclose($newf);
 	      }
-  }
+	  }
+
+	}
 
 }
 ?>
