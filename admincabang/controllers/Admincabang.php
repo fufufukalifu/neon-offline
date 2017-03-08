@@ -143,5 +143,72 @@ function drop_report(){
 		$this->mtoback->delete_report($data);
 	}
 }
+	public function laporanPDF($tryout="all",$paket="all")
+	{
+		$this->load->library('Pdf');
+		$datas = ['tryout'=>$tryout,'paket'=>$paket];
+		$all_report = $this->admincabang_model->get_report_paket($datas);	
+		$data['all_report'] = array();
+		$no=0;
+		$sumNilai=0;
+		$maxNilai=0;
+		$minNilai=100;
+		$avg = 0;
+		foreach ( $all_report as $item ) {
+			$no++;
+			$sumBenar=$item ['jmlh_benar'];
+			$sumSalah=$item ['jmlh_salah'];
+			$sumKosong=$item ['jmlh_kosong'];
+			//hitung jumlah soal
+			$jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
+						// cek jika pembagi 0
+			if ($jumlahSoal != 0) {
+				//hitung nilai
+				$nilai=$sumBenar/$jumlahSoal*100;
+			}
+			
+			$paket=$item ['nm_paket'];
+			$data['all_report'][]=array(
+                'no'=>$no,
+                'jumlah_soal'=>$jumlahSoal,
+                'nama'=>$item ['namaDepan']." ".$item ['namaBelakang'],
+                'jmlh_benar'=>$item ['jmlh_benar'],
+                'jmlh_salah'=>$item ['jmlh_salah'],
+                'jmlh_kosong'=>$item ['jmlh_kosong'],
+                'jumlah_soal'=>$jumlahSoal,
+                'nilai'=>number_format($nilai,2),
+                'tgl_pengerjaan'=>$item ['tgl_pengerjaan']
+                );
+			//sum Nilai
+			$sumNilai += $nilai;
+
+			//set Max nilai
+			if ($maxNilai<$nilai) {
+				$maxNilai=$nilai;
+			}else if($minNilai>$nilai){
+				$minNilai=$nilai;
+			}
+
+		}
+		if ($no!=0) {
+			//hitung rata2 nilai
+		$avg=$sumNilai/$no;
+		}
+		
+		//format rata2 max 2 digit di belakang koma
+		$formattedAvg = number_format($avg,2);
+		$data['avg']=$formattedAvg;
+		$data['jumlahSiswa']=$no;
+		$data['maxNilai']=number_format($maxNilai,2);
+		$data['minNilai']=number_format($minNilai,2);
+		$data['paket'] = $paket;
+		if ($tryout !="all" && $paket !="all") {
+			// var_dump($data);
+			$this->parser->parse('v-laporanPDF-to.php',$data);
+		}else{
+			 redirect(site_url('admincabang/laporanpaket'));
+		}
+		
+	}
 }
 ?>
