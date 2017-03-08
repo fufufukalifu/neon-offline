@@ -79,16 +79,29 @@ class Admincabang extends MX_Controller {
 		$data = array();
 
 		foreach ( $all_report as $item ) {
+			$sumBenar=$item ['jmlh_benar'];
+			$sumSalah=$item ['jmlh_salah'];
+			$sumKosong=$item ['jmlh_kosong'];
+			//hitung jumlah soal
+			$jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
+			
+			$nilai=0;
+			// cek jika pembagi 0
+			if ($jumlahSoal != 0) {
+				//hitung nilai
+				$nilai=$sumBenar/$jumlahSoal*100;
+			}
 			$row = array();
 			$row[] = $item ['id_report'];
 			$row[] = $item ['namaPengguna'];
 			$row[] = $item ['nm_paket'];
+
 			$row[] = $item ['namaDepan']." ".$item ['namaBelakang'];
+			$row[] = $jumlahSoal;
 			$row[] = $item ['jmlh_benar'];
 			$row[] = $item ['jmlh_salah'];
 			$row[] = $item ['jmlh_kosong'];
-			$row[] = $item ['poin'];
-			$row[] = $item ['total_nilai'];			
+			$row[] = number_format($nilai,2);				
 			$row[] = $item['tgl_pengerjaan'];
 			if ($item['jmlh_benar']==0 && $item['jmlh_salah']==0) {
 				$row[] = '<a class="btn btn-sm btn-danger"  title="Hapus" onclick="drop_report('."'".$item['id_report']."'".')"><i class="ico-remove"></i></a>';

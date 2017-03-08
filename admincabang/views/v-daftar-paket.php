@@ -60,11 +60,11 @@
         <th>Username</th>
         <th>Nama Paket</th>
         <th>Nama SIswa</th>
+        <th>Jumlah Soal</th>
         <th>Benar</th>
         <th>Salah</th>
         <th>Kosong</th>
-        <th>Poin</th>
-        <th>Total</th>
+        <th>Nilai</th>
         <th>Waktu Mengerjakan</th>
         <th>Aksi</th>
 
