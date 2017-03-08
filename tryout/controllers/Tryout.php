@@ -285,9 +285,9 @@ class Tryout extends MX_Controller {
 
             $result = $this->load->Mtryout->inputreport($hasil);
             $this->session->unset_userdata('id_mm-tryoutpaket');
-            redirect(base_url('index.php/tryout/daftarpaket'));
+            redirect(base_url('index.php/tryout'));
         }else{
-            redirect(base_url('index.php/tryout/daftarpaket'));
+            redirect(base_url('index.php/tryout'));
         }
     }
 
