@@ -66,7 +66,7 @@
 
 <script>
 $('.login-btn').click(function(){
-    site_url = "http://localhost:9090/neon/webservice/login";
+    site_url = "http://neonjogja.com/webservice/login";
 
     datas = {
      username: $('input[name=username]').val(),

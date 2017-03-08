@@ -48,9 +48,11 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="indicator hide">
-      <span class="spinner"></span>
+
+    <div class="indicator hide"><span class="spinner spinner8"></span></div>
+
     </div>
+
     <table class="table table-striped" id="tblistTO" style="font-size: 13px" width=100%>
       <thead>
        <tr>
@@ -74,8 +76,8 @@
 </div>
 </div>
 <script type="text/javascript">
-var tblist_TO;
-var daftar_to_modal;
+  var tblist_TO;
+  var daftar_to_modal;
 
 // lihat daftar to
 function daftar_tryout(){
@@ -134,6 +136,7 @@ function insert_paket(datas){
   var message;
   
   url = base_url+"toback/inserpaket/"+datas;
+
   $.ajax({
     url : url,
     type : "post",
@@ -158,7 +161,7 @@ function insert_paket(datas){
 
 // download tryout (GET PAKET)
 function download_tryout(id){
-  url = "http://localhost:9090/neon/webservice/tryoutoffline";
+  url = "http://neonjogja.com/webservice/tryoutoffline";
   $.ajax({
     url : url,
     type: "POST",
@@ -183,7 +186,7 @@ function download_tryout(id){
 function download_paket(uuid){
   $('.indicator').removeClass('hide');
   $('.indicator').addClass('show');
-  url = "http://localhost:9090/neon/webservice/paketoffline/"+uuid;
+  url = "http://neonjogja.com/webservice/paketoffline/"+uuid;
   $.ajax({
     url : url,
     type: "POST",
@@ -288,5 +291,5 @@ $(document).ready(function() {
      $("#e_editWkt").hide();
    }
 
-   </script>
- </section>
+ </script>
+</section>

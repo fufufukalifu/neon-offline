@@ -44,6 +44,8 @@
         <th>Poin</th>
         <th>Total</th>
         <th>Waktu Mengerjakan</th>
+        <th>Aksi</th>
+
 
       </tr>
     </thead>
@@ -60,7 +62,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
   var mySelect = $('select[name=cabang]').val();
-  dataTableToken = $('.daftarpaket').DataTable({
+  dataTablePaket = $('.daftarpaket').DataTable({
     "ajax": {
       "url": base_url+"admincabang/admincabang/laporanto",
       "type": "POST"
@@ -84,7 +86,7 @@ $('select[name=cabang]').change(function(){
   url = base_url+"admincabang/admincabang/laporanto/"+cabang+"/"+tryout+"/"+paket;
   console.log(url);
 
-  dataTableToken = $('.daftarpaket').DataTable({
+  dataTablePaket = $('.daftarpaket').DataTable({
     "ajax": {
       "url": url,
       "type": "POST"
@@ -104,7 +106,7 @@ $('select[name=to]').change(function(){
 
   url = base_url+"admincabang/admincabang/laporanto/"+tryout+"/"+paket;
 
-  dataTableToken = $('.daftarpaket').DataTable({
+  dataTablePaket = $('.daftarpaket').DataTable({
     "ajax": {
       "url": url,
       "type": "POST"
@@ -113,7 +115,6 @@ $('select[name=to]').change(function(){
     "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
     "bDestroy": true,
   });
-console.log(url);
 
 load_paket(tryout);
 
@@ -144,7 +145,7 @@ $('select[name=paket]').change(function(){
 
   url = base_url+"admincabang/admincabang/laporanto/"+tryout+"/"+paket;
 
-  dataTableToken = $('.daftarpaket').DataTable({
+  dataTablePaket = $('.daftarpaket').DataTable({
     "ajax": {
       "url": url,
       "type": "POST"
@@ -153,7 +154,37 @@ $('select[name=paket]').change(function(){
     "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
     "bDestroy": true,
   });
-console.log(url);
 
 });
+
+
+// ketika klik hapus report
+function drop_report(datas){
+  url = base_url+"admincabang/drop_report";
+
+  swal({
+    title: "Yakin akan hapus report?",
+    text: "Anda tidak dapat membatalkan ini.",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Ya,Tetap hapus!",
+    closeOnConfirm: false
+  },
+  function(){
+    $.ajax({
+      dataType:"text",
+      data:{id_report:datas},
+      type:"POST",
+      url:url,
+      success:function(){
+        swal("Terhapus!", "Data report berhasil dihapus.", "success");
+        dataTablePaket.ajax.reload(null,false);
+      },
+      error:function(){
+        sweetAlert("Oops...", "Data gagal terhapus!", "error");
+      }
+    });
+  });
+}
 </script>

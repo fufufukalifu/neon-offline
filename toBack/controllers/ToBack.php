@@ -1,8 +1,7 @@
 <?php
 
 class Toback extends MX_Controller{
-	// private $web_link = "http://neonjogja.com/webservice/";
-	private $web_link = "http://localhost:9090/neon/webservice/";
+	private $web_link = "http://neonjogja.com/webservice/";
 
 
 	public function __construct() {
@@ -627,8 +626,19 @@ class Toback extends MX_Controller{
 					$this->copy_gambar($copy_image);
 				}
 
+				//copy audio
+				$audio = $item->audio;
+				if ($audio!="") {
+					$copy_audio = ['namaFile'=>$audio,
+					'url'=>'http://neonjogja.com/assets/audio/soal/'.$audio,
+					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/audio/soal/'
+					];
+					$this->copy_audio($copy_audio);
+				}
+
 				// COPY GAMBAR PEMBAHASAN
-				$gambar_pembahasan = $item->gambar_pembahasan;
+
+				$gambar_pembahasan = $item->pembahasan;
 				if ($gambar_pembahasan!="") {
 					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
 					'url'=>'http://neonjogja.com/assets/image/pembahasan/'.$gambar_pembahasan,
@@ -636,6 +646,8 @@ class Toback extends MX_Controller{
 					];
 					$this->copy_gambar($copy_pembahasan);
 				}
+
+
 				$this->Mtoback->insert_soal($item);
 			}	
 		}
@@ -643,7 +655,6 @@ class Toback extends MX_Controller{
 		$this->insert_pil_jawaban($id);	
 		$output = array("jumlah_soal"=>$jumlah_soal);
 		echo json_encode($output);
-
 	}
 
 	## masukin mm paket soal akses ke local db
@@ -728,16 +739,51 @@ class Toback extends MX_Controller{
 
 
 	}
-	#================================================================# WEB END SERVICE #===============================================================================#
 
-
-
-	
-
-	  ## COPY IMAGE DARI SERVER LAIN
+	## COPY IMAGE DARI SERVER LAIN
 	function copy_gambar($data){
+		$url = $data['url'];
+		$destination_folder = $data['target'];
+    	$newfname = $destination_folder .$data['namaFile']; //set your file ext
 
+    	// check filenya ada atau enggak
+    	$ch = curl_init($url);    
+    	curl_setopt($ch, CURLOPT_NOBODY, true);
+    	curl_exec($ch);
+    	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+    	if($code == 200){
+    		$status = true;
+    	}else{
+    		$status = false;
+    	}
+    	curl_close($ch);
+    	// check filenya ada atau enggak
+
+    	if ($status) {
+    		$file = fopen ($url, "rb");
+
+    		if ($file) {
+	      $newf = fopen ($newfname, "a"); // to overwrite existing file
+
+	      if ($newf)
+	      	while(!feof($file)) {
+	      		fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+	      	}
+	      }
+
+	      if ($file) {
+	      	fclose($file);
+	      }
+
+	      if ($newf) {
+	      	fclose($newf);
+	      }
+	  }
+	}
+
+	  	## COPY IMAGE DARI SERVER LAIN
+	function copy_audio($data){
 		$url = $data['url'];
 		$destination_folder = $data['target'];
     	$newfname = $destination_folder .$data['namaFile']; //set your file ext
@@ -778,6 +824,7 @@ class Toback extends MX_Controller{
 	  }
 
 	}
+	#================================================================# WEB END SERVICE #===============================================================================#
 
 }
 ?>

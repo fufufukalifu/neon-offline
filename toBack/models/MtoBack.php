@@ -184,6 +184,13 @@ class Mtoback extends CI_Model {
 	}
 
 
+	// hapus report laporan //
+	public function delete_report($data){
+		$this->db->where('id_report',$data['id_report']);
+		$this->db->delete('tb_report-paket');
+	}
+	// hapus report laporan //
+	
 	#================================================================# WEB SERVICE #===============================================================================#
 ## transaksi service  ##
 	# validate insert to

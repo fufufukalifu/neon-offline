@@ -89,7 +89,14 @@ class Admincabang extends MX_Controller {
 			$row[] = $item ['jmlh_kosong'];
 			$row[] = $item ['poin'];
 			$row[] = $item ['total_nilai'];			
-			$row[] = $item['tgl_pengerjaan'];	
+			$row[] = $item['tgl_pengerjaan'];
+			if ($item['jmlh_benar']==0 && $item['jmlh_salah']==0) {
+				$row[] = '<a class="btn btn-sm btn-danger"  title="Hapus" onclick="drop_report('."'".$item['id_report']."'".')"><i class="ico-remove"></i></a>';
+			}else{
+				$row[] = "-";	
+
+			}
+
 			
 			$data[] = $row;
 		}
@@ -99,35 +106,42 @@ class Admincabang extends MX_Controller {
 			"data"=>$data,
 			);
 
-		echo json_encode( $output );
-	}
+echo json_encode( $output );
+}
 
 	// laporan paket
-	public function laporanpaket(){
-		$data['judul_halaman'] = "Laporan Paket TO";
-		$data['files'] = array(
-			APPPATH . 'modules/admincabang/views/v-daftar-paket.php',
-			);
+public function laporanpaket(){
+	$data['judul_halaman'] = "Laporan Paket TO";
+	$data['files'] = array(
+		APPPATH . 'modules/admincabang/views/v-daftar-paket.php',
+		);
 		# get to
-		$data['to'] = $this->mtoback->get_To();
-		$hakAkses = $this->session->userdata['HAKAKSES'];
-		if ($hakAkses=='adminOffline') {
-			$this->parser->parse('admin/v-index-admin', $data);
-		} elseif ($hakAkses == 'guru') {
-			redirect(site_url('guru/dashboard/'));
-		} elseif ($hakAkses == 'siswa') {
-			redirect(site_url('welcome'));
-		} else {
-			redirect(site_url('login'));
-		}
-	}
+$data['to'] = $this->mtoback->get_To();
+$hakAkses = $this->session->userdata['HAKAKSES'];
+if ($hakAkses=='adminOffline') {
+	$this->parser->parse('admin/v-index-admin', $data);
+} elseif ($hakAkses == 'guru') {
+	redirect(site_url('guru/dashboard/'));
+} elseif ($hakAkses == 'siswa') {
+	redirect(site_url('welcome'));
+} else {
+	redirect(site_url('login'));
+}
+}
 
     // function get paket
-	public function get_paket( $to_id ) {
-		$data = $this->output
-		->set_content_type( "application/json" )
-		->set_output( json_encode( $this->admincabang_model->get_paket( $to_id ) ) );
-	}
+public function get_paket( $to_id ) {
+	$data = $this->output
+	->set_content_type( "application/json" )
+	->set_output( json_encode( $this->admincabang_model->get_paket( $to_id ) ) );
+}
 
+
+function drop_report(){
+	if ($this->input->post()) {
+		$data = $this->input->post();
+		$this->mtoback->delete_report($data);
+	}
+}
 }
 ?>
