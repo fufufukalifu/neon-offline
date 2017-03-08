@@ -165,7 +165,7 @@ label:hover{ /* HIDE RADIO */
       <div id="my-slideshow" style="">
        <ul class="bjqs" style="display: block;list-style: none">
         <?php foreach ($soal as $key): ?>
-
+        
          <li class="bjqs-slide" style="display: none;">
           <div class="">
            <div class="panel panel-default" style="">
@@ -186,7 +186,7 @@ label:hover{ /* HIDE RADIO */
          <div class="panel-collapse">
            <div class="panel-body">
             <div class="row">
-            <?php   var_dump($key) ?>
+            
               <?php if ($key['audio']!=""): ?>
                 <!-- Start Audio listening -->
                 <div class="col-md-12">

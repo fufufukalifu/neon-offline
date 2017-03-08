@@ -236,7 +236,7 @@ public function datatopaket($id) {
 
 
 public function get_soalnorandom($id_paket) { 
-    $this->db->select('id_paket as idpak, soal as soal, soal.id_soal as soalid, soal.judul_soal as judul, soal.gambar_soal as gambar'); 
+    $this->db->select('id_paket as idpak, soal as soal, soal.id_soal as soalid, soal.judul_soal as judul, soal.gambar_soal as gambar,soal.audio as audio'); 
     $this->db->from('tb_mm-paketbank as paban'); 
     $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal'); 
     $this->db->where('paban.id_paket', $id_paket); 
@@ -261,7 +261,6 @@ public function dataPaketRandom($id) {
     $query = $this->db->get(); 
     return $query->result(); 
 }
-
 }
 
 ?>
