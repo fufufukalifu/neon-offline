@@ -88,7 +88,6 @@ class Msiswa extends CI_Model {
     }
 
     #query get siswa belum to
-
     public function get_siswa_blm_ikutan_to($id) {
         $query = "SELECT s.`id`, s.`namaDepan`,s.`namaBelakang`,c.`namaCabang` FROM tb_siswa s 
         LEFT JOIN `tb_cabang` c
@@ -103,8 +102,20 @@ class Msiswa extends CI_Model {
         $result = $this->db->query($query);
         return $result->result_array();
     }
-
     ##query get siswa belum to.
+
+    #query get siswa belum to
+    public function get_siswa_blm_ikutan_to_pagination($data) {
+        $this->db->select('*,siswa.id as idsiswa');
+        $this->db->join('tb_cabang c', 's.`cabangID` = c.id','left');
+        $this->db->where('s.id NOT IN(SELECT ss.`id` FROM tb_siswa ss JOIN `tb_hakakses-to` ho ON ho.`id_siswa` = ss.`id` WHERE ho.`id_tryout` = '.$data.') AND s.`status`=1
+            "');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    ##query get siswa belum to.
+
     #query get semua siswa
 
     function get_all_siswa() {
