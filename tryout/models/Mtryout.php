@@ -261,6 +261,17 @@ public function dataPaketRandom($id) {
     $query = $this->db->get(); 
     return $query->result(); 
 }
+
+#------------------------------------------UPDATE SEMI ONLINE 19 MEI 2017--------------------------------------#
+function get_report_paket_by_mmid($data){
+    // SELECT * FROM `tb_report-paket` p WHERE p.`id_mm-tryout-paket` = 198 AND p.`id_pengguna` = 1589
+    $this->db->select('*');
+    $this->db->from('tb_report-paket p');
+    $this->db->where('p.id_mm-tryout-paket',$data['id_mm']);
+    $this->db->where('p.id_pengguna',$data['id_pengguna']);
+     $query = $this->db->get(); 
+    return $query->result()[0]; 
+}
 }
 
 ?>

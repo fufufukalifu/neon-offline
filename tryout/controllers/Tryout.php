@@ -267,17 +267,17 @@ class Tryout extends MX_Controller {
                     $kosong++;
                     $koreksi[] = $result[$i]['soalid'];
                     $idSalah[] = $i;
-                    $status = null;
+                    $status = 3;
                 } else if ($data[$id][0] == $result[$i]['jawaban']) {
                     // untuk jawaban benar
                     $benar++;
-                    $status = true;
+                    $status = 1;
                 } else {
                     // untuk jawaban salah
                     $salah++;
                     $koreksi[] = $result[$i]['soalid'];
                     $idSalah[] = $i;
-                    $status = false;
+                    $status = 2;
                 }
                 // $rekap_hasil_koreksi['id_soal'] = ['id_soal' =>$id,'status_koreksi'=>$status];
                 $tempt['id_soal'] = $id;
@@ -322,6 +322,38 @@ class Tryout extends MX_Controller {
 
             $this->load->view('vPembahasan.php', $data);
             $this->load->view('footerpembahasan.php');
+        } else {
+            $this->errorTest();
+        }
+    }
+
+    public function mulaipembahasan() {
+        if (!empty($this->session->userdata['id_mm-tryoutpaketpembahasan'])) {
+            $id = $this->session->userdata['id_mm-tryoutpaketpembahasan'];
+            $data = ['id_mm'=>$id, 'id_pengguna'=>$this->session->userdata('id')];
+            $data['rekap_jawaban'] = json_decode($this->Mtryout->get_report_paket_by_mmid($data)->rekap_hasil_koreksi);
+            $data['topaket'] = $this->Mtryout->datatopaket($id);
+            $jumlah_soal = count($data['rekap_jawaban']);
+
+            $id_paket = $this->Mtryout->datapaket($id)[0]->id_paket;
+
+            $this->load->view('templating/t-headerto');
+            $query = $this->load->Mtryout->get_pembahasan($id_paket);
+            $data['soal'] = $query['soal'];
+            $data['pil'] = $query['pil'];
+            
+            for ($i=0; $i <$jumlah_soal ; $i++) { 
+                $rekap_id = $data['rekap_jawaban'][$i]->id_soal;
+                $soal_id = $data['soal'][$i]['soalid'];
+
+                if ($rekap_id == $soal_id) {
+                    $data['soal'][$i]['status_koreksi'] = $data['rekap_jawaban'][$i]->status_koreksi;
+                }
+            }
+
+
+            $this->load->view('v-pembahasanto.php', $data);
+            $this->load->view('footerpembahasan', $data);
         } else {
             $this->errorTest();
         }
