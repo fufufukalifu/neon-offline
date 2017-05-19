@@ -285,6 +285,9 @@ class Toback extends MX_Controller{
 			
 			<a class="btn btn-sm btn-primary"  title="Sinkron Soal" onclick="download_soal('."'".$list_to['id_tryout']."'".')">
 			<i class="ico-question-sign"></i></a>
+
+			<a class="btn btn-sm btn-primary"  title="Ubah" onclick="edit_TO('."'".$list_to['id_tryout']."'".')">
+			<i class="ico-pencil"></i></a>
 			';
 
 			
