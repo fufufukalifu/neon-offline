@@ -256,21 +256,38 @@ class Tryout extends MX_Controller {
             $kosong = 0;
             $koreksi = array();
             $idSalah = array();
+            $status = false;
+            $rekap_hasil_koreksi = [];
+
+            //untuk cek hawaban
             for ($i = 0; $i < sizeOf($result); $i++) {
                 $id = $result[$i]['soalid'];
-
                 if (!isset($data[$id])) {
+                    // untuk jawaban kosong
                     $kosong++;
                     $koreksi[] = $result[$i]['soalid'];
                     $idSalah[] = $i;
+                    $status = null;
                 } else if ($data[$id][0] == $result[$i]['jawaban']) {
+                    // untuk jawaban benar
                     $benar++;
+                    $status = true;
                 } else {
+                    // untuk jawaban salah
                     $salah++;
                     $koreksi[] = $result[$i]['soalid'];
                     $idSalah[] = $i;
+                    $status = false;
                 }
+                // $rekap_hasil_koreksi['id_soal'] = ['id_soal' =>$id,'status_koreksi'=>$status];
+                $tempt['id_soal'] = $id;
+                $tempt['status_koreksi'] = $status;
+                $rekap_hasil_koreksi[] = $tempt;
+
+                // var_dump($rekap_hasil_koreksi);         
             }
+
+            $json_rekap_hasil_koreksi = json_encode($rekap_hasil_koreksi);       
 
             $hasil['id_pengguna'] = $this->session->userdata['id'];
             $hasil['siswaID'] = $this->msiswa->get_siswaid();
@@ -282,6 +299,7 @@ class Tryout extends MX_Controller {
             $hasil['total_nilai'] = $benar;
             $hasil['poin'] = $benar;
             $hasil['status_pengerjaan'] = 1;
+            $hasil['rekap_hasil_koreksi'] = $json_rekap_hasil_koreksi;
 
             $result = $this->load->Mtryout->inputreport($hasil);
             $this->session->unset_userdata('id_mm-tryoutpaket');
