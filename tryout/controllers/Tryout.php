@@ -111,7 +111,7 @@ class Tryout extends MX_Controller {
                 APPPATH . 'modules/templating/views/t-f-pagetitle.php',
                 APPPATH . $konten,
                 // APPPATH . 'modules/homepage/views/v-footer.php',
-                APPPATH . 'modules/testimoni/views/v-footer.php',
+                // APPPATH . 'modules/testimoni/views/v-footer.php',
                 );
             // DAFTAR PAKET
             $data['paket_dikerjakan'] = $this->Mtryout->get_paket_reported($datas);

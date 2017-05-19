@@ -798,13 +798,14 @@ class Admin extends MX_Controller {
 function login(){
             $data = array(
             'judul_halaman' => 'Login - Neon',
-            'judul_header' => 'Welcome'
+            'judul_header' => 'Welcome',
+            'judul_login' => 'Halo, admin! Silahkan Login',
+
         );
 
         $data['files'] = array(
             APPPATH . 'modules/templating/views/v-navbarlogin.php',
             APPPATH . 'modules/login/views/vLogin-admin.php',
-            APPPATH . 'modules/homepage/views/v-footer.php',
         );
         
         $this->parser->parse('templating/index', $data);

@@ -7,7 +7,7 @@
                 </div>
                 <div class="">
                     <div class="page-header-section">
-                        <h4 class="title font-alt text-center">Silahkan Login</h4>
+                        <h4 class="title font-alt text-center">{judul_login}</h4>
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
 
                         <div class="text-right">
                             <p class="small">
-                                <a href="<?= base_url('index.php/admin/login'); ?>">Login Admin</a>
+                                <a href="<?= base_url('index.php/admin/login'); ?>">Anda Admin? Login Disini</a>
                             </p>
                         <!---->
                         </div>
