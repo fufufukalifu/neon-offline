@@ -1,7 +1,7 @@
 <?php
 
 class Toback extends MX_Controller{
-	private $web_link = "http://neonjogja.com/webservice/";
+	private $web_link = "http://localhost:81/netjoo-admin/webservice/";
 
 
 	public function __construct() {
