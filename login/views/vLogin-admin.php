@@ -7,7 +7,7 @@
                 </div>
                 <div class="">
                     <div class="page-header-section">
-                        <h4 class="title font-alt text-center">Silahkan Login</h4>
+                        <h4 class="title font-alt text-center">{judul_login}</h4>
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
 
                         <div class="text-right">
                             <p class="small">
-                                <a href="<?= base_url('index.php/login'); ?>">Login Siswa</a>
+                                <a href="<?= base_url('index.php/login'); ?>" class="text-info">Anda Peserta? Login Disini</a>
                             </p>
                             <!---->
                         </div>
@@ -65,13 +65,31 @@
 </main>
 
 <script>
-$('.login-btn').click(function(){
+$('.login').click(function(){
+        login();
+});
+
+$('input[name=username]').keypress(function (e) {
+    if (e.which == 13) {
+        login();
+    }
+});
+
+$('input[name=password]').keypress(function (e) {
+    if (e.which == 13) {
+        login();
+    }
+});
+
+function login(){
     site_url = "http://neonjogja.com/webservice/login";
 
     datas = {
-     username: $('input[name=username]').val(),
+     username:$('input[name=username]').val(),
      password:$('input[name=password]').val()
  };
+
+
 
  $.ajax({
     url : site_url,
@@ -93,7 +111,8 @@ $('.login-btn').click(function(){
         sweetAlert("Oops...", "gagal konek ke server", "error");
     }
 });
-});
+
+};
 
 // ================================== # User Defined Function #===================================
 

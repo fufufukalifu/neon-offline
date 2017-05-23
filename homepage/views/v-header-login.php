@@ -57,8 +57,8 @@
 			<div class="page-header-top">
 				<div class="grid-row clear-fix">
 					<address>
-						<a href="tel:(0274) 450300 " class="phone-number"><i class="fa fa-phone"></i>(0274) 450300 </a>
-						<a href="mailto:info@neonjogja.com  " class="email"><i class="fa fa-envelope-o"></i>info@neonjogja.com </a>
+						<a href="tel:(0274) 450300 " class="phone-number"><i class="fa fa-phone"></i>022-87805676  </a>
+						<a href="mailto:info@semionlinetryout  " class="email"><i class="fa fa-envelope-o"></i>info@semionlinetryout </a>
 
 					</address>
 

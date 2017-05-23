@@ -273,5 +273,20 @@ class Mtoback extends CI_Model {
 	#================================================================# WEB SERVICE #===============================================================================#
 
 
+	#==============================FUNGSI BARU=========================================#
+	//get paket by tryout
+	function get_paket_by_to($id_to){
+		$this->db->select('t.nm_tryout, p.id_paket, p.nm_paket, p.token');
+		$this->db->from('tb_tryout t');
+		$this->db->join('tb_mm-tryoutpaket mm' , 't.id_tryout=mm.id_tryout');
+		$this->db->join('tb_paket p' , 'p.id_paket = mm.id_paket');
+		$this->db->where('t.id_tryout', $id_to);
+
+		$query = $this->db->get();
+		return $query->result_array();
+		
+	}
+
+
 }
 ?>

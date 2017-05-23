@@ -1,7 +1,7 @@
 <?php
 
 class Toback extends MX_Controller{
-	private $web_link = "http://neonjogja.com/webservice/";
+	private $web_link = "http://localhost:9090/neon-admin/webservice/";
 
 
 	public function __construct() {
@@ -285,6 +285,15 @@ class Toback extends MX_Controller{
 			
 			<a class="btn btn-sm btn-primary"  title="Sinkron Soal" onclick="download_soal('."'".$list_to['id_tryout']."'".')">
 			<i class="ico-question-sign"></i></a>
+
+			<a class="btn btn-sm btn-primary"  title="Ubah" onclick="edit_TO('."'".$list_to['id_tryout']."'".')">
+			<i class="ico-pencil"></i></a>
+
+			<a href="'.base_url().'kirimnilai/listpaket/'.$list_to['id_tryout'].'" class="btn btn-sm btn-primary"  title="Kirim Nilai">
+			<i class="ico-folder-upload2"></i></a>
+
+			<a href="'.base_url().'toback/list_paket/'.$list_to['id_tryout'].'" class="btn btn-sm btn-primary"  title="Lihat Paket">
+			<i class="ico-file"></i></a>
 			';
 
 			
@@ -826,5 +835,37 @@ class Toback extends MX_Controller{
 	}
 	#================================================================# WEB END SERVICE #===============================================================================#
 
+
+	#======================FUNGSI BARU========================================#
+
+	// fungsi untuk melihat semua daftar paket berdarkan id to
+	public function list_paket($id)
+	{
+		$data['files'] = array(
+			APPPATH . 'modules/toback/views/v-daftar-paket.php',
+			);
+		$data['judul_halaman'] = "List Paket";
+
+		// get daftar paket
+		$data['daftar_paket'] = $this->Mtoback->get_paket_by_to($id);
+		// $data['nm_to'] = $data['daftar_paket'][0]['nm_tryout'];
+
+		$hakAkses=$this->session->userdata['HAKAKSES'];
+		if ($hakAkses=='adminOffline') {
+        // jika admin
+			$this->parser->parse('admin/v-index-admin', $data);
+		} elseif($hakAkses=='guru'){
+            // jika guru
+			$this->load->view('templating/index-b-guru', $data);  
+		} elseif($hakAkses=='admin_cabang'){
+            // jika guru
+			$this->load->view('admincabang/v-index-admincabang', $data);  
+
+
+		}else{
+            // jika siswa redirect ke welcome
+			redirect(site_url('welcome'));
+		}
+	}
 }
 ?>

@@ -15,38 +15,30 @@ class Login extends MX_Controller {
             if ($this->session->userdata('HAKAKSES')=='siswa'){
                // redirect('welcome');
             }else if($this->session->userdata('HAKAKSES')=='guru'){
-               redirect('guru/dashboard');
-           }else{
-           }
+             redirect('guru/dashboard');
+         }else{
+         
+         }
 
-       }
+     }
 
-   }
+ }
 
 
 
-   public function index() {
-
+ public function index() {
     $data = array(
-
-        'judul_halaman' => 'Login - Neon',
-
-        'judul_header' => 'Welcome'
-
+        'judul_halaman' => 'Login - Tryout Semi-online',
+        'judul_header' => 'Welcome',
+        'judul_login' => 'Hallo, perserta! silahkan login'
         );
-
-
 
     $data['files'] = array(
         APPPATH . 'modules/templating/views/v-navbarlogin.php',
         APPPATH . 'modules/login/views/vLogin.php',
-
         );
 
-
-
     $this->parser->parse('templating/index', $data);
-
 }
 
 
@@ -54,88 +46,69 @@ class Login extends MX_Controller {
     //Fungsi untuk login, mengecek username dan password
 
 public function validasiLogin() {
-
     $username = htmlspecialchars($this->input->post('username'));
-
     $password = md5($this->input->post('password'));
 
-
-
     if ($result = $this->Mlogin->cekUser($username, $password)) {
-
-            //variabelSession
-
+        //variabelSession
         $sess_array = array();
-
         foreach ($result as $row) {
-             $idPengguna = $row->id;
-
-            $hakAkses = $row->hakAkses;
-
-                //membuat session
-
-            $verifikasiCode = md5($row->regTime);
-
-            $sess_array = array(
-
-                'id' => $idPengguna,
-
-                'USERNAME' => $row->namaPengguna,
-
-                'HAKAKSES' => $row->hakAkses,
-
-                'AKTIVASI' => $row->aktivasi,
-
-                'eMail' => $row->eMail,
-
-                'verifikasiCode' => $verifikasiCode,
-
-                'loggedin' => TRUE,
+           $idPengguna = $row->id;
+           $hakAkses = $row->hakAkses;
+            //membuat session
+           $verifikasiCode = md5($row->regTime);
+           $sess_array = array(
+            'id' => $idPengguna,
+            'USERNAME' => $row->namaPengguna,
+            'HAKAKSES' => $row->hakAkses,
+            'AKTIVASI' => $row->aktivasi,
+            'eMail' => $row->eMail,
+            'verifikasiCode' => $verifikasiCode,
+            'loggedin' => TRUE,
 
 
 
-                );
+            );
 
-            $this->session->set_userdata($sess_array);
+           $this->session->set_userdata($sess_array);
 
 
 
-            if ($hakAkses == 'admin') {
+           if ($hakAkses == 'admin') {
 
-                redirect(base_url('index.php/admin'));
+            redirect(base_url('index.php/admin'));
 
-            } elseif ($hakAkses == 'guru') {
+        } elseif ($hakAkses == 'guru') {
 
-                $guru = $this->Mlogin->cekGuru($this->session->userdata['id']);
+            $guru = $this->Mlogin->cekGuru($this->session->userdata['id']);
 
-                foreach ($guru as $value) {
-                    $namaGuru = $value->namaDepan .' '.$value->namaBelakang;
-                    $this->session->set_userdata('id_guru', $value->id);
-                    $this->session->set_userdata('NAMAGURU', $namaGuru);
+            foreach ($guru as $value) {
+                $namaGuru = $value->namaDepan .' '.$value->namaBelakang;
+                $this->session->set_userdata('id_guru', $value->id);
+                $this->session->set_userdata('NAMAGURU', $namaGuru);
 
-                }
+            }
 
-                redirect(site_url('guru/dashboard/'));
+            redirect(site_url('guru/dashboard/'));
 
-            } elseif ($hakAkses == 'siswa') {
-                $tampSiswa=$this->Mlogin->get_namaSiswa($idPengguna);
-                $namaSiswa = $tampSiswa['namaDepan'] . ' '  . $tampSiswa['namaBelakang']  ;
-                     //set session nama Siswa
-               $this->session->set_userdata('NAMASISWA', $namaSiswa);
-               // $this->cek_token();
-               redirect(site_url('tryout'));
+        } elseif ($hakAkses == 'siswa') {
+            $tampSiswa=$this->Mlogin->get_namaSiswa($idPengguna);
+            $namaSiswa = $tampSiswa['namaDepan'] . ' '  . $tampSiswa['namaBelakang']  ;
+            
+            //set session nama Siswa
+            $this->session->set_userdata('NAMASISWA', $namaSiswa);
+            redirect(site_url('tryout/validasitoken'));
+        } elseif ($hakAkses == 'admin_cabang') {
+         redirect(site_url('admincabang'));
+     } else {
 
-           } elseif ($hakAkses == 'admin_cabang') {
-               redirect(site_url('admincabang'));
-           } else {
-
-            echo 'tidak ada hak akses';
-
-        }
+        echo 'tidak ada hak akses';
 
     }
 
-    return TRUE;
+}
+
+return TRUE;
 
 } else {
 
@@ -344,13 +317,13 @@ function cek_token(){
         // cek dulu statusna udah di aktivin atau belum
         if ($token['status']==1) {
             # udah diaktifin
-         $date_diaktifkan = $date1->format('d-M-Y');
-         $date_kadaluarsa =  date("d-M-Y", strtotime($date_diaktifkan)+ (24*3600*$token['masaAktif']));
+           $date_diaktifkan = $date1->format('d-M-Y');
+           $date_kadaluarsa =  date("d-M-Y", strtotime($date_diaktifkan)+ (24*3600*$token['masaAktif']));
 
-         $date1 = new DateTime(date("d-M-Y"));
-         $date2 = new DateTime($date_kadaluarsa);
-         $sisa_aktif = $date2->diff($date1)->days;
-         if ($sisa_aktif != 0) {
+           $date1 = new DateTime(date("d-M-Y"));
+           $date2 = new DateTime($date_kadaluarsa);
+           $sisa_aktif = $date2->diff($date1)->days;
+           if ($sisa_aktif != 0) {
             //token aktif
             $this->session->set_userdata(array('token'=>'Aktif','sisa'=>$sisa_aktif));
         }else{
