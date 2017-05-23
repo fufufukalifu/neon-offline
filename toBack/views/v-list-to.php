@@ -267,7 +267,7 @@ function download_tryout(id){
 function download_paket(uuid){
   $('.indicator').removeClass('hide');
   $('.indicator').addClass('show');
-  url = "http://neonjogja.com/webservice/paketoffline/"+uuid;
+  url = "http://localhost:81/netjoo-admin/webservice/paketoffline/"+uuid;
   $.ajax({
     url : url,
     type: "POST",
