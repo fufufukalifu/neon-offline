@@ -30,10 +30,10 @@
 <section class="section bgcolor-white"> 
   <div class="container">
    <!-- START Row -->
-   <div class="row">
+   <!-- <div class="row"> -->
     <!-- START Left Section -->
     <!-- top -->
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
       <h4>Daftar Paket TO yang Belum Dikerjakan</h4>
       <div class="col-md-12">
         <?php if ($paket==array()): ?>
@@ -77,7 +77,7 @@
         </table>
       <?php endif ?>
     </div>
-  </div>
+  </div> -->
 
   <div class="col-md-12">
     <section>
@@ -85,9 +85,9 @@
       <h4>Paket Soal yang Sudah Dikerjakan</h4>
       <!-- gallery container -->
       <div class="col-md-12">
-        <?php if($paket_dikerjakan==array()): ?>
-          <h5>Tidak ada paket soal.</h5>
-        <?php else: ?>
+        <?php //if($paket_dikerjakan==array()): ?>
+          <!-- <h5>Tidak ada paket soal.</h5> -->
+        <?php //else: ?>
           <table class="table" style="font-size: 13px">
             <thead>
              <tr>
@@ -106,11 +106,11 @@
                   class="btn btn-primary modal-on<?=$paketitem['id_paket']?>"
                   data-todo='<?=json_encode($paketitem)?>' title="Lihat Score"><i class="glyphicon glyphicon-list-alt"></i></a>
 
-                  <?php if ($status_to=="done"): ?>
+                  <?php //if ($status_to=="done"): ?>
                     <a onclick="pembahasanto(<?=$paketitem['id_paket']?>)" 
                       class="btn btn-primary"
                       data-todo='<?=json_encode($paketitem)?>' title="Pembahasan"><i class="glyphicon glyphicon-book"></i></a>
-                    <?php endif ?>
+                    <?php //endif ?>
                   </td>
                 <td><?=$paketitem['nm_paket'] ?></td>
                 
@@ -118,7 +118,7 @@
               <?php endforeach ?>
             </tbody>
           </table>
-        <?php endif ?>
+        <?php// endif ?>
 
       </div>
 

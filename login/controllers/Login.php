@@ -46,42 +46,24 @@ class Login extends MX_Controller {
     //Fungsi untuk login, mengecek username dan password
 
 public function validasiLogin() {
-
     $username = htmlspecialchars($this->input->post('username'));
-
     $password = md5($this->input->post('password'));
 
-
-
     if ($result = $this->Mlogin->cekUser($username, $password)) {
-
-            //variabelSession
-
+        //variabelSession
         $sess_array = array();
-
         foreach ($result as $row) {
            $idPengguna = $row->id;
-
            $hakAkses = $row->hakAkses;
-
-                //membuat session
-
+            //membuat session
            $verifikasiCode = md5($row->regTime);
-
            $sess_array = array(
-
             'id' => $idPengguna,
-
             'USERNAME' => $row->namaPengguna,
-
             'HAKAKSES' => $row->hakAkses,
-
             'AKTIVASI' => $row->aktivasi,
-
             'eMail' => $row->eMail,
-
             'verifikasiCode' => $verifikasiCode,
-
             'loggedin' => TRUE,
 
 
@@ -112,11 +94,10 @@ public function validasiLogin() {
         } elseif ($hakAkses == 'siswa') {
             $tampSiswa=$this->Mlogin->get_namaSiswa($idPengguna);
             $namaSiswa = $tampSiswa['namaDepan'] . ' '  . $tampSiswa['namaBelakang']  ;
-                     //set session nama Siswa
+            
+            //set session nama Siswa
             $this->session->set_userdata('NAMASISWA', $namaSiswa);
-               // $this->cek_token();
-            redirect(site_url('tryout'));
-
+            redirect(site_url('tryout/validasitoken'));
         } elseif ($hakAkses == 'admin_cabang') {
          redirect(site_url('admincabang'));
      } else {

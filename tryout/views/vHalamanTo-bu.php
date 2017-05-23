@@ -22,7 +22,7 @@
   width: 20px;
   height: 20px;
   color : #06C;
-    font-size: 12px;
+  font-size: 12px;
   text-align: center;
   text-decoration: none;
   border: 1px solid #63d3e9; 
@@ -103,12 +103,8 @@ label:hover{ /* HIDE RADIO */
   <script type="text/javascript">
     jQuery(document).ready(function ($) {
      $('#my-slideshow').bjqs({
-//                'height': 400,
-                // 'width': 600,
-                // 'responsive': false
-              });
+     });
    });
-
 
     $(window).load(function() {
     // Animate loader off screen
@@ -230,7 +226,7 @@ label:hover{ /* HIDE RADIO */
 
 
              <div class="col-md-11">
-             <?php $gambar=$key['gambar']; ?>
+               <?php $gambar=$key['gambar']; ?>
                <?php if (!empty($gambar) && $gambar!="" && $gambar!=' ') { ?>  
 
                <img src="<?= base_url('./assets/image/soal/' . $gambar) ?>">   

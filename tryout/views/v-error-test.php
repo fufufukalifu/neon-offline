@@ -27,7 +27,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="text-center">
-                                        <h4>Halaman tidak dapat diakses ! <a href="<?= base_url('index.php/tryout') ?>" class="text-primary">Kembali?</a></h4>
+                                        <h4>Halaman tidak dapat diakses ! <a href="<?= base_url('index.php/tryout/validasitoken') ?>" class="text-primary">Kembali?</a></h4>
 
                                     </div>
                                 </div>
