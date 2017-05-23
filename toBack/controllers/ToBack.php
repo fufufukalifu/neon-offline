@@ -2,7 +2,7 @@
 
 class Toback extends MX_Controller{
 	private $web_link = "http://localhost:9090/neon-admin/webservice/";
-
+	private $project_host = "http://localhost:9090/neon-offline/";
 
 	public function __construct() {
 		
@@ -230,6 +230,8 @@ class Toback extends MX_Controller{
 	//menampilkan halaman list TO
 	public function listTO()
 	{
+
+
 		$data['files'] = array(
 			APPPATH . 'modules/toback/views/v-list-to.php',
 			);
@@ -254,6 +256,7 @@ class Toback extends MX_Controller{
 	}
 	// menampilkan list to
 	public function ajax_listsTO(){
+
 		$list =$this->Mtoback->get_To();
 		$data = array();
 
@@ -284,9 +287,9 @@ class Toback extends MX_Controller{
 			<i class="ico-user"></i></a>
 			
 			<a class="btn btn-sm btn-primary"  title="Sinkron Soal" onclick="download_soal('."'".$list_to['id_tryout']."'".')">
-			<i class="ico-question-sign"></i></a>
-
-			<a class="btn btn-sm btn-primary"  title="Ubah" onclick="edit_TO('."'".$list_to['id_tryout']."'".')">
+			<i class="ico-question-sign"></i></a>';
+		
+			$row[] = '<a class="btn btn-sm btn-primary"  title="Ubah" onclick="edit_TO('."'".$list_to['id_tryout']."'".')">
 			<i class="ico-pencil"></i></a>
 
 			<a href="'.base_url().'kirimnilai/listpaket/'.$list_to['id_tryout'].'" class="btn btn-sm btn-primary"  title="Kirim Nilai">
@@ -559,7 +562,9 @@ class Toback extends MX_Controller{
 	
 
 	## masukin mahasiswa dan pengguna  ke local db
-	public function insert_mahasiswa($id){
+	public function insert_mahasiswa(){
+		$id = $this->session->userdata('id');
+
 		$url = $this->web_link.'siswaoffline/'.$id;
 		$json = file_get_contents($url);
 		$data_siswa = json_decode($json);
@@ -618,6 +623,7 @@ class Toback extends MX_Controller{
 		$url = $this->web_link.'soaloffline/'.$id;
 		$json = file_get_contents($url);
 		$data_soal = json_decode($json);
+
 		$jumlah_soal=0;
 		foreach ($data_soal as $item) {	
 			$validate_data = ['id'=>$item->id_soal,'tabel'=>'tb_banksoal','key'=>'id_soal'];
@@ -629,7 +635,7 @@ class Toback extends MX_Controller{
 				// COPY GAMBAR
 				if ($gambar!="") {
 					$copy_image = ['namaFile'=>$gambar,
-					'url'=>'http://localhost:81/netjoo-admin/assets/image/soal/'.$gambar,
+					'url'=>	$this->project_host.'/assets/image/soal/'.$gambar,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/soal/'
 					];
 					$this->copy_gambar($copy_image);
@@ -639,7 +645,7 @@ class Toback extends MX_Controller{
 				$audio = $item->audio;
 				if ($audio!="") {
 					$copy_audio = ['namaFile'=>$audio,
-					'url'=>'http://localhost:81/netjoo-admin/assets/audio/soal/'.$audio,
+					'url'=> $this->project_host.'/assets/audio/soal/'.$audio,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/audio/soal/'
 					];
 					$this->copy_audio($copy_audio);
@@ -650,7 +656,7 @@ class Toback extends MX_Controller{
 				$gambar_pembahasan = $item->pembahasan;
 				if ($gambar_pembahasan!="") {
 					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
-					'url'=>'http://localhost:81/netjoo-admin/assets/image/pembahasan/'.$gambar_pembahasan,
+					'url'=> $this->project_host.'assets/image/pembahasan/'.$gambar_pembahasan,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/pembahasan/'
 					];
 					$this->copy_gambar($copy_pembahasan);
@@ -710,6 +716,7 @@ class Toback extends MX_Controller{
 	## cacah untuk di datatable
 	function data_table_all_to(){
 		$url = $this->web_link.'get_all_to/'.$this->session->userdata('id');
+
 		$json = file_get_contents($url);
 		$data_to = json_decode($json);
 

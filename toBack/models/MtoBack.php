@@ -283,8 +283,15 @@ class Mtoback extends CI_Model {
 		$this->db->where('t.id_tryout', $id_to);
 
 		$query = $this->db->get();
-		return $query->result_array();
-		
+		return $query->result_array();	
+	}
+
+	// fungsi get id sekolah dari akun pengawas tertentu.
+	function get_sekolahID_by_penggunaID($data){
+		$this->db->select('id');
+		$this->db->from('tb_sekolah');
+		$this->db->from('tb_sekolah');
+
 	}
 
 

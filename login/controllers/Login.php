@@ -67,7 +67,6 @@ public function validasiLogin() {
             'loggedin' => TRUE,
 
 
-
             );
 
            $this->session->set_userdata($sess_array);
@@ -86,11 +85,8 @@ public function validasiLogin() {
                 $namaGuru = $value->namaDepan .' '.$value->namaBelakang;
                 $this->session->set_userdata('id_guru', $value->id);
                 $this->session->set_userdata('NAMAGURU', $namaGuru);
-
             }
-
             redirect(site_url('guru/dashboard/'));
-
         } elseif ($hakAkses == 'siswa') {
             $tampSiswa=$this->Mlogin->get_namaSiswa($idPengguna);
             $namaSiswa = $tampSiswa['namaDepan'] . ' '  . $tampSiswa['namaBelakang']  ;
