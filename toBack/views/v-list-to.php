@@ -124,7 +124,7 @@
     <div class="panel-heading">
      <h3 class="panel-title">Daftar Tryout Yang Sudah Di Download</h3>
      <div class="panel-toolbar text-right">
-      <a class="btn btn-inverse btn-outline daftar-to" title="Daftar Tryout" onclick=daftar_tryout()><i class="ico-th-list"></i></a>
+      <a class="btn btn-inverse btn-outline daftar-to" title="Daftar Tryout" onclick="daftar_tryout()"><i class="ico-th-list"></i></a>
 
     </div>
   </div>
@@ -242,7 +242,7 @@ function insert_paket(datas){
 
 // download tryout (GET PAKET)
 function download_tryout(id){
-  url = "http://neonjogja.com/webservice/tryoutoffline";
+  url = "http://localhost:81/netjoo-admin/webservice/tryoutoffline";
   $.ajax({
     url : url,
     type: "POST",

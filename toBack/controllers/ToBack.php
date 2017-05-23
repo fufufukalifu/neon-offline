@@ -629,7 +629,7 @@ class Toback extends MX_Controller{
 				// COPY GAMBAR
 				if ($gambar!="") {
 					$copy_image = ['namaFile'=>$gambar,
-					'url'=>'http://neonjogja.com/assets/image/soal/'.$gambar,
+					'url'=>'http://localhost:81/netjoo-admin/assets/image/soal/'.$gambar,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/soal/'
 					];
 					$this->copy_gambar($copy_image);
@@ -639,7 +639,7 @@ class Toback extends MX_Controller{
 				$audio = $item->audio;
 				if ($audio!="") {
 					$copy_audio = ['namaFile'=>$audio,
-					'url'=>'http://neonjogja.com/assets/audio/soal/'.$audio,
+					'url'=>'http://localhost:81/netjoo-admin/assets/audio/soal/'.$audio,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/audio/soal/'
 					];
 					$this->copy_audio($copy_audio);
@@ -650,7 +650,7 @@ class Toback extends MX_Controller{
 				$gambar_pembahasan = $item->pembahasan;
 				if ($gambar_pembahasan!="") {
 					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
-					'url'=>'http://neonjogja.com/assets/image/pembahasan/'.$gambar_pembahasan,
+					'url'=>'http://localhost:81/netjoo-admin/assets/image/pembahasan/'.$gambar_pembahasan,
 					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/pembahasan/'
 					];
 					$this->copy_gambar($copy_pembahasan);
