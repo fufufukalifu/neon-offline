@@ -563,7 +563,7 @@ class Toback extends MX_Controller{
 
 	## masukin mahasiswa dan pengguna  ke local db
 	public function insert_mahasiswa(){
-		$id = $this->session->userdata('id');
+		$id = $this->session->userdata('sekolahID');
 
 		$url = $this->web_link.'siswaoffline/'.$id;
 		$json = file_get_contents($url);
