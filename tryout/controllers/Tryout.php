@@ -155,6 +155,8 @@ class Tryout extends MX_Controller {
         $id_to = $this->session->userdata('id_tryout');
         $datas['id_pengguna'] = $this->session->userdata('id');
         $datas['id_siswa'] = $this->msiswa->get_siswaid();
+        
+        $data['nama_to'] = $this->Mtryout->get_tryout_by_id($id_to)[0]['nm_tryout'];
 
         $date = new DateTime(date("Y-m-d H:i:s"));
 
@@ -162,9 +164,9 @@ class Tryout extends MX_Controller {
         // if (isset($id_to)) {
         $data = array(
             'judul_halaman' => 'Neon - Daftar Paket',
-            'judul_header' => 'Daftar Nilai Paket Tryout',
+            'judul_header' => 'Daftar Nilai Paket Tryout '.$data['nama_to'],
             'judul_tingkat' => '',
-            'nama_to' => 'Daftar Nilai Paket Tryout',
+            // 'nama_to' => 'Daftar Nilai Paket Tryout '.$data['nama_to'],
             );
 
             // FILES

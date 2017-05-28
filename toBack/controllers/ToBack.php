@@ -2,6 +2,8 @@
 
 class Toback extends MX_Controller{
 	private $web_link = "http://localhost:9090/neon-admin/webservice/";
+	// anggi
+	// private $web_link = "http://localhost:81/netjoo-admin/webservice/";
 	private $project_host = "http://localhost:9090/neon-offline/";
 
 	public function __construct() {

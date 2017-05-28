@@ -42,5 +42,49 @@ class Mkirim extends CI_model {
 
 	}
 
+	// get nama tryout
+	public function get_nm_to($id)
+	{
+		$this->db->select('nm_tryout');
+		$this->db->from('tb_tryout');
+		$this->db->where('id_tryout' , $id);
+		$query = $this->db->get();
+		// cek jika hasil query null
+        if($query->num_rows() == 1) {
+            return $query->result_array()[0]['nm_tryout'];
+        }else{
+             return $query='';
+        }
+	}
+
+	// update status kirim
+	public function update_status_kirim($id)
+	{
+		$this->db->where('id_report', $id);
+		$this->db->set('status_kirim', 1);
+		$this->db->update('tb_report-paket');
+	}
+
+	//get report 
+	function get_report_filter($data){
+		$this->db->select('*');
+
+		$this->db->from('tb_report-paket pk');
+
+		$this->db->join('tb_siswa s' , 'pk.siswaID=s.id');
+		$this->db->join('tb_pengguna p' , 'p.id = pk.id_pengguna');
+		$this->db->join('tb_mm-tryoutpaket mmto' , 'mmto.id = pk.id_mm-tryout-paket');
+		$this->db->join('tb_paket pkt' , 'pkt.id_paket = mmto.id_paket');
+		$this->db->group_by('pkt.id_paket');
+		$this->db->where('mmto.id_tryout', $data['id_to']);
+
+		if ($data['status']!="all") {
+			$this->db->where('pk.status_kirim', $data['status']);
+		}
+
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 }
 ?>

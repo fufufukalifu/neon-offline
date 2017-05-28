@@ -2,7 +2,7 @@
   <div class="col-md-12 kirim_token">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Daftar Paket TO </h3> 
+        <h3 class="panel-title">Daftar Paket TO <?=$nm_to?> </h3> 
         <div class="panel-toolbar text-right">
          <div class="col-sm-2">
 
@@ -12,13 +12,27 @@
 </div>
 
 <div class="panel-body">
-
+  <form  class="panel panel-default form-horizontal form-bordered form-step"  method="post" >
+         <div  class="form-group">
+           <label class="col-sm-1 control-label">Status</label>
+           <div class="col-sm-10">
+              <input type="text" name="id_to" value="<?=$id_to?>" hidden="true">
+             <!-- stkt = soal tingkat -->
+             <select class="form-control" name="status">
+              <option value="all">-- Pilih Status --</option>
+              <option value="1">Sudah dikirim</option>
+              <option value="0">Belum dikirim</option>
+            </select>
+          </div>
+        </div>
+      </form>
   <table class="daftarpaket table table-striped display responsive nowrap" style="font-size: 13px" width=100%>
     <thead>
       <tr>
         <th>No</th>
         <th>ID</th>
         <th>Nama Paket</th>
+        <th>Status</th>
         <th>
           <span class="checkbox custom-checkbox check-all">
             <input type="checkbox" name="checkall" id="check-all">
@@ -38,6 +52,13 @@
         <td><?=$i;?></td>
         <td><?=$paket['id_paket']?></td>
         <td><?=$paket['nm_paket']?></td>
+        <?php 
+          $status = $paket[ 'status_kirim'];
+          if ($status == 1) : ?>
+            <td>Sudah dikirim</td>
+        <?php else : ?>
+            <td>Belum dikirm</td>
+        <?php endif; ?>
         <td>
           <span class='checkbox custom-checkbox custom-checkbox-inverse'>
             <input type='checkbox' name="report"<?=$nilai?>" id="soal<?=$paket['id_paket']?>" value="<?=$paket['id_paket']?>">
@@ -57,6 +78,7 @@
 </div>   
 </div>
 <script type="text/javascript">
+var dataTablePaket;
 $(document).ready(function() {
 
 dataTablePaket = $('.daftarpaket').DataTable({
@@ -73,6 +95,7 @@ $('.upload_nilai').click(function(){
 });
 
 
+// untuk kirim nilai
 function kirim_nilai() {
   //tampung id paket
   id_paket = [];
@@ -109,6 +132,8 @@ function kirim(datas) {
                     sweetAlert("Oops...", "Terjadi Kesalahan", "error");
                 }else{
                     swal("Berhasil!", "Berhasil Upload Nilai", "success");
+                    // jika berhasil update status_kirim menjadi 1
+                    update_status(datas.id_report);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -117,6 +142,19 @@ function kirim(datas) {
             }
         });
 
+}
+
+// update status kirimnya
+function update_status(id_report) {
+  var datas = {id:id_report}
+  $.ajax({
+    url : "<?php echo base_url() ?>kirimnilai/ubah_status",
+    type : "POST",
+    dataType:"text",
+    data : datas,
+    success: function (data) {
+    } 
+  });
 }
 
 
@@ -128,6 +166,29 @@ $('[name="checkall"]:checkbox').click(function () {
   $('table.daftarpaket tbody input:checkbox').prop( "checked", false );
 }
 });
+
+
+
+// STATUS KETIKA DI CHANGE
+$('select[name=status]').change(function(){
+
+  status_kirim = $('select[name=status]').val();
+  id_to = $('input[name=id_to]').val();
+
+  url = base_url+"kirimnilai/kirimnilai_ajax/"+status_kirim+"/"+id_to;
+
+    dataTablePaket = $('.daftarpaket').DataTable({
+    "ajax": {
+      "url": url,
+      "type": "POST"
+    },
+    "emptyTable": "Tidak Ada Data Pesan",
+    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
+    "bDestroy": true,
+  });
+
+});
+
 
 
 </script>
