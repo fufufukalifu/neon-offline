@@ -307,6 +307,11 @@ class Mtryout extends MX_Controller {
         return $query->num_rows();
     }
 
+    // insert ke log tryout
+    public function insert_log_tryout($data){
+        $this->db->insert('tb_log_pengerjaan_to', $data);
+    }
+
 }
 
 ?>

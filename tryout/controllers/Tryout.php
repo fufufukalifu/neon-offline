@@ -198,6 +198,7 @@ class Tryout extends MX_Controller {
             "id_mm-tryout-paket" => $this->session->userdata('id_mm-tryoutpaket'),
             "status_pengerjaan" => '2'
             );
+        $this->Mtryout->insert_log_tryout($insert);
     }
 
     function buatpembahasan() {

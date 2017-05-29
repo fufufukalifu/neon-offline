@@ -86,5 +86,11 @@ class Mkirim extends CI_model {
 		return $query->result_array();
 	}
 
+	//drop  report
+	public function delete_report($id_report)
+	{
+		$this->db->where('id_report',$id_report);
+		$this->db->delete('tb_report-paket');
+	}
 }
 ?>

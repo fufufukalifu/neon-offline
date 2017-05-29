@@ -119,6 +119,7 @@ class Kirimnilai extends MX_Controller {
 			$row[] = "<span class='checkbox custom-checkbox custom-checkbox-inverse'>
 			<input type='checkbox' name="."report".$nilai." id="."soal".$item['id_paket']." value=".$item['id_paket'].">
 			<label for="."soal".$item['id_paket'].">&nbsp;&nbsp;</label></span>";
+			$row[] = '<a class="btn btn-sm btn-danger"  title="Hapus" onclick="dropReport('."'".$item['id_report']."'".')"><i class="ico-remove"></i></a>';
 			
 			$data[] = $row;
 			$n++;
@@ -129,6 +130,12 @@ class Kirimnilai extends MX_Controller {
 			);
 
 		echo json_encode( $output );
+	}
+
+	// delete report 
+	public function dropReport($id_report)
+	{
+		$this->mkirim->delete_report($id_report);
 	}
 
 }

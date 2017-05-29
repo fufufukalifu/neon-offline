@@ -246,7 +246,8 @@ function insert_paket(datas){
 
 // download tryout (GET PAKET)
 function download_tryout(id){
-  url = "http://localhost:9090/neon-admin/webservice/tryoutoffline";
+  // url = "http://localhost:9090/neon-admin/webservice/tryoutoffline";
+  url = "http://localhost:81/netjoo-2/webservice/tryoutoffline";
 
   $.ajax({
     url : url,

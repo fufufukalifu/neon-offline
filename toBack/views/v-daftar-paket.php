@@ -2,7 +2,7 @@
   <div class="col-md-12 kirim_token">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Daftar Paket TO</h3> 
+        <h3 class="panel-title">Daftar Paket <?=$nm_to;?></h3> 
         <div class="panel-toolbar text-right">
          <div class="col-sm-2">
 

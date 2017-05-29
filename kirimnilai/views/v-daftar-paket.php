@@ -39,6 +39,7 @@
               <label for="check-all">&nbsp;&nbsp;</label>
           </span> 
         </th>
+        <th>Aksi</th>
 
       </tr>
     </thead>
@@ -65,6 +66,8 @@
             <label for="soal<?=$paket['id_paket']?>">&nbsp;&nbsp;</label>
           </span>
         </td>
+        <td><a class="btn btn-sm btn-danger"  title="Hapus" onclick="dropReport('<?=$paket['id_report']?>')">
+          <i class="ico-remove"></i></a></td>
       </tr>
       <?php 
       $i++;
@@ -134,6 +137,7 @@ function kirim(datas) {
                     swal("Berhasil!", "Berhasil Upload Nilai", "success");
                     // jika berhasil update status_kirim menjadi 1
                     update_status(datas.id_report);
+                    reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -188,6 +192,55 @@ $('select[name=status]').change(function(){
   });
 
 });
+
+  // drop report
+  function dropReport(id_report) {
+    // if (confirm('Apakah Anda yakin akan menghapus data ini? ')) {
+      swal({
+        title: "Yakin akan menghapus soal ini?",
+        text: "Anda tidak dapat membatalkan ini.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Ya,Tetap hapus!",
+        closeOnConfirm: false
+      },
+      function(){
+        // ajax delete data to database
+        $.ajax({
+          url : base_url+"index.php/kirimnilai/dropReport/"+id_report,
+          type: "POST",
+          dataType: "TEXT",
+          success: function(data,respone)
+          {  
+            swal('Report Berhasil Dihapus');
+            reload();
+          },
+            error: function (jqXHR, textStatus, errorThrown)
+          {
+            alert('Error deleting data');
+          }
+        });
+      });
+    
+  }
+
+function reload() {
+  status_kirim = $('select[name=status]').val();
+  id_to = $('input[name=id_to]').val();
+
+  url = base_url+"kirimnilai/kirimnilai_ajax/"+status_kirim+"/"+id_to;
+
+    dataTablePaket = $('.daftarpaket').DataTable({
+    "ajax": {
+      "url": url,
+      "type": "POST"
+    },
+    "emptyTable": "Tidak Ada Data Pesan",
+    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
+    "bDestroy": true,
+  });
+}
 
 
 

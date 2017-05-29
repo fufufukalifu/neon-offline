@@ -1,10 +1,10 @@
 <?php
 
 class Toback extends MX_Controller{
-	private $web_link = "http://localhost:9090/neon-admin/webservice/";
+	// private $web_link = "http://localhost:9090/neon-admin/webservice/";
 	// anggi
-	// private $web_link = "http://localhost:81/netjoo-admin/webservice/";
-	private $project_host = "http://localhost:9090/neon-offline/";
+	private $web_link = "http://localhost:81/netjoo-admin/webservice/";
+	private $project_host = "http://localhost:81/neon-offline/";
 
 	public function __construct() {
 		
@@ -18,6 +18,7 @@ class Toback extends MX_Controller{
 		$this->load->model( 'paketsoal/mpaketsoal' );
 		$this->load->model('siswa/msiswa');
 		$this->load->model('templating/mtemplating');
+		$this->load->model( 'kirimnilai/mkirim' );
 		parent::__construct();
 
 		if ($this->session->userdata('loggedin')==true) {
@@ -857,7 +858,8 @@ class Toback extends MX_Controller{
 
 		// get daftar paket
 		$data['daftar_paket'] = $this->Mtoback->get_paket_by_to($id);
-		// $data['nm_to'] = $data['daftar_paket'][0]['nm_tryout'];
+		// get nama tryout
+		$data['nm_to'] = $this->mkirim->get_nm_to($id);
 
 		$hakAkses=$this->session->userdata['HAKAKSES'];
 		if ($hakAkses=='adminOffline') {
