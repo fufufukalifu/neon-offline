@@ -286,11 +286,13 @@ class Mtryout extends MX_Controller {
     # get report nilai oleh id pengguna tertentu
     function get_report_by_pengguna_id(){
         $id = $this->session->userdata('id');
+        $id_to = $this->session->userdata('id_tryout');
         
         $query = "SELECT * FROM ( SELECT * FROM `tb_report-paket` WHERE id_pengguna = '".$id."' ) AS p
         JOIN `tb_mm-tryoutpaket` mm ON mm.`id` = p.`id_mm-tryout-paket`
         JOIN `tb_paket` pkt ON pkt.`id_paket` = mm.`id_paket`
-        JOIN tb_tryout t ON t.`id_tryout` = mm.`id_tryout`
+        JOIN tb_tryout t ON t.`id_tryout` = mm.`id_tryout` 
+        WHERE t.id_tryout = $id_to
         ";
         $result = $this->db->query($query);
         return $result->result_array();      
@@ -312,6 +314,12 @@ class Mtryout extends MX_Controller {
         $this->db->insert('tb_log_pengerjaan_to', $data);
     }
 
+    // update log trytout
+    public function update_log_tryout($data){
+       $this->db->set($data['update']);
+       $this->db->where($data['where']);
+       $this->db->update('tb_log_pengerjaan_to');
+    }
 }
 
 ?>

@@ -159,7 +159,7 @@ class Tryout extends MX_Controller {
         $data['nama_to'] = $this->Mtryout->get_tryout_by_id($id_to)[0]['nm_tryout'];
 
         $date = new DateTime(date("Y-m-d H:i:s"));
-
+        // $data['nama_to']
         //buat date
         // if (isset($id_to)) {
         $data = array(
@@ -194,8 +194,8 @@ class Tryout extends MX_Controller {
         $this->session->set_userdata('id_paket', $data['id_paket']);
         $this->session->set_userdata('id_tryout', $data['id_tryout']);
         $this->session->set_userdata('id_mm-tryoutpaket', $data['id_mm-tryoutpaket']);
-        $insert = array("siswaID" => $this->msiswa->get_siswaid(),
-            "id_mm-tryout-paket" => $this->session->userdata('id_mm-tryoutpaket'),
+        $insert = array("siswa_id" => $this->msiswa->get_siswaid(),
+            "mm_tryout_paket_id" => $this->session->userdata('id_mm-tryoutpaket'),
             "status_pengerjaan" => '2'
             );
         $this->Mtryout->insert_log_tryout($insert);
@@ -307,6 +307,16 @@ class Tryout extends MX_Controller {
 
             $result = $this->load->Mtryout->inputreport($hasil);
             $this->session->unset_userdata('id_mm-tryoutpaket');
+
+            // update tb log tryout
+            $waktu = new DateTime("now");
+            $data['update'] = ['waktu_selesai'=>date($waktu->format("Y-m-d H:i:s")),
+            'status_pengerjaan'=>1];
+            $data['where'] = ['siswa_id'=>$hasil['siswaID'],
+            'mm_tryout_paket_id'=>$hasil['id_mm-tryout-paket']];
+            $this->Mtryout->update_log_tryout($data);
+            // update tb log tryout
+            
             redirect(base_url('index.php/tryout/selesaitryout'));
         }else{
             redirect(base_url('index.php/tryout/selesaitryout'));

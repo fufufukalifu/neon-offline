@@ -247,7 +247,7 @@ function insert_paket(datas){
 // download tryout (GET PAKET)
 function download_tryout(id){
   // url = "http://localhost:9090/neon-admin/webservice/tryoutoffline";
-  url = "http://localhost:81/netjoo-2/webservice/tryoutoffline";
+  url = "http://localhost:81/netjoo-admin/webservice/tryoutoffline";
 
   $.ajax({
     url : url,
@@ -273,8 +273,8 @@ function download_tryout(id){
 function download_paket(uuid){
   $('.indicator').removeClass('hide');
   $('.indicator').addClass('show');
-  // url = "http://localhost:81/netjoo-admin/webservice/paketoffline/"+uuid;
-  url = "http://localhost:9090/neon-admin/webservice/paketoffline/"+uuid;
+  url = "http://localhost:81/netjoo-admin/webservice/paketoffline/"+uuid;
+  // url = "http://localhost:9090/neon-admin/webservice/paketoffline/"+uuid;
 
   $.ajax({
     url : url,
