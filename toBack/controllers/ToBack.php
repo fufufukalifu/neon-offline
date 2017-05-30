@@ -879,33 +879,99 @@ class Toback extends MX_Controller{
 		}
 	}
 
-	// laporan paket
-	public function laporanpaket(){
-		// kalo ada yang di post dari modal filter.
+	// function view halaman report siswa
+	public function report_tryout(){
 
-		$data['judul_halaman'] = "Laporan Paket TO";
-		$data['files'] = array(
-			APPPATH . 'modules/admincabang/views/v-laporan-siswa.php',
-			);
-		# get cabang
-		$data['cabang'] = $this->mcabang->get_all_cabang();
-		# get to
-		$data['to'] = $this->mtoback->get_To();
-		$hakAkses = $this->session->userdata['HAKAKSES'];
-		if ($hakAkses == 'admin_cabang') {
-			$this->parser->parse('v-index-admincabang', $data);
-		} elseif ($hakAkses == 'admin') {
-			$data['files'] = array(
-				APPPATH . 'modules/admincabang/views/v-daftar-paket-admin.php',
-				);
+        $data['judul_halaman'] = "Report Nilai Tryout";
+        $data['files'] = array(
+            APPPATH . 'modules/toback/views/v-laporan-siswa.php',
+            );
+
+        # get to
+		$data['to'] = $this->Mtoback->get_To();
+
+        $hakAkses = $this->session->userdata['HAKAKSES'];
+
+        if ($hakAkses=='adminOffline') {
+        // jika admin
 			$this->parser->parse('admin/v-index-admin', $data);
-		} elseif ($hakAkses == 'guru') {
-			redirect(site_url('guru/dashboard/'));
-		} elseif ($hakAkses == 'siswa') {
+		} elseif($hakAkses=='guru'){
+            // jika guru
+			$this->load->view('templating/index-b-guru', $data);  
+		} elseif($hakAkses=='admin_cabang'){
+            // jika guru
+			$this->load->view('admincabang/v-index-admincabang', $data);  
+
+
+		}else{
+            // jika siswa redirect ke welcome
 			redirect(site_url('welcome'));
-		} else {
-			redirect(site_url('login'));
 		}
+    }
+
+    // ajax untuk report siswa
+    function ajax_report_tryout($id_to="all", $id_paket="all"){
+
+    	$data = ['id_to'=>$id_to,'id_paket'=>$id_paket];
+	    $datas = $this->Mtoback->get_report_paket_siswa($data);
+
+	    $list = array();
+	    $no = 0;
+	        //mengambil nilai list
+	    $baseurl = base_url();
+	    foreach ($datas as $list_item) {
+	        $no++;
+	        $row = array();
+	        $sumBenar=$list_item ['jmlh_benar'];
+	        $sumSalah=$list_item ['jmlh_salah'];
+	        $sumKosong=$list_item ['jmlh_kosong'];
+	            //hitung jumlah soal
+	        $jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
+
+	        $nilai=0;
+	            // cek jika pembagi 0
+	        if ($jumlahSoal != 0) {
+	                //hitung nilai
+	            $nilai=$sumBenar/$jumlahSoal*100;
+	        }
+	        $row[] = $no;
+	        $row[] = $list_item['namaDepan'];
+	        $row[] = $list_item['nm_paket'];
+	        //kondisi jika orang tua yang login maka akan ditampikan nama tryout
+	        $row[] = $list_item['nm_tryout'];
+	        $row[] = $list_item['jumlah_soal'];
+	        $row[] = $list_item['jmlh_benar'];
+	        $row[] = $list_item['jmlh_salah'];
+	        $row[] = $list_item['jmlh_kosong'];
+	        $row[] = $jumlahSoal;
+
+	        $array = array("id_tryout"=>$list_item['id_tryout'],
+	            "id_mm_tryout_paket"=>$list_item['id_mm-tryout-paket'],
+	            "id_paket"=>$list_item['id_mm-tryout-paket']);
+
+
+
+	        $row[] ='<a class="btn btn-sm btn-danger  modal-on'.$list_item['id_report'].'" 
+	        data-todo='.htmlspecialchars(json_encode($array)).' 
+
+	        title="Lihat Pembahasan" onclick="delete_report('."'".$list_item['id_report']."'".')"><i class="ico-remove"></i></a> ';
+	        
+
+	        $list[] = $row;   
+
+	    }
+
+	    $output = array(
+	        "data" => $list,
+	        );
+	    echo json_encode($output);
+
 	}
+
+	// function untuk delete report
+	function dropreporttry($id ) {
+        $this->Mtoback->dropreport_t( $id );
+    }
+	
 }
 ?>

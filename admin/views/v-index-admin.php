@@ -340,7 +340,7 @@
 </li>
 
 <li>
-  <a href="<?= base_url('index.php/toback') ?>">
+  <a href="<?= base_url('index.php/toback/report_tryout') ?>">
     <span class="figure"><i class=" ico-bars6"></i></span>
     <span class="text">Report Tryout</span>
   </a>

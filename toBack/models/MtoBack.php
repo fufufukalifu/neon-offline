@@ -294,6 +294,49 @@ class Mtoback extends CI_Model {
 
 	}
 
+	# get report nilai oleh id pengguna tertentu
+    function get_report_paket_siswa($data){
+		$id_to =  $data['id_to'];       
+        $id_paket =  $data['id_paket'];   
+
+        if ($id_to!="all") {
+        	$query = "SELECT * FROM `tb_report-paket` AS p
+                    JOIN `tb_mm-tryoutpaket` mm ON mm.`id` = p.`id_mm-tryout-paket`
+                    JOIN `tb_paket` pkt ON pkt.`id_paket` = mm.`id_paket`
+                    JOIN tb_tryout t ON t.`id_tryout` = mm.`id_tryout`
+                    JOIN `tb_siswa` sis ON sis.`id` = p.`siswaID`
+                    WHERE t.id_tryout = $id_to
+                ";
+            if ($id_paket!="all") {
+	        	$query = "SELECT * FROM `tb_report-paket` AS p
+	                    JOIN `tb_mm-tryoutpaket` mm ON mm.`id` = p.`id_mm-tryout-paket`
+	                    JOIN `tb_paket` pkt ON pkt.`id_paket` = mm.`id_paket`
+	                    JOIN tb_tryout t ON t.`id_tryout` = mm.`id_tryout`
+	                    JOIN `tb_siswa` sis ON sis.`id` = p.`siswaID`
+	                    WHERE t.id_tryout = $id_to
+	                    AND pkt.id_paket = $id_paket
+	                ";
+            }
+        } else {
+        	$query = "SELECT * FROM `tb_report-paket` AS p
+                    JOIN `tb_mm-tryoutpaket` mm ON mm.`id` = p.`id_mm-tryout-paket`
+                    JOIN `tb_paket` pkt ON pkt.`id_paket` = mm.`id_paket`
+                    JOIN tb_tryout t ON t.`id_tryout` = mm.`id_tryout`
+                    JOIN `tb_siswa` sis ON sis.`id` = p.`siswaID`
+                ";
+        }    
+
+        $result = $this->db->query($query);
+        return $result->result_array(); 
+    }
+
+    // delete report 
+    public function dropreport_t( $id ) {
+
+        $this->db->where( 'id_report', $id );
+        $this->db->delete('`tb_report-paket');
+
+    }
 
 }
 ?>
