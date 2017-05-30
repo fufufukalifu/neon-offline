@@ -339,6 +339,13 @@
 </ul>
 </li>
 
+<li>
+  <a href="<?= base_url('index.php/toback') ?>">
+    <span class="figure"><i class=" ico-bars6"></i></span>
+    <span class="text">Report Tryout</span>
+  </a>
+</li>
+
  <li>
   <a href="<?= base_url('index.php/admincontrol/pengerjaan') ?>">
     <span class="figure"><i class=" ico-bars6"></i></span>

@@ -878,5 +878,34 @@ class Toback extends MX_Controller{
 			redirect(site_url('welcome'));
 		}
 	}
+
+	// laporan paket
+	public function laporanpaket(){
+		// kalo ada yang di post dari modal filter.
+
+		$data['judul_halaman'] = "Laporan Paket TO";
+		$data['files'] = array(
+			APPPATH . 'modules/admincabang/views/v-laporan-siswa.php',
+			);
+		# get cabang
+		$data['cabang'] = $this->mcabang->get_all_cabang();
+		# get to
+		$data['to'] = $this->mtoback->get_To();
+		$hakAkses = $this->session->userdata['HAKAKSES'];
+		if ($hakAkses == 'admin_cabang') {
+			$this->parser->parse('v-index-admincabang', $data);
+		} elseif ($hakAkses == 'admin') {
+			$data['files'] = array(
+				APPPATH . 'modules/admincabang/views/v-daftar-paket-admin.php',
+				);
+			$this->parser->parse('admin/v-index-admin', $data);
+		} elseif ($hakAkses == 'guru') {
+			redirect(site_url('guru/dashboard/'));
+		} elseif ($hakAkses == 'siswa') {
+			redirect(site_url('welcome'));
+		} else {
+			redirect(site_url('login'));
+		}
+	}
 }
 ?>
