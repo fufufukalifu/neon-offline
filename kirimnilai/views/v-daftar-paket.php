@@ -140,9 +140,10 @@ function kirim(datas) {
                     reload();
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown)
+            error: function (data, jqXHR, textStatus, errorThrown)
             {
-                sweetAlert("Oops...", "gagal konek ke server", "error");
+                console.log(data);
+                // sweetAlert("Oops...", "gagal konek ke server", "error");
             }
         });
 

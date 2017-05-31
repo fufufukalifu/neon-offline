@@ -114,7 +114,6 @@ label:hover{ /* HIDE RADIO */
 
 
 
-
 <section id="main" role="main">
   <!-- Trigger the modal with a button -->
   <!-- START modal-lg -->
@@ -155,19 +154,6 @@ label:hover{ /* HIDE RADIO */
     <?php foreach ($topaket as $key): ?>
      <div class="text-center"><div style="font-size:20px;"><?= $key['namato'] ?>/<?= $key['namapa'] ?></div></div>
    <?php endforeach ?>
-
-   <!-- info untuk soal -->
-     <!-- <div class="col-md-12 animation animating pulse pesan-jawaban">
-      <div class="alert alert-success fade in">
-       <a type="button" class="close" onclick="close_info_jawaban()" aria-hidden="true">×</a>
-       <center>
-        <h4 class="semibold">Jawaban Anda</h4>
-        <h4 class="mb10 notif-jawaban" id="MathOutput">$${}$$</h4>
-        <h4 class="mb10 notif-jawaban" id="box" style="visibility:hidden"></h4>
-      </div>
-    </div> -->
-    <!-- info untuk soal -->
-
   </div>
 </section>
 <!--/ END page header -->
@@ -176,7 +162,7 @@ label:hover{ /* HIDE RADIO */
 <section class="section bgcolor-white">
  <div class="container-fluid">
   <div class="row">
-   <div class="col-md-10 col-md-offset-1">
+   <div class="col-md-12">
     <form action="<?= base_url('index.php/tryout/cekjawaban') ?>" method="post" id="hasil">
      <div class="col-md-8" style="margin-bottom:30">
 
@@ -192,14 +178,10 @@ label:hover{ /* HIDE RADIO */
              <!-- <h1>Selamat datang</h1> -->
              <div class="row">
               <div class="col-md-6 center"><h4 class=""><h4 class="">ID Soal : <small> <?= $key['judul'] ?></small></h4></div>
-
               <div class="col-md-2"></div>
               <div class="col-md-6 text-right" style="margin-top:5">
-               <a class="btn btn-sm btn-success" onclick="bataljawab('pil[<?= $key['soalid']?>]','<?=$i?>',<?= $key['soalid']?>)">Batal Jawab</a>&nbsp&nbsp&nbsp
+               <a class="btn btn-sm btn-success" onclick="bataljawab('pil[<?= $key['soalid']?>]','<?=$i?>',<?= $key['soalid']?>)">Batal Jawab</a>
                <a class="btn btn-sm btn-warning" onclick="raguColor(<?= $i ?>)">Ragu Ragu</a>&nbsp&nbsp&nbsp
-               <!-- JANGAN DIHAPUS, TOMBOL LIHAT JAWABAN -->
-               <!-- <a class="btn btn-sm btn-success" onclick="lihatJawaban('<?= $key['soalid']?>')">Lihat jawaban</a> -->
-               <!-- JANGAN DIHAPUS, TOMBOL LIHAT JAWABAN -->
              </div>
            </div>
          </div>
@@ -228,10 +210,8 @@ label:hover{ /* HIDE RADIO */
              <div class="col-md-11">
                <?php $gambar=$key['gambar']; ?>
                <?php if (!empty($gambar) && $gambar!="" && $gambar!=' ') { ?>  
-
                <img src="<?= base_url('./assets/image/soal/' . $gambar) ?>">   
                <?php } ?>
-
                <h5><?= $key['soal'] ?></h5>
                <br>
              </div>  
@@ -310,11 +290,11 @@ $nosoal++;
 </div>
 <div style="margin-left:40">
  <div class="col-md-6">
-  <button class="btn btn-info btn-block" id="btnPrev">Sebelumnya</button>
+  <button class="btn btn-info btn-block" id="btnPrev"><i class="ico ico-arrow-left2"></i>  Sebelumnya </button>
   <!--<button type="button" class="btn btn-primary btn-block">Selanjutnya</button>-->
 </div>
 <div class="col-md-6"> 
-  <button class="btn btn-info btn-block" id="btnNext">Selanjutnya</button>
+  <button class="btn btn-info btn-block" id="btnNext">Selanjutnya <i class="ico ico-arrow-right22"></i></button>
   <!--<button type="button" class="btn btn-teal btn-block">Sebelumnya</button>-->
 </div>
 </div>

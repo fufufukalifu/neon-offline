@@ -45,11 +45,11 @@
     <div class="parallax-image" data-parallax-left="0.5" data-parallax-top="0.3" data-parallax-scroll-speed="0.5" style="transform: translateY(-193.647px) translateZ(0px); left: -284.5px;">
       <img src="<?=base_url('assets/back/img/parallax.png') ?>" alt="" style="height: auto; width: auto;">
     </div>
-    <div class="them-mask bg-color-2"></div>
+    <div class="them-mask"style="background:rgba(72, 60, 71, 0.1);border:2px solid rgba(72, 60, 71, 0.4);"></div>
     <div class="grid-row center-text">
-      <div class="font-style-1 margin-none">Masukan Token</div>
+      <div class="font-style-1 margin-none" style="color:black">Masukan Token</div>
       <div class="divider-mini"></div>
-      <p class="parallax-text">Untuk memulai tryout online, silahkan masukan token terlebih dahulu.</p>
+      <p class="parallax-text" style="color:black">Untuk memulai tryout online, silahkan masukan token terlebih dahulu.</p>
       <form class="subscribe" id="cek_token">
         <input type="text" name="token" value="" size="40" placeholder="Masukan token anda..." aria-required="true"><input type="submit" value="Submit">
       </form>
@@ -98,15 +98,16 @@
 
   // MENAMPILKAN MODAL PAKET
   function show_modal_paket(data){  
-    console.log(data);
     // parameter untuk memulai tryout  
     global_properties.id_paket = data.id_paket;
     global_properties.id_tryout = data.id_tryout;
     global_properties.id_mm_tryoutpaket = data.mm_id;
-
+    namaMahasiswa = "<?=$this->session->userdata('NAMASISWA') ?>";
     $('#modal_paket').modal('show');
     $('#modal_paket .modal-title').html("Nama Tryout : "+data.nm_tryout);
-    var konten ="<span> <b>Kode Token</b> : "+data.token+"</span><br>" +
+    var konten ="<span> <b>Nama Siswa</b> : "+namaMahasiswa+"</span><br><br>" +
+                "<span> <hr> <br>" +
+                "<span> <b>Kode Token</b> : "+data.token+"</span><br>" +
                 "<span> <b>Nama Paket</b> : "+data.nm_paket+"</span>" +
                 "<p><b>Deskripsi : <br> </b>"+data.deskripsi+"</p>" +
                 "<span><b>Jumlah Soal :</b> "+data.jumlah_soal+" Soal </span><br>" +

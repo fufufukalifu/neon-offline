@@ -320,6 +320,10 @@ class Mtryout extends MX_Controller {
        $this->db->where($data['where']);
        $this->db->update('tb_log_pengerjaan_to');
     }
+
+    public function get_info_perserta(){
+        
+    }
 }
 
 ?>
