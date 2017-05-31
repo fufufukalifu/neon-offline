@@ -307,7 +307,7 @@ $nosoal++;
    <div class="panel-heading">
     <div class="row">
      <!--<div class="text-center"><h4>Lembar Jawaban</h4></div>-->
-     <div class="text-center"> <h4>Sisa Waktu : <span id="timer"></span></h4></div>
+     <div class="text-center"> <h4>Sisa Waktu <span id="timer"></span></h4></div>
      <input type="text" hidden="true" id="durasi" value="" name="durasi" />
    </div>
  </div>
