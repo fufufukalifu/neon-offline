@@ -290,11 +290,11 @@ $nosoal++;
 </div>
 <div style="margin-left:40">
  <div class="col-md-6">
-  <button class="btn btn-info btn-block" id="btnPrev"><i class="ico ico-arrow-left2"></i>  Sebelumnya </button>
+  <button class="btn btn-info btn-block" id="btnPrev"><i class="ico ico-arrow-left2"></i> Soal Sebelumnya </button>
   <!--<button type="button" class="btn btn-primary btn-block">Selanjutnya</button>-->
 </div>
 <div class="col-md-6"> 
-  <button class="btn btn-info btn-block" id="btnNext">Selanjutnya <i class="ico ico-arrow-right22"></i></button>
+  <button class="btn btn-info btn-block" id="btnNext"> Soal Selanjutnya <i class="ico ico-arrow-right22"></i></button>
   <!--<button type="button" class="btn btn-teal btn-block">Sebelumnya</button>-->
 </div>
 </div>
@@ -307,7 +307,7 @@ $nosoal++;
    <div class="panel-heading">
     <div class="row">
      <!--<div class="text-center"><h4>Lembar Jawaban</h4></div>-->
-     <div class="text-center"> <h4><span id="timer"></span></h4></div>
+     <div class="text-center"> <h4>Sisa Waktu : <span id="timer"></span></h4></div>
      <input type="text" hidden="true" id="durasi" value="" name="durasi" />
    </div>
  </div>
