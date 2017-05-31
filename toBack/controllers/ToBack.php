@@ -939,11 +939,11 @@ class Toback extends MX_Controller{
 	        $row[] = $list_item['nm_paket'];
 	        //kondisi jika orang tua yang login maka akan ditampikan nama tryout
 	        $row[] = $list_item['nm_tryout'];
-	        $row[] = $list_item['jumlah_soal'];
+	        $row[] = $jumlahSoal;
 	        $row[] = $list_item['jmlh_benar'];
 	        $row[] = $list_item['jmlh_salah'];
 	        $row[] = $list_item['jmlh_kosong'];
-	        $row[] = $jumlahSoal;
+	        $row[] = $nilai;
 
 	        $array = array("id_tryout"=>$list_item['id_tryout'],
 	            "id_mm_tryout_paket"=>$list_item['id_mm-tryout-paket'],
