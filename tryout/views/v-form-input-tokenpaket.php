@@ -1,69 +1,59 @@
- <style>
-   form.subscribe input[name="token"]{
-     display: inline-block;
-     background-color: #ffffff;
-     line-height: 40px;
-     height: 40px;
-     padding: 0 18px;
-     border: 0;
-     width: calc(100% - 120px);
-     width: -moz-calc(100% - 125px);
-     border-top-left-radius: 4px;
-     -ms-border-top-left-radius: 4px;
-     -moz-border-top-left-radius: 4px;
-     -webkit-border-top-left-radius: 4px;
-     border-bottom-left-radius: 4px;
-     -ms-border-bottom-left-radius: 4px;
-     -moz-border-bottom-left-radius: 4px;
-     -webkit-border-bottom-left-radius: 4px;  
-   }
- </style>
- <!-- MODAL -->
- <div class="modal fade" id="modal_paket">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Modal title</h4>
-      </div><div class="container"></div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <a href="#" data-dismiss="modal" class="btn">Batal</a>
-        <a href="#" class="btn btn-primary" onclick="kerjakan_paket()">Mulai Tryout</a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- MODAL -->
-
-
-<br>
+ <br>
 <div class="container">
-  <div class="parallaxed">
-    <div class="parallax-image" data-parallax-left="0.5" data-parallax-top="0.3" data-parallax-scroll-speed="0.5" style="transform: translateY(-193.647px) translateZ(0px); left: -284.5px;">
-      <img src="<?=base_url('assets/back/img/parallax.png') ?>" alt="" style="height: auto; width: auto;">
+  <!-- row -->
+  <div class="row">
+    <!-- col-md-2 -->
+    <div class="col-md-2">
     </div>
-    <div class="them-mask"style="background:rgba(72, 60, 71, 0.1);border:2px solid rgba(72, 60, 71, 0.4);"></div>
-    <div class="grid-row center-text">
-      <div class="font-style-1 margin-none" style="color:black">Masukan Token</div>
-      <div class="divider-mini"></div>
-      <p class="parallax-text" style="color:black">Untuk memulai tryout online, silahkan masukan token terlebih dahulu.</p>
-      <form class="subscribe" id="cek_token">
-        <input type="text" name="token" value="" size="40" placeholder="Masukan token anda..." aria-required="true"><input type="submit" value="Submit">
-      </form>
+    <!--/ col-md-2 -->
+
+     <!-- col-md-8 -->
+    <div class="col-md-8">
+      <!-- panel panel-default -->
+      <div class="panel panel-default">
+        <!-- panel heading/header -->
+        <div class="panel-heading">
+          <h3 class="panel-title">Konfirmasi Data Peserta</h3>
+        </div>
+        <!--/ panel heading/header -->
+        <!-- panel body -->
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="control-label"><b>Nama Peserta</b></label>
+            </div>
+            <div class="col-sm-12">
+              <label class="control-label"><?=$this->session->userdata('NAMASISWA') ?></label>
+            </div>
+          </div>
+          <hr>
+          <form id="cek_token">
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="control-label"><b>Token</b></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="token" value="" size="40" placeholder="Masukan token anda..." aria-required="true">
+            </div>
+          </div>
+          <hr style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="col-sm-9">
+            </div>
+            <div class="col-sm-3">
+              <input type="submit" value="Submit" class="col-sm-12 btn btn-success">
+            </div>
+          </form>
+        </div>
+        <!--/ panel body -->
+      </div>
+      <!-- panel panel-default -->
     </div>
+    <!--/ col-md-8 -->
   </div>
+  <!--/ row -->
 </div>
 
 <script>
-  var global_properties = {
-    id_paket:"",
-    id_tryout:"",
-    id_mm_tryoutpaket:""
-  };
-
   // KETIKA USER MELAKUKAN AKSI SUBMIT PADA FORM
   $('#cek_token').submit(function(){
     validasi_token_tryout();
@@ -73,6 +63,7 @@
   // CEK TOKEN TERSEBUT PAKET APA
   function validasi_token_tryout(){
     url_ajax = base_url+"tryout/ajax_cek_validasi_tokentryout";
+    kode_token = $('input[name=token]').val();
 
     $.ajax({
       type: "POST",
@@ -87,7 +78,8 @@
           if (hasil_paket.status=='done') {
           sweetAlert("Wah...", "token yang kamu masukan sudah dikerjakan, silahkan masukan token lain!", "success");
           }else{
-          show_modal_paket(hasil_paket);            
+            // window.location.href = base_url + "tryout/konfirmasi/"+kode_token;  
+            next(kode_token);         
           }
         }
       },error:function(data){
@@ -96,41 +88,27 @@
     });
   }
 
-  // MENAMPILKAN MODAL PAKET
-  function show_modal_paket(data){  
-    // parameter untuk memulai tryout  
-    global_properties.id_paket = data.id_paket;
-    global_properties.id_tryout = data.id_tryout;
-    global_properties.id_mm_tryoutpaket = data.mm_id;
-    namaMahasiswa = "<?=$this->session->userdata('NAMASISWA') ?>";
-    $('#modal_paket').modal('show');
-    $('#modal_paket .modal-title').html("Nama Tryout : "+data.nm_tryout);
-    var konten ="<span> <b>Nama Siswa</b> : "+namaMahasiswa+"</span><br><br>" +
-                "<span> <hr> <br>" +
-                "<span> <b>Kode Token</b> : "+data.token+"</span><br>" +
-                "<span> <b>Nama Paket</b> : "+data.nm_paket+"</span>" +
-                "<p><b>Deskripsi : <br> </b>"+data.deskripsi+"</p>" +
-                "<span><b>Jumlah Soal :</b> "+data.jumlah_soal+" Soal </span><br>" +
-                "<span><b>Tanggal Tryout : </b>"+data.tgl_mulai+" - "+data.tgl_berhenti+"</span><br>" +
-                "<span><b>Durasi : </b>"+data.durasi+" Menit </span>";
-    $('#modal_paket .modal-body').html(konten);
-  }
+  // konfirmasi tes
+  function next(kode_token) {
+    console.log(kode_token);
+    url_ajax = base_url+"tryout/next";
 
-  //MULAI TRYOUT
-  function kerjakan_paket(){      
-    url = base_url+"index.php/tryout/buatto";
+    var global_properties = {
+      token: kode_token
+    };
 
     $.ajax({
-      url : url,
       type: "POST",
+      dataType: "JSON",
+      url: url_ajax,
       data: global_properties,
-      dataType: "TEXT",
       success: function(data){
-       window.location.href = base_url + "index.php/tryout/mulaitest";
-     },error: function (jqXHR, textStatus, errorThrown,data){
         // console.log(data);
+        window.location.href = base_url + "tryout/konfirmasi";  
+      },error:function(data){
         sweetAlert("Oops...", "wah, gagal menghubungkan!", "error");
-    }
-  });
-}
+      }
+
+    });
+  }
 </script>

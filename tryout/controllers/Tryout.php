@@ -408,5 +408,40 @@ class Tryout extends MX_Controller {
         $this->load->view('v-selesai-tryout.php');
     }
 
+    // view halaman konfirmasi test
+    public function konfirmasi()
+    {   
+        if (!empty($this->session->userdata['kode_token'])) { 
+            $token = $this->session->userdata['kode_token']; 
+            $data = array(
+                'judul_halaman' => 'Neon - Tryout',
+                'judul_header' => 'Daftar Tryout',
+                'judul_tingkat' => '',
+                );
+
+            $konten = 'modules/tryout/views/v-konfirmasi-tes.php';
+
+            $data['files'] = array(
+                APPPATH . 'modules/homepage/views/v-header-login.php',
+                APPPATH . $konten,
+                );
+
+            // get info tes
+            $data['tryout'] = $this->Mtryout->get_info_to($token);
+            $this->parser->parse('templating/index', $data);
+        } else {
+            $this->errorTest();
+        }
+    }
+
+    // tampung kode token
+    public function next()
+    {   
+            $token = $this->input->post('token');
+            $this->session->set_userdata('kode_token', $token);
+            echo json_encode($token);
+        
+    }
+
 }
 ?>
