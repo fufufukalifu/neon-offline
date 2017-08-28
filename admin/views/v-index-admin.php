@@ -205,68 +205,11 @@
 <!--/ Offcanvas left -->
 
       <!-- Notification dropdown -->
-      <li class="dropdown custom" id="header-dd-notification">
-        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="meta">
-            <span class="icon"><i class="ico-bell"></i></span>
-            <span class="hasnotification hasnotification-danger"></span>
-          </span>
-        </a>
-
-        <!-- Dropdown menu -->
-        <div class="dropdown-menu" role="menu">
-          <div class="dropdown-header">
-            <span class="title">Notification <span class="count"></span></span>
-            <span class="option text-right"><a href="javascript:void(0);">Clear all</a></span>
-          </div>
-          <div class="dropdown-body slimscroll">
-            <!-- indicator -->
-            <div class="indicator inline"><span class="spinner"></span></div>
-            <!--/ indicator -->
-
-            <!-- Message list -->
-            <div class="media-list">
-              <a href="javascript:void(0);" class="media read border-dotted">
-                <span class="media-object pull-left">
-                  <i class="ico-checkmark3 bgcolor-success"></i>
-                </span>
-                <span class="media-body">
-                  <span class="media-text">Lorem ipsum dolor sit amet, <span class="text-primary semibold">consectetur</span> adipisicing elit.</span>
-                  <!-- meta icon -->
-                  <span class="media-meta pull-right">14w</span>
-                  <!--/ meta icon -->
-                </span>
-              </a>
-            </div>
-            <!--/ Message list -->
-          </div>
-        </div>
-        <!--/ Dropdown menu -->
-      </li>
+      
       <!--/ Notification dropdown -->
 
-      <!-- Search form toggler  -->
-      <li>
-        <a href="javascript:void(0);" data-toggle="dropdown" data-target="#dropdown-form">
-          <span class="meta">
-            <span class="icon"><i class="ico-search"></i></span>
-          </span>
-        </a>
-      </li>
-      <!--/ Search form toggler -->
     </ul>
     <!--/ END Left nav -->
-
-    <!-- START navbar form -->
-    <div class="navbar-form navbar-left dropdown" id="dropdown-form">
-      <form action="" role="search">
-        <div class="has-icon">
-          <input type="text" class="form-control" placeholder="Search application...">
-          <i class="ico-search form-control-icon"></i>
-        </div>
-      </form>
-    </div>
-    <!-- START navbar form -->
 
     <!-- START Right nav -->
     <ul class="nav navbar-nav navbar-right">
@@ -280,10 +223,7 @@
           </span>
         </a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="javascript:void(0);"><span class="icon"><i class="ico-user-plus2"></i></span> My Accounts</a></li>
 
-          <li><a href="javascript:void(0);"><span class="icon"><i class="ico-question"></i></span> Help</a></li>
-          <li class="divider"></li>
           <li><a href="<?=base_url('index.php/logout');?>"><span class="icon"><i class="ico-exit"></i></span> Sign Out</a></li>
         </ul>
       </li>

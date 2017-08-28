@@ -145,7 +145,7 @@
       <th>Tanggal Berakhir</th>
       <th>Waktu Berakhir</th>
       <th>Status Publish</th>
-            <th>Sync</th>
+      <th>Sync</th>
       
       <th>Aksi</th>
 
@@ -161,8 +161,8 @@
 </div>
 </div>
 <script type="text/javascript">
-var tblist_TO;
-var daftar_to_modal;
+  var tblist_TO;
+  var daftar_to_modal;
 
 // lihat daftar to
 function daftar_tryout(){
@@ -246,8 +246,8 @@ function insert_paket(datas){
 
 // download tryout (GET PAKET)
 function download_tryout(id){
-  // url = "http://localhost:9090/neon-admin/webservice/tryoutoffline";
-  url = "http://soc.neonjogja.com/index.php/webservice/tryoutoffline";
+  url = "http://192.168.0.101/neon-admin/webservice/tryoutoffline";
+  // url = "http://soc.neonjogja.com/index.php/webservice/tryoutoffline";
 
   $.ajax({
     url : url,
@@ -412,7 +412,7 @@ $(document).ready(function() {
                     alert('Error get data from ajax');
                   }
                 });
-}
+          }
 
   // menyimpan data yang diedit
   function saveedit(){
@@ -490,5 +490,5 @@ $(document).ready(function() {
              function reload_tblist(){
               tblist_TO.ajax.reload(null,false); 
             }
-            </script>
-          </section>
+          </script>
+        </section>

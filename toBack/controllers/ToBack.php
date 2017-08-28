@@ -3,8 +3,8 @@
 class Toback extends MX_Controller{
 	// private $web_link = "http://localhost:9090/neon-admin/webservice/";
 	// anggi
-	private $web_link = "http://soc.neonjogja.com/index.php/webservice/";
-	private $project_host = "http://localhost:81/neon-offline/";
+	private $web_link = "http://192.168.0.101/neon-admin/index.php/webservice/";
+	private $project_host = "http://192.168.0.101/neon-offline/";
 
 	public function __construct() {
 		
@@ -238,7 +238,7 @@ class Toback extends MX_Controller{
 		$data['files'] = array(
 			APPPATH . 'modules/toback/views/v-list-to.php',
 			);
-		$data['judul_halaman'] = "List Try Out";
+		$data['judul_halaman'] = "Daftar Try Out";
 		$hakAkses=$this->session->userdata['HAKAKSES'];
 		if ($hakAkses=='adminOffline') {
         // jika admin

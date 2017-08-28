@@ -123,7 +123,7 @@ function kirim_nilai() {
 
 // kirim ke webservice
 function kirim(datas) {
-  url = "http://soc.neonjogja.com/index.php/webservice/accept_report_to";
+  url = "http://192.168.0.101/neon-admin/index.php/webservice/accept_report_to";
   $.ajax({
             url : url,
             type: "POST",
