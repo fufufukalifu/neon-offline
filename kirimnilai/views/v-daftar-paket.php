@@ -85,7 +85,6 @@ var dataTablePaket;
 $(document).ready(function() {
 
 dataTablePaket = $('.daftarpaket').DataTable({
-
     "emptyTable": "Tidak Ada Data Pesan",
     "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entries",
     "bDestroy": true,
@@ -123,12 +122,14 @@ function kirim_nilai() {
 
 // kirim ke webservice
 function kirim(datas) {
-  url = "http://192.168.0.101/neon-admin/index.php/webservice/accept_report_to";
+  url_rest = "<?php echo rest_url ?>";
+  url = url_rest+"addReport";
   $.ajax({
             url : url,
             type: "POST",
-            data:datas,
+            data:JSON.stringify(datas),
             dataType: "JSON",
+            contentType: 'application/json',
             success: function(data)
             {
                 if (data.status==false) {
@@ -142,7 +143,7 @@ function kirim(datas) {
             },
             error: function (data, jqXHR, textStatus, errorThrown)
             {
-                console.log(data);
+                console.log(textStatus);
                 // sweetAlert("Oops...", "gagal konek ke server", "error");
             }
         });

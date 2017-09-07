@@ -23,7 +23,7 @@ class Mkirim extends CI_model {
 	// get nilai 
 	public function ambil_nilai($id)
 	{
-		$this->db->select('pk.*');
+		$this->db->select('pk.*, id_mm-tryout-paket as id_mm_tryout_paket');
 
 		$this->db->from('tb_report-paket pk');
 

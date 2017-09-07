@@ -3,8 +3,8 @@
 class Toback extends MX_Controller{
 	// private $web_link = "http://localhost:9090/neon-admin/webservice/";
 	// anggi
-	private $web_link = "http://192.168.0.101/neon-admin/index.php/webservice/";
-	private $project_host = "http://192.168.0.101/neon-offline/";
+	private $web_link = rest_url;
+	private $project_host = "http://localhost/neon-offline/";
 
 	public function __construct() {
 		
@@ -517,6 +517,7 @@ class Toback extends MX_Controller{
 			);
 
 		$validate = $this->Mtoback->validate_to($post['id_tryout']);
+
 		if (!$validate) {
 			$data = array("status"=>1);
 			$this->Mtoback->insert_to($dat_To);			
@@ -528,11 +529,13 @@ class Toback extends MX_Controller{
 	
 	# insert paket dari webservice
 	public function inserpaket($id){
-		$url = $this->web_link.'paketoffline/'.$id;
+		$url = $this->web_link.'get_paket_by_toid?id_tryout='.$id;
+
 		$json = file_get_contents($url);
 		$data_paket = json_decode($json);
-		$jumlah_paket = 0;		
-		foreach ($data_paket as $item) {
+		$jumlah_paket = 0;
+
+		foreach ($data_paket->PilihanJawaban as $item) {
 			$validate_data = ['id'=>$item->id_paket,'tabel'=>'tb_paket','key'=>'id_paket'];
 			$validate = $this->Mtoback->validate($validate_data);
 			// kalo gak ada recordna di tabel	
@@ -540,14 +543,13 @@ class Toback extends MX_Controller{
 				// 	#data untuk di insert ke paket
 				$jumlah_paket++;
 				$this->Mtoback->insert_paket($item);
-
 			}
 
-			$url2 = $this->web_link.'mm_tryout_paket/'.$id;
+			$url2 = $this->web_link.'get_mm_tryout_paket?id_tryout='.$id;
 			$json = file_get_contents($url2);
 			$data_mm = json_decode($json);
 				// 	#data untuk di insert ke mm paket to
-			foreach ($data_mm as $item) {
+			foreach ($data_mm->TryoutPengguna as $item) {
 				$validate_mm = $this->Mtoback->validate_mm($item->id);
 				if (!$validate_mm) {
 					// echo "string";
@@ -567,19 +569,18 @@ class Toback extends MX_Controller{
 	## masukin mahasiswa dan pengguna  ke local db
 	public function insert_mahasiswa(){
 		$id = $this->session->userdata('sekolahID');
-
-		$url = $this->web_link.'siswaoffline/'.$id;
+		$url = $this->web_link.'get_siswa_at_school/?sekolahID='.$id;
 		$json = file_get_contents($url);
 		$data_siswa = json_decode($json);
 		// var_dump($data_siswa);
 		
 		$jumlah_siswa = 0;		
 
-		$url2 = $this->web_link.'penggunaffline/'.$id;
+		$url2 = $this->web_link.'get_pengguna_on_tryout/?sekolahID='.$id;
 		$json = file_get_contents($url2);
 		$data_pengguna = json_decode($json);
 
-		foreach ($data_pengguna as $item) {
+		foreach ($data_pengguna->PenggunaOnTryout as $item) {
 			$validate_data = ['id'=>$item->id,'tabel'=>'tb_pengguna','key'=>'id'];
 			$validate = $this->Mtoback->validate($validate_data);
 			if (!$validate) {
@@ -589,7 +590,7 @@ class Toback extends MX_Controller{
 			}
 		}
 
-		foreach ($data_siswa as $item) {
+		foreach ($data_siswa->ReportPengguna as $item) {
 			$validate_data = ['id'=>$item->id,'tabel'=>'tb_siswa','key'=>'id'];
 			$validate = $this->Mtoback->validate($validate_data);
 			if (!$validate) {
@@ -597,7 +598,6 @@ class Toback extends MX_Controller{
 				$this->Mtoback->insert_siswa($item);
 			}
 		}
-		$this->insert_hak_akses($id);
 
 		$output = array("jumlah_siswa"=>$jumlah_siswa);
 		echo json_encode($output);
@@ -623,12 +623,12 @@ class Toback extends MX_Controller{
 
 	## masukin soal ke local db
 	public function insert_soal($id){
-		$url = $this->web_link.'soaloffline/'.$id;
+		$url = $this->web_link.'get_soal_on_tryout/?id_tryout='.$id;
 		$json = file_get_contents($url);
 		$data_soal = json_decode($json);
 
 		$jumlah_soal=0;
-		foreach ($data_soal as $item) {	
+		foreach ($data_soal->Soal as $item) {	
 			$validate_data = ['id'=>$item->id_soal,'tabel'=>'tb_banksoal','key'=>'id_soal'];
 			$validate = $this->Mtoback->validate($validate_data);
 			if (!$validate) {
@@ -677,12 +677,12 @@ class Toback extends MX_Controller{
 
 	## masukin mm paket soal akses ke local db
 	public function insert_mm($id){
-		$url = $this->web_link.'mm_soal_paket/'.$id;
+		$url = $this->web_link.'get_mm_paket/?id_tryout='.$id;
 
 		$json = file_get_contents($url);
 		$data_mm = json_decode($json);
 
-		foreach ($data_mm as $item) {
+		foreach ($data_mm->MMPaket as $item) {
 			$validate_data = ['id'=>$item->id,'tabel'=>'tb_mm-paketbank','key'=>'id'];
 			$validate = $this->Mtoback->validate($validate_data);
 			if (!$validate) {
@@ -694,11 +694,11 @@ class Toback extends MX_Controller{
 
 	## masukin pilihan jawaban
 	public function insert_pil_jawaban($id){
-		$url = $this->web_link.'pilihan_jawaban_offline/'.$id;
+		$url = $this->web_link.'get_pilihan_jawaban/?id_tryout='.$id;
 
 		$json = file_get_contents($url);
 		$data_pilihan_jawaban = json_decode($json);
-		foreach ($data_pilihan_jawaban as $item) {				
+		foreach ($data_pilihan_jawaban->PilihanJawaban as $item) {				
 			if ($item->gambar!="") {
 					// panggil untuk ngopi pilihan jawaban
 				$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
@@ -718,7 +718,7 @@ class Toback extends MX_Controller{
 
 	## cacah untuk di datatable
 	function data_table_all_to(){
-		$url = $this->web_link.'get_all_to/'.$this->session->userdata('id');
+		$url = $this->web_link.'get_all_to/?penggunaID='.$this->session->userdata('id');
 
 		$json = file_get_contents($url);
 		$data_to = json_decode($json);
@@ -726,7 +726,7 @@ class Toback extends MX_Controller{
 		$data = array();
 
 		$baseurl = base_url();
-		foreach ( $data_to as $list_to ) {
+		foreach ( $data_to->TryoutPengguna as $list_to ) {
 			// $no++;
 			if ($list_to->publish=='1') {
 				$publish='Publish';
