@@ -1,5 +1,4 @@
 <?php
-
 class Toback extends MX_Controller{
 	// private $web_link = "http://localhost:9090/neon-admin/webservice/";
 	// anggi
@@ -527,14 +526,35 @@ class Toback extends MX_Controller{
 		echo json_encode($data);
 	}
 	
-	# insert paket dari webservice
+//  ------------------------------------ SINKRONISASI PAKET ------------------------------------
+	function get_paket_from_service($url){
+		$json = file_get_contents($url);
+		$data_paket['paket'] = json_decode($json);
+		return $data_paket;
+	}
+
+	function get_paket_local(){
+		$data_paket_local = $this->Mtoback->get_all_paket();
+		return $data_paket_local;
+	}
+
+	function validate_paket($data_paket){
+		$data_paket_insert = array_diff_key($data_paket['service']['paket']->PilihanJawaban,$data_paket['lokal']);
+		return $data_paket_insert;
+	}
+
 	public function inserpaket($id){
 		$url = $this->web_link.'get_paket_by_toid?id_tryout='.$id;
-
-		$json = file_get_contents($url);
-		$data_paket = json_decode($json);
-		$jumlah_paket = 0;
-
+		$data_paket['service'] = $this->get_paket_from_service($url);
+		$data_paket['lokal'] = $this->get_paket_local();
+		$data_paket_insert = $this->validate_paket($data_paket);
+		//insert batch to database
+		$jumlah_paket = count($data_paket_insert);
+		
+		if($jumlah_paket>0){
+			$this->Mtoback->insert_paket_batch($data_paket_insert);			
+		}
+/*
 		foreach ($data_paket->PilihanJawaban as $item) {
 			$validate_data = ['id'=>$item->id_paket,'tabel'=>'tb_paket','key'=>'id_paket'];
 			$validate = $this->Mtoback->validate($validate_data);
@@ -559,49 +579,59 @@ class Toback extends MX_Controller{
 
 
 		}
+*/
 		// keterangan jumlah paket
 		$output = array("jumlah_paket"=>$jumlah_paket);
 		echo json_encode($output);
-
 	}
-	
+//  ------------------------------------ SINKRONISASI PAKET ------------------------------------
 
-	## masukin mahasiswa dan pengguna  ke local db
-	public function insert_mahasiswa(){
+	
+//  ------------------------------------ SINKRONISASI SISWA ------------------------------------
+	function get_users_webservice(){
 		$id = $this->session->userdata('sekolahID');
+
+		// select siswa berdasarkan sekolah
 		$url = $this->web_link.'get_siswa_at_school/?sekolahID='.$id;
 		$json = file_get_contents($url);
-		$data_siswa = json_decode($json);
-		// var_dump($data_siswa);
-		
-		$jumlah_siswa = 0;		
+		$data_dari_server['siswa'] = json_decode($json);
 
+		// select pengguna berdasarkan sekolah
 		$url2 = $this->web_link.'get_pengguna_on_tryout/?sekolahID='.$id;
 		$json = file_get_contents($url2);
-		$data_pengguna = json_decode($json);
+		$data_dari_server['pengguna'] = json_decode($json);
+		return $data_dari_server;
+	}
 
-		foreach ($data_pengguna->PenggunaOnTryout as $item) {
-			$validate_data = ['id'=>$item->id,'tabel'=>'tb_pengguna','key'=>'id'];
-			$validate = $this->Mtoback->validate($validate_data);
-			if (!$validate) {
-				$jumlah_siswa++;
-				// 	#data untuk di insert ke tb pengguna
-				$this->Mtoback->insert_pengguna($item);
-			}
+	//select siswa dan pengguna di db
+	function get_user_local(){
+		$data_dari_db = $this->msiswa->get_siswa_and_user();
+		return $data_dari_db;
+	}
+
+	//compare siswa terdaftar dan db
+	function validate_users(){
+		$data_dari_db = $this->get_user_local();
+		$data_dari_server = $this->get_users_webservice();
+		$jumlah_siswa = 0;
+		// ambil siswa yang belum terdaftar
+		$siswa_akan_daftar['siswa']=array_diff_key($data_dari_server['siswa']->ReportPengguna,$data_dari_db['siswa']);
+		$siswa_akan_daftar['pengguna']=array_diff_key($data_dari_server['pengguna']->PenggunaOnTryout,$data_dari_db['pengguna']);
+		$siswa_akan_daftar['jumlah_siswa'] = count($siswa_akan_daftar['siswa']);
+		return $siswa_akan_daftar;
+	}
+	## masukin mahasiswa dan pengguna  ke local db
+	public function insert_mahasiswa(){
+		$siswa_akan_daftar = $this->validate_users();
+		//insert ke db
+		if ($siswa_akan_daftar['jumlah_siswa']>0) {
+			$this->msiswa->insert_siswa_and_user($siswa_akan_daftar);			
 		}
 
-		foreach ($data_siswa->ReportPengguna as $item) {
-			$validate_data = ['id'=>$item->id,'tabel'=>'tb_siswa','key'=>'id'];
-			$validate = $this->Mtoback->validate($validate_data);
-			if (!$validate) {
-				// 	#data untuk di insert ke tb pengguna
-				$this->Mtoback->insert_siswa($item);
-			}
-		}
-
-		$output = array("jumlah_siswa"=>$jumlah_siswa);
+		$output = array("jumlah_siswa"=>$siswa_akan_daftar['jumlah_siswa']);
 		echo json_encode($output);
 	}
+//  ------------------------------------SINKRONISASI SISWA ------------------------------------
 
 
 	## masukin hak akses ke local db
@@ -621,6 +651,7 @@ class Toback extends MX_Controller{
 
 	}
 
+// ------------------------------------ SINKRONISASI SOAL
 	## masukin soal ke local db
 	public function insert_soal($id){
 		$url = $this->web_link.'get_soal_on_tryout/?id_tryout='.$id;
@@ -715,6 +746,8 @@ class Toback extends MX_Controller{
 		}
 
 	}
+// ------------------------------------- SINKRONISASI SOAL
+
 
 	## cacah untuk di datatable
 	function data_table_all_to(){
@@ -753,10 +786,7 @@ class Toback extends MX_Controller{
 		$output = array(
 			"data"=>$data,
 			);
-
 		echo json_encode( $output );
-
-
 	}
 
 	## COPY IMAGE DARI SERVER LAIN
