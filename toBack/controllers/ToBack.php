@@ -954,7 +954,7 @@ class Toback extends MX_Controller{
 	        $row[] ='<a class="btn btn-sm btn-danger  modal-on'.$list_item['id_report'].'" 
 	        data-todo='.htmlspecialchars(json_encode($array)).' 
 
-	        title="Lihat Pembahasan" onclick="delete_report('."'".$list_item['id_report']."'".')"><i class="ico-remove"></i></a> ';
+	        title="Hapus Report" onclick="delete_report('."'".$list_item['id_report']."'".')"><i class="ico-remove"></i></a> ';
 	        
 
 	        $list[] = $row;   
