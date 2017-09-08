@@ -15,18 +15,18 @@ class Login extends MX_Controller {
             if ($this->session->userdata('HAKAKSES')=='siswa'){
                // redirect('welcome');
             }else if($this->session->userdata('HAKAKSES')=='guru'){
-             redirect('guru/dashboard');
-         }else{
-         
-         }
+               redirect('guru/dashboard');
+           }else{
+               
+           }
 
-     }
+       }
 
- }
+   }
 
 
 
- public function index() {
+   public function index() {
     $data = array(
         'judul_halaman' => 'Login - Tryout Semi-online',
         'judul_header' => 'Welcome',
@@ -53,11 +53,11 @@ public function validasiLogin() {
         //variabelSession
         $sess_array = array();
         foreach ($result as $row) {
-           $idPengguna = $row->id;
-           $hakAkses = $row->hakAkses;
+         $idPengguna = $row->id;
+         $hakAkses = $row->hakAkses;
             //membuat session
-           $verifikasiCode = md5($row->regTime);
-           $sess_array = array(
+         $verifikasiCode = md5($row->regTime);
+         $sess_array = array(
             'id' => $idPengguna,
             'USERNAME' => $row->namaPengguna,
             'HAKAKSES' => $row->hakAkses,
@@ -69,11 +69,11 @@ public function validasiLogin() {
 
             );
 
-           $this->session->set_userdata($sess_array);
+         $this->session->set_userdata($sess_array);
 
 
 
-           if ($hakAkses == 'admin') {
+         if ($hakAkses == 'admin') {
 
             redirect(base_url('index.php/admin'));
 
@@ -95,8 +95,8 @@ public function validasiLogin() {
             $this->session->set_userdata('NAMASISWA', $namaSiswa);
             redirect(site_url('tryout/validasitoken'));
         } elseif ($hakAkses == 'admin_cabang') {
-         redirect(site_url('admincabang'));
-     } else {
+           redirect(site_url('admincabang'));
+       } else {
 
         echo 'tidak ada hak akses';
 
@@ -313,13 +313,13 @@ function cek_token(){
         // cek dulu statusna udah di aktivin atau belum
         if ($token['status']==1) {
             # udah diaktifin
-           $date_diaktifkan = $date1->format('d-M-Y');
-           $date_kadaluarsa =  date("d-M-Y", strtotime($date_diaktifkan)+ (24*3600*$token['masaAktif']));
+         $date_diaktifkan = $date1->format('d-M-Y');
+         $date_kadaluarsa =  date("d-M-Y", strtotime($date_diaktifkan)+ (24*3600*$token['masaAktif']));
 
-           $date1 = new DateTime(date("d-M-Y"));
-           $date2 = new DateTime($date_kadaluarsa);
-           $sisa_aktif = $date2->diff($date1)->days;
-           if ($sisa_aktif != 0) {
+         $date1 = new DateTime(date("d-M-Y"));
+         $date2 = new DateTime($date_kadaluarsa);
+         $sisa_aktif = $date2->diff($date1)->days;
+         if ($sisa_aktif != 0) {
             //token aktif
             $this->session->set_userdata(array('token'=>'Aktif','sisa'=>$sisa_aktif));
         }else{
@@ -337,6 +337,50 @@ function cek_token(){
 
 
 }
+
+
+function test_rest(){
+    var_dump(rest_url);
+}
+
+
+// LOGIN KE CONTROLLER PUNYA ORANG.
+public function login_admin(){
+        if ($this->input->post()) {
+    $post = $this->input->post();
+
+            // $hasil_login = $this->Webservice_model->check_user_admin_offline($post['username'], md5($post['password']));
+            // $hasil_login = $this->Webservice_model->check_user_admin_offline('adminOpik', 'a0066c4ed186b9ed329411f715f49443');
+    $url = rest_url."check_user_admin_offline?namaPengguna=".$post['username']."&&kataSandi=".md5($post['password'])."&&eMail=".$post['username'];
+
+    $json = file_get_contents($url);
+    $hasil_login = json_decode($json);
+            // var_dump($hasil_login);
+    
+
+    if ($hasil_login->AdminOffline) {
+        $row = $hasil_login->AdminOffline[0];
+        $verifikasiCode = md5($row->regTime);
+        $data_login = array(
+            'id' => $row->penggunaID,
+            'USERNAME' => $row->namaPengguna,
+            'HAKAKSES' => 'adminOffline',
+            'AKTIVASI' => $row->aktivasi,
+            'eMail' => $row->email,
+            'verifikasiCode' => $verifikasiCode,
+            'loggedin' => TRUE,
+            'status' => 'berhasil',
+            'sekolahID'=>$row->sekolahID
+            );
+    }else{
+        $data_login = ['status'=>"Gagal"];
+    }
+
+    echo json_encode($data_login);
+        }
+
+}
+
 
 }
 

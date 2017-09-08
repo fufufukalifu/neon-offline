@@ -82,8 +82,7 @@ $('input[name=password]').keypress(function (e) {
 });
 
 function login(){
-    // site_url = "http://localhost:9090/neon-admin/webservice/login";
-    site_url = "http://soc.neonjogja.com/index.php/webservice/login";
+    site_url = base_url+"login/login_admin";
 
     datas = {
      username:$('input[name=username]').val(),

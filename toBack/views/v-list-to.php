@@ -199,11 +199,10 @@ function insert_to(obc){
      $('.indicator').addClass('hide');
      if (data.status==1) {
       swal('Tryout Berhasil Di download');
+      swal("Yes!", "Tryout Berhasil Di download", "success");
       tblist_TO.ajax.reload();
     }else{
-      swal('Tryout sudah tersedia');
-      tblist_TO.ajax.reload();
-
+      swal("Opps!", "Tryout sudah tersedia", "success");
     };
   },
   error: function (jqXHR, textStatus, errorThrown)
@@ -246,25 +245,10 @@ function insert_paket(datas){
 
 // download tryout (GET PAKET)
 function download_tryout(id){
-  url = "http://192.168.0.101/neon-admin/webservice/tryoutoffline";
-  // url = "http://soc.neonjogja.com/index.php/webservice/tryoutoffline";
-
-  $.ajax({
-    url : url,
-    type: "POST",
-    data:{id_tryout:id},
-    dataType: "json",
-    success: function(data)
-    {
-      // console.log(data);
-      $.each(data, function(index, value) {
-        insert_to(value);
-      });
-    },
-    error: function (jqXHR, textStatus, errorThrown)
-    {
-      console.log("gagal download");
-    }
+  url_rest = "<?php echo rest_url ?>";
+  url = url_rest+"get_to_by_id?id_tryout="+id;
+  $.getJSON( url, function( json ) {
+    insert_to(json.To[0])
   });
 }
 

@@ -236,7 +236,7 @@ class Tryout extends MX_Controller {
             $data['soal'] = $query['soal']; 
             $data['pil'] = $query['pil']; 
 
-            $this->load->view('vHalamanTo-bu.php', $data); 
+            $this->load->view('vHalamanTo.php', $data); 
             $this->load->view('templating/t-footerto', $data); 
         } else { 
             $this->errorTest(); 

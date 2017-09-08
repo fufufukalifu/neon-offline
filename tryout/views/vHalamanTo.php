@@ -1,16 +1,3 @@
-Skip to content
-Features Business Explore Marketplace Pricing
-This repository
-Search
-Sign in or Sign up
- Watch 4  Star 0  Fork 0 fufufukalifu/tryout-semi-online
- Code  Issues 0  Pull requests 0  Projects 0 Insights 
-Branch: master Find file Copy pathtryout-semi-online/tryout/views/vHalamanTo-bu.php
-1366c94  21 hours ago
-@fufufukalifu fufufukalifu fix kalo ada soal kosong
-1 contributor
-RawBlameHistory     
-465 lines (399 sloc)  12.9 KB
 <!-- LOADING -->
 <style>
   .no-js #loader { display: none;  }
@@ -371,7 +358,6 @@ $nosoal++;
 <!--/ END Template Main -->
 <script>
   function updateColor(id) {
-    console.log(id);
    $(".jwb" + id).html($('input[id="' + id + '"]:checked').val()[1]);
    $('a[alt="' + id + '"]').css({"background-color": "#5bc0de", "color": "#fff", "border": "none"});
  }
@@ -394,7 +380,6 @@ function clearpiljaw(id,groupname){
  $('label[alt="' + groupname + '"]').removeClass( "terpilih" );
 }
 function changeColor(data){
-  console.log(data);
   $('label[alt="' + data.soalid + '"]').removeClass( "terpilih" );
   var d = document.getElementById(data.value);
   d.className = "terpilih";
@@ -448,5 +433,3 @@ function allStorage() {
   }
   show_storage(allStorage());
 </script>
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
