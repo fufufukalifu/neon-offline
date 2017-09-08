@@ -220,6 +220,32 @@ class Msiswa extends CI_Model {
         }
     }
 
+
+
+    // webservice
+    function get_siswa_and_user(){
+        $this->db->select('id');
+        $this->db->from('tb_siswa siswa');
+        $query = $this->db->get();
+        $data['siswa'] = $query->result();
+
+        $this->db->select('id');
+        $this->db->from('tb_siswa siswa');        
+        $data['pengguna'] = $query->result();
+
+        return $data;
+
+    }
+
+    function insert_siswa_and_user($data){
+        $this->db->insert_batch('tb_siswa', $data['siswa']); 
+        $this->db->insert_batch('tb_pengguna', $data['pengguna']); 
+    }
+
+    function insert_paket($data){
+        $this->db->insert_batch('tb_paket', $data); 
+    }
+
     ##
 }
 
