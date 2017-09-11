@@ -224,13 +224,14 @@ class Msiswa extends CI_Model {
 
     // webservice
     function get_siswa_and_user(){
-        $this->db->select('id');
-        $this->db->from('tb_siswa siswa');
+        $this->db->select('s.`id`, `namaDepan`, `namaBelakang`, `alamat`, `noKontak`, s.`penggunaID`, `photo`, `biografi`, s.`status`');
+        $this->db->from('tb_siswa s');
         $query = $this->db->get();
         $data['siswa'] = $query->result();
 
-        $this->db->select('id');
-        $this->db->from('tb_siswa siswa');        
+        $this->db->select('p.id,namaPengguna, kataSandi, eMail, regTime, aktivasi, avatar `oauth_uid`,`oauth_uid`,hakAkses,p.status, last_akses');
+        $this->db->from('tb_pengguna p');
+        $query = $this->db->get();        
         $data['pengguna'] = $query->result();
 
         return $data;
@@ -240,10 +241,6 @@ class Msiswa extends CI_Model {
     function insert_siswa_and_user($data){
         $this->db->insert_batch('tb_siswa', $data['siswa']); 
         $this->db->insert_batch('tb_pengguna', $data['pengguna']); 
-    }
-
-    function insert_paket($data){
-        $this->db->insert_batch('tb_paket', $data); 
     }
 
     ##

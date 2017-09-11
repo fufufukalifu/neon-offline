@@ -339,15 +339,23 @@ class Mtoback extends CI_Model {
 	}
 
 	public function get_all_paket(){
-		$this->db->select('id_paket');
+		$this->db->select('*');
 		$this->db->from('tb_paket p');
 
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	 function insert_paket_batch($data){
-        $this->db->insert_batch('tb_paket', $data); 
+		public function get_mm_paket(){
+		$this->db->select('*');
+		$this->db->from('tb_mm-tryoutpaket p');
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	 function insert_batch($data, $table){
+        $this->db->insert_batch($table, $data); 
     }
 
 }
