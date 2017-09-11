@@ -385,7 +385,7 @@ class Toback extends MX_Controller{
 
 		// jika bank soalnya sudah diupload semua
 		if ($jumlah_soal>0) {
-			// $this->Mtoback->insert_batch($soal['insert'], 'tb_banksoal');	
+			$this->Mtoback->insert_batch($soal['insert'], 'tb_banksoal');	
 		}
 
 		// MM Banksoal to PAket //
@@ -394,7 +394,7 @@ class Toback extends MX_Controller{
 		$soal['insert_mm'] = $this->my_array_diff($soal['mmsoal_paket_service'],$soal['mmsoal_paket_local']);
 
 		if (count($soal['insert'])>0) {
-			// $this->Mtoback->insert_batch($soal['mmsoal_paket_service'], 'tb_mm-paketbank');	
+			$this->Mtoback->insert_batch($soal['mmsoal_paket_service'], 'tb_mm-paketbank');	
 		}
 
 		$this->copy_files($soal['insert']);
