@@ -3,7 +3,7 @@ class Toback extends MX_Controller{
 	// private $web_link = "http://localhost:9090/neon-admin/webservice/";
 	// anggi
 	private $web_link = rest_url;
-	private $project_host = "http://neonjogja.com";
+	private $project_host = "http://soc.neonjogja.com";
 
 	public function __construct() {
 		
@@ -484,7 +484,7 @@ class Toback extends MX_Controller{
 			if ($item->gambar!="") {
 				// panggil untuk ngopi pilihan jawaban
 				$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
-				'url'=>'http://neonjogja.com/assets/image/jawaban/'.$item->gambar,
+				'url'=>'http://soc.neonjogja.com/assets/image/jawaban/'.$item->gambar,
 				'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/jawaban/'
 				];
 				$this->copy_gambar($copy_image_pilihan_jawaban);
