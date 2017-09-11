@@ -97,6 +97,11 @@
 									<a href="<?=base_url('tryout') ?>">Try Out</a>
 
 								</li>
+								<li>
+
+									<a href="<?=base_url('help') ?>">Help</a>
+
+								</li>
 
 
 								<li>
