@@ -5,6 +5,8 @@
  */
 class Siswa extends MX_Controller {
 
+    private $web_link = rest_url;
+
     public function __construct() {
         parent::__construct();
         $this->load->model('msiswa');
@@ -249,14 +251,7 @@ class Siswa extends MX_Controller {
             $row[] = $list_siswa['idsiswa'];
             $row[] = $list_siswa['namaDepan'] . " " . $list_siswa['namaBelakang'];
             $row[] = $list_siswa['namaPengguna'];
-
-            $row[] = $list_siswa['namaSekolah'];
             $row[] = '<a href=""  title="Mail To">' . $list_siswa['eMail'] . '</a> <i class="ico-mail-send"></i>';
-            $row[] = '<a href="' . base_url('index.php/siswa/reportSiswa/' . $list_siswa['penggunaID']) . '" "> Lihat detail</a></i>';
-
-            $row[] = '<a class="btn btn-sm btn-warning"  title="Edit" href="' . base_url('index.php/siswa/updateSiswa/' . $list_siswa['idsiswa'] . '/' . $list_siswa['penggunaID']) . '" "><i class="ico-edit"></i></a> 
-
-        <a class="btn btn-sm btn-danger"  title="Hapus" onclick="dropSiswa(' . "" . $list_siswa['idsiswa'] . "," . $list_siswa['penggunaID'] . ')"><i class="ico-remove"></i></a>';
 
             $data[] = $row;
         }
@@ -509,6 +504,34 @@ class Siswa extends MX_Controller {
         $data['token'] = $this->session->userdata('token');
         var_dump($data['token']);
         $this->parser->parse( 'templating/index', $data );
+    }
+
+    // pengecekan jumlah siswa di offline dengan webservice
+    function cek_sinkronisasi_siswa(){
+        $id = $this->session->userdata('sekolahID');
+        // select siswa berdasarkan sekolah
+        $url = $this->web_link.'get_siswa_at_school/?sekolahID='.$id;
+        $json = file_get_contents($url);
+        $data_dari_server['siswa'] = json_decode($json);
+        
+        // select pengguna berdasarkan sekolah
+        $url2 = $this->web_link.'get_pengguna_on_tryout/?sekolahID='.$id;
+        $json = file_get_contents($url2);
+        $data_dari_server['pengguna'] = json_decode($json);
+
+        // var jumlah siswa
+        $jumlah_siswa_service = count($data_dari_server['siswa'] );
+        $jumlah_siswa_db= $this->msiswa->count_siswa();
+
+        // var jumlah pengguna
+        $jumlah_pengguna_service = count($data_dari_server['pengguna']);
+        $jumlah_pengguna_db =  $this->msiswa->count_pengguna();
+        if ($jumlah_siswa_db<$jumlah_siswa_service && $jumlah_pengguna_db< $jumlah_pengguna_service) {
+            echo json_encode('Ada siswa yang belum disinkronisasi');
+        } else {
+            echo json_encode('Berhasil sinkron semua siswa');
+        }
+
     }
 
 

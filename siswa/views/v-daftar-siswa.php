@@ -6,9 +6,8 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">Daftar Siswa</h4>
                     <!-- Trigger the modal with a button -->
-                    <a href="<?= base_url('index.php/siswa/daftarsiswa') ?>" title="Tambah Data" type="button" class="btn btn-default pull-right" style="margin-top:-30px;" ><i class="ico-plus"></i></a>
+                    <a title="" class="btn btn-success pull-right" style="margin-top:-30px;" onclick="cek_jumlah_siswa()" >Cek Jumlah Siswa</a>
                     <br>
-                    <!--<a data-toggle="modal" class="btn btn-default pull-right"  "  data-target="#myModal">Tambah</a>-->
                 </div>
 
                 <table class="daftarsiswa table table-striped display responsive nowrap" style="font-size: 13px" width=100%>
@@ -18,10 +17,7 @@
                             <th>Id siswa</th>
                             <th>Nama Lengkap</th>
                             <th>Nama Pengguna</th>
-                            <th>Sekolah</th>
                             <th>Email</th>
-                            <th>Report Siswa</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
 
@@ -72,6 +68,23 @@
 
     function reload_tblist() {
         tb_siswa.ajax.reload(null, false);
+    }
+
+    function cek_jumlah_siswa(){
+      var url_get_jmlh_siswa=base_url+"siswa/cek_sinkronisasi_siswa";
+
+      $.ajax({
+        url:url_get_jmlh_siswa,
+        dataType:"json",
+        type:"post",
+        success:function(data){
+            swal(data);
+        },
+        error:function(){
+
+        }
+      });
+
     }
 
 </script>

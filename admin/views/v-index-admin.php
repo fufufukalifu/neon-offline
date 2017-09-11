@@ -247,9 +247,16 @@
     <!-- START MENU -->
     <ul class="topmenu topmenu-responsive" data-toggle="menu">
       <li >
-        <a href="<?= base_url('index.php/admin') ?>">
+        <a href="#">
           <span class="figure"><i class="ico-trophy"></i></span>
           <span class="text">Dashboard</span>
+        </a>
+      </li>
+
+<li >
+        <a href="<?= base_url('index.php/siswa/daftar');?>">
+          <span class="figure"><i class="ico-user"></i></span>
+          <span class="text">Siswa</span>
         </a>
       </li>
 
@@ -288,8 +295,15 @@
 
  <li>
   <a href="<?= base_url('index.php/admincontrol/pengerjaan') ?>">
-    <span class="figure"><i class=" ico-bars6"></i></span>
+    <span class="figure"><i class="ico-screen2"></i></span>
     <span class="text">Admin Control</span>
+  </a>
+</li>
+
+<li>
+  <a href="<?= base_url('index.php/help_admin') ?>">
+    <span class="figure"><i class="ico-book3"></i></span>
+    <span class="text">User Guide</span>
   </a>
 </li>
 

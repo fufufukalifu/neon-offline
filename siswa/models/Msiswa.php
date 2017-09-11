@@ -243,6 +243,26 @@ class Msiswa extends CI_Model {
         $this->db->insert_batch('tb_pengguna', $data['pengguna']); 
     }
 
+    // get jumlah tb_siswa
+    function count_siswa()
+    {
+        $this->db->select('count(id) as jmlh_siswa');
+        $this->db->from('tb_siswa');
+
+        $query = $this->db->get();
+        return $query->result_array()[0]['jmlh_siswa'];
+    }
+
+    // get jumlah tb_pengguna
+    function count_pengguna()
+    {
+        $this->db->select('count(id) as jmlh_pengguna');
+        $this->db->from('tb_pengguna');
+
+        $query = $this->db->get();
+        return $query->result_array()[0]['jmlh_pengguna'];
+    }
+
     ##
 }
 
