@@ -526,10 +526,14 @@ class Siswa extends MX_Controller {
         // var jumlah pengguna
         $jumlah_pengguna_service = count($data_dari_server['pengguna']);
         $jumlah_pengguna_db =  $this->msiswa->count_pengguna();
-        if ($jumlah_siswa_db<$jumlah_siswa_service && $jumlah_pengguna_db< $jumlah_pengguna_service) {
-            echo json_encode('Ada siswa yang belum disinkronisasi');
+        if ($jumlah_siswa_db>0) {
+            if ($jumlah_siswa_db<$jumlah_siswa_service && $jumlah_pengguna_db< $jumlah_pengguna_service) {
+                echo json_encode('Ada siswa yang belum disinkronisasi');
+            } else {
+                echo json_encode('Berhasil sinkron semua siswa');
+            }
         } else {
-            echo json_encode('Berhasil sinkron semua siswa');
+            echo json_encode('Jumlah siswa kosong');
         }
 
     }
