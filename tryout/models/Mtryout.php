@@ -225,7 +225,7 @@ class Mtryout extends MX_Controller {
     }
 
     public function datatopaket($id) {
-        $this->db->select('try.nm_tryout as namato, p.nm_paket as namapa');
+        $this->db->select('try.nm_tryout as namato, p.nm_paket as namapa, jenis_penilaian');
         $this->db->from('tb_mm-tryoutpaket as tp');
         $this->db->join('tb_tryout as try','tp.id_tryout = try.id_tryout');
         $this->db->join('tb_paket as p','tp.id_paket = p.id_paket');
@@ -328,7 +328,7 @@ class Mtryout extends MX_Controller {
     # get paket by token did by siswa.
     function get_info_to($token){
         $this->db->select('p.token, mm.`id` AS mm_id, p.id_paket, t.id_tryout, nm_paket, deskripsi, 
-            jumlah_soal, durasi, token, t.`nm_tryout`, t.`tgl_berhenti`, t.`tgl_mulai`,p.durasi,t.wkt_mulai');
+            jumlah_soal, durasi, token, t.`nm_tryout`, t.`tgl_berhenti`, t.`tgl_mulai`,p.durasi,t.wkt_mulai, jenis_penilaian');
         $this->db->from('(SELECT * FROM tb_paket WHERE token= "'.$token.'") AS p');
         $this->db->join('`tb_mm-tryoutpaket` mm','p.id_paket = mm.`id_paket`'); 
         $this->db->join('tb_tryout t','t.`id_tryout` = mm.`id_tryout`'); 

@@ -141,7 +141,7 @@ label:hover{ /* HIDE RADIO */
     <p class="title font-alt">Tryout Online 
     </p>
     <?php foreach ($topaket as $key): ?>
-     <div class="text-center"><div style="font-size:20px;"><?= $key['namato'] ?>/<?= $key['namapa'] ?></div></div>
+     <div class="text-center"><div style="font-size:20px;"><span class="text-info jenis_penilaian"><?= $key['jenis_penilaian'] ?></span>: <?= $key['namato'] ?>/<?= $key['namapa'] ?></div></div>
    <?php endforeach ?>
   </div>
 </section>

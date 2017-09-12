@@ -78,6 +78,17 @@
                   <label class="control-label"><?=$to->durasi;?> Menit</label>
                 </div>
               </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <label class="control-label">Jenis Penilaian</label>
+                </div>
+                <div class="col-sm-12">
+                  <label class="control-label text-danger bold"><?=$to->jenis_penilaian;?></label>
+                </div>
+              </div>
+
+
             </div>
             <a class="modal-on"
                   data-todo='<?=json_encode($to)?>'></a>
