@@ -59,6 +59,7 @@
         <th>id</th>
         <th>Username</th>
         <th>Nama Paket</th>
+        <th>Jenis</th>
         <th>Nama SIswa</th>
         <th>Jumlah Soal</th>
         <th>Benar</th>

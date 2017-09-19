@@ -14,7 +14,9 @@ class Admincabang_model extends CI_model {
 			total_nilai,
 			poin,
 			nm_paket,
-			pk.tgl_pengerjaan');
+			pk.tgl_pengerjaan,
+			pkt.jenis_penilaian
+			');
 
 		$this->db->from('tb_report-paket pk');
 
