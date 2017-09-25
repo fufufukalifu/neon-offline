@@ -76,9 +76,12 @@
           sweetAlert("Oops...", "wah, token yang kamu masukan tidak ditemukan!", "error");
         }else{
           if (hasil_paket.status=='done') {
-          sweetAlert("Wah...", "token yang kamu masukan sudah dikerjakan, silahkan masukan token lain!", "success");
+            sweetAlert("Wah...", "token yang kamu masukan sudah dikerjakan, silahkan masukan token lain!", "success");
+          }else if(hasil_paket.status=='forbidden'){
+            sweetAlert("Wah...", "token yang kamu masukan sudah habis waktunya, silahkan masukan token lain!", "error");
+          }else if(hasil_paket.status=='yet'){
+            sweetAlert("Wah...", "token yang kamu masukan belum bisa dikerjakan, silahkan masukan token lain!", "error");
           }else{
-            // window.location.href = base_url + "tryout/konfirmasi/"+kode_token;  
             next(kode_token);         
           }
         }

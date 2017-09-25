@@ -758,6 +758,32 @@ class Toback extends MX_Controller{
         $this->Mtoback->dropreport_t( $id );
     }
 
+    public function ajax_edit( $id_tryout) {
+		$data = $this->Mtoback->get_TO_by_id( $id_tryout );
+		echo json_encode( $data );
+	}
+
+	public function editTryout(){
+			$data['id_tryout']=htmlspecialchars($this->input->post('id_tryout'));
+			$nm_tryout=htmlspecialchars($this->input->post('nama_tryout'));
+			$tglMulai=htmlspecialchars($this->input->post('tgl_mulai'));
+			$tglAkhir=htmlspecialchars($this->input->post('tgl_berhenti'));
+			$publish=htmlspecialchars($this->input->post('publish'));
+
+			$wktMulai=htmlspecialchars($this->input->post('wkt_mulai'));
+			$wktAkhir=htmlspecialchars($this->input->post('wkt_akhir'));
+
+			$data['tryout']=array(
+				'nm_tryout'=>$nm_tryout,
+				'tgl_mulai'=>$tglMulai,
+				'tgl_berhenti'=>$tglAkhir,
+				'wkt_mulai'=>$wktMulai,
+				'wkt_berakhir'=>$wktAkhir,
+				'publish'=>$publish,
+				);
+
+			$this->Mtoback->ch_To($data);
+		}
 	
 }
 ?>

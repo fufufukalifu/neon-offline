@@ -38,7 +38,7 @@ class Tryout extends MX_Controller {
     public function validasitoken() {
         $this->session->unset_userdata('id_tryout');
         $data = array(
-            'judul_halaman' => 'Neon - Tryout',
+            'judul_halaman' => 'SEMOET - Tryout',
             'judul_header' => 'Daftar Tryout',
             'judul_tingkat' => '',
             );
@@ -387,14 +387,42 @@ class Tryout extends MX_Controller {
                 'id_mm'=>$data['paket'][0]->mm_id,
                 'id_pengguna'=>$this->session->userdata('id')
                 ];
+
+                $paket = $this->Mtryout->get_paket_by_token($data['post'])[0];
+                $date = new DateTime(date("Y-m-d H:i:s"));
+
+                // concat tanggal mlai dan tanggai akhir
+                $mulai = date("Y-m-d H:i:s ", strtotime($paket->tgl_mulai." ".$paket->wkt_mulai));
+                $akhir = date("Y-m-d H:i:s ", strtotime($paket->tgl_berhenti." ".$paket->wkt_berakhir));
+
+                //buat date
+                $date_mulai =  new DateTime($mulai);
+                $date_berhenti =  new DateTime($akhir);
+
                 // select ke report, paketnya pernah dikerjain belum ?
                 $data['jumlah_report'] = $this->Mtryout->cek_report_paket_by_idpengguna($data['param']);
 
                 // kalo belum pernah ngerjain, tampilkan paket data                    
                 if ($data['jumlah_report']==0) {
-                    echo json_encode($data['paket'][0]);
+                    // echo json_encode($data['paket'][0]);
+                    // kalo tanggal mulainya lebih dari hari ini dan kurang dari sama dengan tanggal berhenti
+                    if (($date>= $date_mulai) && ($date <= $date_berhenti)) {
+                        //TO BISA DI AKSES
+                        echo json_encode($data['paket'][0]);
+                    }else{
+                        //TO TIDAK BISA DI AKSES
+                        if ($date>=$date_berhenti) {
+                            // SELESAI
+                            echo json_encode(['status'=>'forbidden']);            
+                        }else{
+                            // BELUM DIMULAI
+                            echo json_encode(['status'=>'yet']);             
+                        }
+                    }
                 }else{
                     echo json_encode(['status'=>'done']);
+                    // echo json_encode($mulai);
+                    
                 }
             }
         }else{
