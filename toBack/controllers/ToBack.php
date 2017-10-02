@@ -267,6 +267,12 @@ class Toback extends MX_Controller{
 		$data_paket['mm_to_service'] = $this->get_paket_from_service($url)['mm_to']->TryoutPengguna;
 		$data_paket['mm_to_local'] = $this->get_paket_local()['mm_to'];
 		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);			
+				var_dump($data_paket['service']);
+		echo "<hr>";
+		var_dump($data_paket['local']);
+		echo "<hr>";
+		var_dump($data_paket['insert']);
+		echo "<hr>";
 
 		//insert batch to database
 		$jumlah_paket = count($data_paket['insert']);
@@ -381,13 +387,7 @@ class Toback extends MX_Controller{
 		$soal['local'] = $this->mbanksoal->get_soal_all();
 		$soal['insert'] = $this->my_array_diff($soal['service'],$soal['local']);
 		$jumlah_soal=count($soal['insert']);
-		
-		var_dump($soal['service']);
-		echo "<hr>";
-		var_dump($soal['local']);
-		echo "<hr>";
-		var_dump($soal['insert']);
-		echo "<hr>";
+
 
 		// jika bank soalnya sudah diupload semua
 		if ($jumlah_soal>0) {
