@@ -269,7 +269,7 @@ class Toback extends MX_Controller{
 		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);			
 				var_dump($data_paket['service']);
 		echo "<hr>";
-		var_dump($data_paket['local']);
+		var_dump($data_paket['lokal']);
 		echo "<hr>";
 		var_dump($data_paket['insert']);
 		echo "<hr>";
