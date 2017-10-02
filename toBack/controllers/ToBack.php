@@ -382,6 +382,13 @@ class Toback extends MX_Controller{
 		$soal['insert'] = $this->my_array_diff($soal['service'],$soal['local']);
 		$jumlah_soal=count($soal['insert']);
 		
+		var_dump($soal['service']);
+		echo "<hr>";
+		var_dump($soal['local']);
+		echo "<hr>";
+		var_dump($soal['insert']);
+		echo "<hr>";
+
 		// jika bank soalnya sudah diupload semua
 		if ($jumlah_soal>0) {
 			$this->Mtoback->insert_batch($soal['insert'], 'tb_banksoal');	
