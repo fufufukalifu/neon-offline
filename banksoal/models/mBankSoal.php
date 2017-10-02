@@ -508,6 +508,17 @@ public function get_all_soal($data){
 
 }
 
+public function get_soal_all(){
+    $query = "SELECT id_soal,judul_soal, soal, jawaban, 
+    kesulitan, sumber,audio,
+    b.`create_by`, b.random, b.publish, b.UUID, b.status, gambar_soal, 
+    pembahasan, gambar_pembahasan, video_pembahasan, status_pembahasan, link        
+    FROM `tb_banksoal` b";
+    $result = $this->db->query($query);
+    return $result->result(); 
+
+}
+
 public function get_mm_paket_to($data){
         $query = "SELECT mm.id,mm.`id_paket`,mm.id_soal
     FROM `tb_mm-paketbank` mm

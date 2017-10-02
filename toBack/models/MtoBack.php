@@ -347,7 +347,7 @@ class Mtoback extends CI_Model {
 	}
 
 		public function get_mm_paket(){
-		$this->db->select('*');
+		$this->db->select('id, id_paket, id_tryout');
 		$this->db->from('tb_mm-tryoutpaket p');
 
 		$query = $this->db->get();

@@ -263,12 +263,11 @@ class Toback extends MX_Controller{
 		$data_paket['service'] = $this->get_paket_from_service($url)['paket']->PilihanJawaban;
 		$data_paket['lokal'] = $this->get_paket_local()['paket'];
 		$data_paket['insert'] = $this->my_array_diff($data_paket['service'], $data_paket['lokal']);
-
 		// get mm
 		$data_paket['mm_to_service'] = $this->get_paket_from_service($url)['mm_to']->TryoutPengguna;
 		$data_paket['mm_to_local'] = $this->get_paket_local()['mm_to'];
-		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);
-			
+		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);			
+
 		//insert batch to database
 		$jumlah_paket = count($data_paket['insert']);
 		$jumlah_mm = count($data_paket['mm_insert']);
@@ -379,10 +378,10 @@ class Toback extends MX_Controller{
 	public function insert_soal($id){
 		//	 keperluan bank soal
 		$soal['service'] = $this->get_soal_webservice($id);
-		$soal['local'] = $this->get_soal_local($id);
+		$soal['local'] = $this->mbanksoal->get_soal_all();
 		$soal['insert'] = $this->my_array_diff($soal['service'],$soal['local']);
 		$jumlah_soal=count($soal['insert']);
-
+		
 		// jika bank soalnya sudah diupload semua
 		if ($jumlah_soal>0) {
 			$this->Mtoback->insert_batch($soal['insert'], 'tb_banksoal');	
