@@ -266,13 +266,7 @@ class Toback extends MX_Controller{
 		// get mm
 		$data_paket['mm_to_service'] = $this->get_paket_from_service($url)['mm_to']->TryoutPengguna;
 		$data_paket['mm_to_local'] = $this->get_paket_local()['mm_to'];
-		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);		echo phpinfo();	
-				var_dump($data_paket['service']);
-		echo "<hr>";
-		var_dump($data_paket['lokal']);
-		echo "<hr>";
-		var_dump($data_paket['insert']);
-		echo "<hr>";
+		$data_paket['mm_insert'] = $this->my_array_diff($data_paket['mm_to_service'], $data_paket['mm_to_local']);
 
 		//insert batch to database
 		$jumlah_paket = count($data_paket['insert']);
