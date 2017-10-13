@@ -4,9 +4,9 @@ class Toback extends MX_Controller{
 	// anggi
 	private $web_link = rest_url;
 	private $project_host = "http://soc.neonjogja.com";
+	private $doc_root = doc_root;
 
 	public function __construct() {
-		
 		ini_set('max_execution_time', 0);
 		header('Access-Control-Allow-Origin: *');
 		$this->load->library('form_validation');
@@ -263,6 +263,7 @@ class Toback extends MX_Controller{
 		$data_paket['service'] = $this->get_paket_from_service($url)['paket']->PilihanJawaban;
 		$data_paket['lokal'] = $this->get_paket_local()['paket'];
 		$data_paket['insert'] = $this->my_array_diff($data_paket['service'], $data_paket['lokal']);
+		
 		// get mm
 		$data_paket['mm_to_service'] = $this->get_paket_from_service($url)['mm_to']->TryoutPengguna;
 		$data_paket['mm_to_local'] = $this->get_paket_local()['mm_to'];
@@ -413,7 +414,7 @@ class Toback extends MX_Controller{
 				if ($gambar!="") {
 					$copy_image = ['namaFile'=>$gambar,
 					'url'=>	$this->project_host.'/assets/image/soal/'.$gambar,
-					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/soal/'
+					'target'=>$this->doc_root.'assets/image/soal/'
 					];
 					$this->copy_gambar($copy_image);
 				}
@@ -424,7 +425,7 @@ class Toback extends MX_Controller{
 				if ($audio!="") {
 					$copy_audio = ['namaFile'=>$audio,
 					'url'=> $this->project_host.'/assets/audio/soal/'.$audio,
-					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/audio/soal/'
+					'target'=>$this->doc_root.'assets/audio/soal/'
 					];
 					$this->copy_audio($copy_audio);
 				}
@@ -435,7 +436,7 @@ class Toback extends MX_Controller{
 				if ($gambar_pembahasan!="") {
 					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
 					'url'=> $this->project_host.'/assets/image/pembahasan/'.$gambar_pembahasan,
-					'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/pembahasan/'
+					'target'=>$this->doc_root.'assets/image/pembahasan/'
 					];
 					$this->copy_gambar($copy_pembahasan);
 				}
@@ -485,7 +486,7 @@ class Toback extends MX_Controller{
 				// panggil untuk ngopi pilihan jawaban
 				$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
 				'url'=>'http://soc.neonjogja.com/assets/image/jawaban/'.$item->gambar,
-				'target'=>$_SERVER['DOCUMENT_ROOT'].'/neon-offline/assets/image/jawaban/'
+				'target'=>$this->doc_root.'assets/image/jawaban/'
 				];
 				$this->copy_gambar($copy_image_pilihan_jawaban);
 			}
