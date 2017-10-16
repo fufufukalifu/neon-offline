@@ -146,13 +146,12 @@ class Mtryout extends MX_Controller {
         return $query->result();
     }
 
-    public function get_soal($id_paket) {
-        $this->db->order_by('rand()');
+    public function get_soal($id_paket,$limit) {
         $this->db->select('id_paket as idpak, soal as soal, soal.id_soal as soalid, audio, soal.judul_soal as judul, soal.gambar_soal as gambar');
-        $this->db->from('tb_mm-paketbank as paban');
+        // $this->db->from('tb_mm-paketbank as paban');
         $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal');
         $this->db->where('paban.id_paket', $id_paket);
-        $query = $this->db->get();
+        $query = $this->db->get('tb_mm-paketbank as paban',$limit);
         $soal = $query->result_array();
 
         $this->db->order_by('rand()');
@@ -225,7 +224,7 @@ class Mtryout extends MX_Controller {
     }
 
     public function datatopaket($id) {
-        $this->db->select('try.nm_tryout as namato, p.nm_paket as namapa, jenis_penilaian');
+        $this->db->select('try.nm_tryout as namato, p.nm_paket as namapa, jenis_penilaian, p.jumlah_soal');
         $this->db->from('tb_mm-tryoutpaket as tp');
         $this->db->join('tb_tryout as try','tp.id_tryout = try.id_tryout');
         $this->db->join('tb_paket as p','tp.id_paket = p.id_paket');
@@ -235,7 +234,7 @@ class Mtryout extends MX_Controller {
     }
 
 
-    public function get_soalnorandom($id_paket) { 
+    public function get_soalnorandom($id_paket, $limit) { 
         $this->db->select('id_paket as idpak, soal as soal, soal.id_soal as soalid, soal.judul_soal as judul, soal.gambar_soal as gambar,soal.audio as audio'); 
         $this->db->from('tb_mm-paketbank as paban'); 
         $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal'); 

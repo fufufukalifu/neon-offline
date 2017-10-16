@@ -17,8 +17,8 @@
   <link rel="shortcut icon" href="<?= base_url('assets/image/favicon.ico') ?>">
   <script type="text/javascript" src="<?= base_url('assets/library/jquery/js/jquery.min.js') ?>"></script>
   <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables/css/jquery.datatables.min.css'); ?>">
-    <script src="<?= base_url('assets/sal/sweetalert-dev.js');?>"></script>
-    <link rel="stylesheet" href="<?= base_url('assets/sal/sweetalert.css');?>">
+  <script src="<?= base_url('assets/sal/sweetalert-dev.js');?>"></script>
+  <link rel="stylesheet" href="<?= base_url('assets/sal/sweetalert.css');?>">
   <script>var base_url = '<?php echo base_url() ?>';</script>
   <!--/ END META SECTION -->
 
@@ -194,48 +194,48 @@
       <!--/ Sidebar shrink -->
 
 
-<!-- Offcanvas left: This menu will take position at the top of template header (mobile only). Make sure that only #header have the `position: relative`, or it may cause unwanted behavior -->
-<li class="navbar-main hidden-lg hidden-md hidden-sm">
- <a href="javascript:void(0);" data-toggle="sidebar" data-direction="ltr" rel="tooltip" title="Menu sidebar">
-  <span class="meta">
-   <span class="icon"><i class="ico-paragraph-justify3"></i></span>
- </span>
-</a>
-</li>
-<!--/ Offcanvas left -->
+      <!-- Offcanvas left: This menu will take position at the top of template header (mobile only). Make sure that only #header have the `position: relative`, or it may cause unwanted behavior -->
+      <li class="navbar-main hidden-lg hidden-md hidden-sm">
+       <a href="javascript:void(0);" data-toggle="sidebar" data-direction="ltr" rel="tooltip" title="Menu sidebar">
+        <span class="meta">
+         <span class="icon"><i class="ico-paragraph-justify3"></i></span>
+       </span>
+     </a>
+   </li>
+   <!--/ Offcanvas left -->
 
-      <!-- Notification dropdown -->
-      
-      <!--/ Notification dropdown -->
+   <!-- Notification dropdown -->
 
+   <!--/ Notification dropdown -->
+
+ </ul>
+ <!--/ END Left nav -->
+
+ <!-- START Right nav -->
+ <ul class="nav navbar-nav navbar-right">
+  <!-- Profile dropdown -->
+  <li class="dropdown profile">
+    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="meta">
+        <span class="avatar"><img src="<?= base_url('assets/image/avatar/avatar7.jpg') ?>" class="img-circle" alt="" /></span>
+        <span class="text hidden-xs hidden-sm pl5"><?=$this->session->userdata['USERNAME'];?></span>
+        <span class="caret"></span>
+      </span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+
+      <li><a href="<?=base_url('index.php/logout');?>"><span class="icon"><i class="ico-exit"></i></span> Sign Out</a></li>
     </ul>
-    <!--/ END Left nav -->
+  </li>
+  <!-- Profile dropdown -->
 
-    <!-- START Right nav -->
-    <ul class="nav navbar-nav navbar-right">
-      <!-- Profile dropdown -->
-      <li class="dropdown profile">
-        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="meta">
-            <span class="avatar"><img src="<?= base_url('assets/image/avatar/avatar7.jpg') ?>" class="img-circle" alt="" /></span>
-            <span class="text hidden-xs hidden-sm pl5"><?=$this->session->userdata['USERNAME'];?></span>
-            <span class="caret"></span>
-          </span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
+  <!-- Offcanvas right This menu will take position at the top of template header (mobile only). Make sure that only #header have the `position: relative`, or it may cause unwanted behavior -->
 
-          <li><a href="<?=base_url('index.php/logout');?>"><span class="icon"><i class="ico-exit"></i></span> Sign Out</a></li>
-        </ul>
-      </li>
-      <!-- Profile dropdown -->
-
-      <!-- Offcanvas right This menu will take position at the top of template header (mobile only). Make sure that only #header have the `position: relative`, or it may cause unwanted behavior -->
-
-      <!--/ Offcanvas right -->
-    </ul>
-    <!--/ END Right nav -->
-  </div>
-  <!--/ END Toolbar -->
+  <!--/ Offcanvas right -->
+</ul>
+<!--/ END Right nav -->
+</div>
+<!--/ END Toolbar -->
 </header>
 <!--/ END Template Header -->
 
@@ -253,7 +253,7 @@
         </a>
       </li>
 
-<li >
+      <li >
         <a href="<?= base_url('index.php/siswa/daftar');?>">
           <span class="figure"><i class="ico-user"></i></span>
           <span class="text">Siswa</span>
@@ -261,29 +261,29 @@
       </li>
 
 
-<li>
- <a href="javascript:void(0);" data-target="#tryout" data-toggle="submenu" data-parent=".topmenu">
-  <span class="figure"><i class="ico-clipboard"></i></span>
-  <span class="text">Try Outs</span>
-  <span class="arrow"></span>
-</a>
+      <li>
+       <a href="javascript:void(0);" data-target="#tryout" data-toggle="submenu" data-parent=".topmenu">
+        <span class="figure"><i class="ico-clipboard"></i></span>
+        <span class="text">Try Outs</span>
+        <span class="arrow"></span>
+      </a>
 
-<ul id="tryout" class="submenu collapse ">
-  <li class="submenu-header ellipsis">Try Out</li>
+      <ul id="tryout" class="submenu collapse ">
+        <li class="submenu-header ellipsis">Try Out</li>
 
 
-<li >
- <a href="<?= base_url('index.php/toback/listTo');?>">
-  <span class="text">Daftar Try Out</span>
-</a>
-</li>
-<li>
- <a href="<?= base_url('index.php/admincabang/laporanpaket');?>">
-  <span class="text">Laporan Try Out</span>
-</a>
-</li>
+        <li >
+         <a href="<?= base_url('index.php/toback/listTo');?>">
+          <span class="text">Daftar Try Out</span>
+        </a>
+      </li>
+      <li>
+       <a href="<?= base_url('index.php/admincabang/laporanpaket');?>">
+        <span class="text">Laporan Try Out</span>
+      </a>
+    </li>
 
-</ul>
+  </ul>
 </li>
 
 <li>
@@ -293,7 +293,7 @@
   </a>
 </li>
 
- <li>
+<li>
   <a href="<?= base_url('index.php/admincontrol/pengerjaan') ?>">
     <span class="figure"><i class="ico-screen2"></i></span>
     <span class="text">Admin Control</span>
@@ -304,7 +304,30 @@
   <a href="<?= base_url('index.php/help_admin') ?>">
     <span class="figure"><i class="ico-book3"></i></span>
     <span class="text">User Guide</span>
+    <a href=""><br></a>
   </a>
+</li>
+
+<li>
+ <a href="javascript:void(0);" data-target="#custom" data-toggle="submenu" data-parent=".topmenu">
+  <span class="figure"><i class="ico-clipboard"></i></span>
+  <span class="text">Custom</span>
+  <span class="arrow"></span>
+</a>
+
+<ul id="custom" class="submenu collapse ">
+  <li>
+    <a href="<?= base_url('custom/set_nilai_peserta_lks');?>">
+      <span class="text">Nilai Ujian</span>
+    </a>
+  </li>
+  <li>
+   <a href="<?= base_url('index.php/custom/laporan_nilai_akhir');?>">
+    <span class="text">Laporan Nilai Ujian</span>
+  </a>
+</li>
+
+</ul>
 </li>
 
 </ul>
@@ -609,7 +632,7 @@ if (nm_paket != "" && tgl_mulai != "" && tgl_akhir!= "" && wkt_mulai != "" && wk
 // ####################################################
 
 </script>
-            <!-- Cometchat -->
+<!-- Cometchat -->
 <link type="text/css" href="/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
 <script type="text/javascript" src="/cometchat/cometchatjs.php" charset="utf-8"></script>
 <!--/ App and page level script -->

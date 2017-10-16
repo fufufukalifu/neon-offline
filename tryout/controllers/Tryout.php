@@ -226,12 +226,11 @@ class Tryout extends MX_Controller {
             $random = $this->Mtryout->dataPaketRandom($id_paket)[0]->random; 
 
             $data['paket'] = $this->Mtryout->durasipaket($id_paket); 
-
             $this->load->view('templating/t-headerto'); 
             if ($random == 0) { 
                 $query = $this->load->Mtryout->get_soalnorandom($id_paket); 
             }else{ 
-                $query = $this->load->Mtryout->get_soal($id_paket); 
+                $query = $this->load->Mtryout->get_soal($id_paket, $data['topaket'][0]['jumlah_soal']); 
             } 
             $data['soal'] = $query['soal']; 
             $data['pil'] = $query['pil']; 
