@@ -228,5 +228,10 @@ function drop_report(){
 		}
 		
 	}
+
+	public function info($value='')
+	{
+		echo phpinfo();
+	}
 }
 ?>

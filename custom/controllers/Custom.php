@@ -9,8 +9,6 @@ class Custom extends MX_Controller {
 		$this->load->model('custom_model');
 		$this->load->model('admincabang/admincabang_model');
 		$this->load->model('Datatables_model_query');
-		
-
 	}
 
 	function index(){
@@ -207,6 +205,58 @@ public function listener(){
          $index = "id_report";
          echo $this->Datatables_model_query->generate($table, $columns, $index);
        }
+
+public function report_LKS()
+{
+	$this->load->library('Pdf');
+	$all_report=$this->custom_model->get_report_LKS();
+	// var_dump($all_report);
+	$no=0;
+	$maxNilai=0;
+	$minNilai=100;
+	$sum_nilai_akhir=0;
+	foreach ( $all_report as $item ) {
+		$no++;
+		$paket=$item ['nm_paket'];
+		$nilai_akhir=$item['nilai_akhir'];
+		$data['all_report'][]=array(
+			'no'=>$no,
+			'namaDepan'=>$item['namaDepan'],
+			'namaBelakang'=>$item['namaBelakang'],
+			'nm_paket'=>$item['nm_paket'],
+			'jumlah_soal'=>$item['jumlah_soal'],
+			'jmlh_salah'=>$item['jmlh_salah'],
+			'jmlh_benar'=>$item['jmlh_benar'],
+			'nilai_praktek'=>$item['nilai_praktek'],
+			'nilai'=>$item['nilai'],
+			'nilai_akhir'=>$nilai_akhir,
+		);
+			//sum Nilai
+			// $sumNilai += $nilai;
+
+			//set Max nilai
+			if ($maxNilai<$nilai_akhir) {
+				$maxNilai=$nilai_akhir;
+				$data["nama_max"]=$item['namaDepan']." ".$item['namaBelakang'];
+			}else if($minNilai>$nilai_akhir){
+				$minNilai=$nilai_akhir;
+			}
+			$sum_nilai_akhir+=$nilai_akhir;
+
+	}
+	$data['maxNilai'] =$maxNilai;
+	$data['minNilai'] =$minNilai;
+	$data['jmlh_peserta']=$no;
+	if ($no!=0) {
+		$data['avg']=$sum_nilai_akhir/$no;
+	}
+	
+	$data['paket'] = $paket;
+	$this->parser->parse('v-laporan-LKS-pdf.php',$data);
+	
+}
+
+
 
 	
 }

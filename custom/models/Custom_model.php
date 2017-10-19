@@ -39,5 +39,14 @@ class Custom_model extends CI_Model
 		$result = $this->db->query($query);
 		return $result->result_array(); 
 	}
+
+	public function get_report_LKS()
+	{
+		$this->db->select("*");
+		$this->db->from("laporan_nilai_akhir");
+		$this->db->order_by("nilai_akhir","desc");
+		$query= $this->db->get();
+		return $query->result_array();
+	}
 }
 ?>
