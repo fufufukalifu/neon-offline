@@ -206,7 +206,7 @@ public function listener(){
          echo $this->Datatables_model_query->generate($table, $columns, $index);
        }
 
-public function report_LKS()
+public function report_LKS($id_paket)
 {
 	$this->load->library('Pdf');
 	$all_report=$this->custom_model->get_report_LKS();
@@ -223,7 +223,7 @@ public function report_LKS()
 			'no'=>$no,
 			'namaDepan'=>$item['namaDepan'],
 			'namaBelakang'=>$item['namaBelakang'],
-			'nm_paket'=>$item['nm_paket'],
+			'nm_paket'=>substr($paket,0,15),
 			'jumlah_soal'=>$item['jumlah_soal'],
 			'jmlh_salah'=>$item['jmlh_salah'],
 			'jmlh_benar'=>$item['jmlh_benar'],

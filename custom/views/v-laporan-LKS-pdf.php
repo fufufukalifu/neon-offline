@@ -152,7 +152,7 @@ $pdf->SetFont('helvetica', '', 9);
 $pdf->AddPage();
 
 // column titles
-$header = array('No','Nama ', 'Nama Paket','Jumlah'."\n".'Soal','Jumlah Salah','JumlahBenar','Nilai Prakterk','Nilai CBT', 'Nilai '."\n".'Akhir');
+$header = array('No','Nama ', 'Nama Paket','Jumlah'."\n".'Soal','Salah','Benar','Prakterk','Nilai CBT', 'Nila Akhir');
 
 // data loading
 //judul tabel

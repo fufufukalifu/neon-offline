@@ -6,7 +6,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">Daftar Nilai Akhir Test CBT & Praktek</h3>
         <div class="panel-toolbar text-right">
-          <button href="" class="btn btn-success" onclick="proses_nilai()">Laporan</a>
+          <a href="<?=base_url()?>/custom/report_LKS" class="btn btn-success"  target="_blank">Laporans</a>
 
           </div>
         </div>
