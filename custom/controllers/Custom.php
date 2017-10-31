@@ -192,9 +192,13 @@ class Custom extends MX_Controller {
 	}
 
 	function json(){
+		$id_paket=$this->input->post("id_paket");
 		$this->load->library('datatables');
-		$this->datatables->select('*');
+		$this->datatables->select('id_report,namaDepan,namaBelakang,nm_tryout,nm_paket,jumlah_soal,jmlh_salah,jmlh_benar,nilai_praktek,nilai,nilai_akhir');
 		$this->datatables->from('laporan_nilai_akhir');
+		if ($id_paket!="all") {
+			$this->datatables->where('id_paket',$id_paket);
+		}
 		return print_r($this->datatables->generate());
 	}
 
@@ -209,7 +213,7 @@ public function listener(){
 public function report_LKS($id_paket)
 {
 	$this->load->library('Pdf');
-	$all_report=$this->custom_model->get_report_LKS();
+	$all_report=$this->custom_model->get_report_LKS($id_paket);
 	// var_dump($all_report);
 	$no=0;
 	$maxNilai=0;
@@ -256,6 +260,16 @@ public function report_LKS($id_paket)
 	
 }
 
+public function get_paket($value='')
+{
+	$arr_paket=$this->custom_model->get_paket();
+	// var_dump($arr_paket)
+	$op_paket='<option value="all" selected >Semua</option>';
+	foreach ($arr_paket as $key) {
+		$op_paket.='<option value="'.$key->id_paket.'">'.$key->nm_paket.'</option>';
+	}
+	echo json_encode($op_paket);
+}
 
 
 	

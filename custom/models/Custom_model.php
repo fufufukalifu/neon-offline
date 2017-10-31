@@ -40,13 +40,26 @@ class Custom_model extends CI_Model
 		return $result->result_array(); 
 	}
 
-	public function get_report_LKS()
+	public function get_report_LKS($id_paket)
 	{
 		$this->db->select("*");
 		$this->db->from("laporan_nilai_akhir");
+		$this->db->where("id_paket",$id_paket);
 		$this->db->order_by("nilai_akhir","desc");
 		$query= $this->db->get();
 		return $query->result_array();
+	}
+
+	public function get_paket()
+	{
+		$this->db->distinct("paket.id");
+		$this->db->select("paket.id_paket,paket.nm_paket");
+		$this->db->from("tb_paket paket");
+		$this->db->join("tb_mm-tryoutpaket mto","mto.id_paket=paket.id_paket");
+		$this->db->join("tb_tryout tryo","mto.id_tryout = tryo.id_tryout");
+		$this->db->join("tb_report-paket rp","rp.id_mm-tryout-paket= mto.id");
+		$query = $this->db->get();
+		return $query->result(); 
 	}
 }
 ?>
