@@ -32,7 +32,6 @@
     width: 100%;
     height: 100%;
     z-index: 9999;
-    background: url(http://www.thebuddhistchef.com/wp-content/themes/culinier-theme/images/loader.gif) center no-repeat #fff;
   }
 </style>
 <!-- LOADING -->
@@ -118,8 +117,9 @@
 </style>
 <!-- START Body -->
 
+<?php $link_bg =  base_url("assets/image/loader.gif") ?>
 <body class="bgcolor-white">
-  <div class="se-pre-con">
+  <div class="se-pre-con" style="background: url(<?=$link_bg ?>) center no-repeat #fff;">
   </div>
   <!-- START Template Main -->
   <script src="<?= base_url('assets/js/bjqs-1.10.js') ?>"></script>

@@ -54,7 +54,7 @@ class Custom extends MX_Controller {
 			$sumSalah=$list_item ['jmlh_salah'];
 			$sumKosong=$list_item ['jmlh_kosong'];
 	            //hitung jumlah soal
-			$jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
+			$jumlahSoal=$list_item['jumlah_soal'];
 
 			$nilai=0;
 	            // cek jika pembagi 0
@@ -73,7 +73,7 @@ class Custom extends MX_Controller {
 			$row[] = $jumlahSoal;
 			$row[] = $list_item['jmlh_benar'];
 			$row[] = $list_item['jmlh_salah'];
-			$row[] = $list_item['jmlh_kosong'];
+			$row[] = $jumlahSoal - ($list_item['jmlh_benar']+$list_item['jmlh_salah']);
 			$row[] = round($nilai,1);
 
 			$array = array("id_tryout"=>$list_item['id_tryout'],
@@ -123,8 +123,8 @@ class Custom extends MX_Controller {
 			$sumSalah=$item ['jmlh_salah'];
 			$sumKosong=$item ['jmlh_kosong'];
 			//hitung jumlah soal
-			$jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
-						// cek jika pembagi 0
+			$jumlahSoal=$list_item['jumlah_soal'];
+				// cek jika pembagi 0
 			if ($jumlahSoal != 0) {
 				//hitung nilai
 				$nilai=$sumBenar/$jumlahSoal*100;
@@ -203,38 +203,38 @@ class Custom extends MX_Controller {
 	}
 
 
-public function listener(){
-         $table = "laporan_nilai_akhir";
-         $columns = array("id_report","namaDepan","namaBelakang","nm_tryout","nm_paket","jumlah_soal","jmlh_salah","jmlh_benar","nilai_praktek","nilai","nilai_akhir");
-         $index = "id_report";
-         echo $this->Datatables_model_query->generate($table, $columns, $index);
-       }
+	public function listener(){
+		$table = "laporan_nilai_akhir";
+		$columns = array("id_report","namaDepan","namaBelakang","nm_tryout","nm_paket","jumlah_soal","jmlh_salah","jmlh_benar","nilai_praktek","nilai","nilai_akhir");
+		$index = "id_report";
+		echo $this->Datatables_model_query->generate($table, $columns, $index);
+	}
 
-public function report_LKS($id_paket)
-{
-	$this->load->library('Pdf');
-	$all_report=$this->custom_model->get_report_LKS($id_paket);
+	public function report_LKS($id_paket)
+	{
+		$this->load->library('Pdf');
+		$all_report=$this->custom_model->get_report_LKS($id_paket);
 	// var_dump($all_report);
-	$no=0;
-	$maxNilai=0;
-	$minNilai=100;
-	$sum_nilai_akhir=0;
-	foreach ( $all_report as $item ) {
-		$no++;
-		$paket=$item ['nm_paket'];
-		$nilai_akhir=$item['nilai_akhir'];
-		$data['all_report'][]=array(
-			'no'=>$no,
-			'namaDepan'=>$item['namaDepan'],
-			'namaBelakang'=>$item['namaBelakang'],
-			'nm_paket'=>substr($paket,0,15),
-			'jumlah_soal'=>$item['jumlah_soal'],
-			'jmlh_salah'=>$item['jmlh_salah'],
-			'jmlh_benar'=>$item['jmlh_benar'],
-			'nilai_praktek'=>$item['nilai_praktek'],
-			'nilai'=>$item['nilai'],
-			'nilai_akhir'=>$nilai_akhir,
-		);
+		$no=0;
+		$maxNilai=0;
+		$minNilai=100;
+		$sum_nilai_akhir=0;
+		foreach ( $all_report as $item ) {
+			$no++;
+			$paket=$item ['nm_paket'];
+			$nilai_akhir=$item['nilai_akhir'];
+			$data['all_report'][]=array(
+				'no'=>$no,
+				'namaDepan'=>$item['namaDepan'],
+				'namaBelakang'=>$item['namaBelakang'],
+				'nm_paket'=>substr($paket,0,15),
+				'jumlah_soal'=>$item['jumlah_soal'],
+				'jmlh_salah'=>$item['jmlh_salah'],
+				'jmlh_benar'=>$item['jmlh_benar'],
+				'nilai_praktek'=>$item['nilai_praktek'],
+				'nilai'=>$item['nilai'],
+				'nilai_akhir'=>$nilai_akhir,
+			);
 			//sum Nilai
 			// $sumNilai += $nilai;
 
@@ -247,29 +247,29 @@ public function report_LKS($id_paket)
 			}
 			$sum_nilai_akhir+=$nilai_akhir;
 
-	}
-	$data['maxNilai'] =$maxNilai;
-	$data['minNilai'] =$minNilai;
-	$data['jmlh_peserta']=$no;
-	if ($no!=0) {
-		$data['avg']=$sum_nilai_akhir/$no;
-	}
-	
-	$data['paket'] = $paket;
-	$this->parser->parse('v-laporan-LKS-pdf.php',$data);
-	
-}
+		}
+		$data['maxNilai'] =$maxNilai;
+		$data['minNilai'] =$minNilai;
+		$data['jmlh_peserta']=$no;
+		if ($no!=0) {
+			$data['avg']=$sum_nilai_akhir/$no;
+		}
 
-public function get_paket($value='')
-{
-	$arr_paket=$this->custom_model->get_paket();
-	// var_dump($arr_paket)
-	$op_paket='<option value="all" selected >Semua</option>';
-	foreach ($arr_paket as $key) {
-		$op_paket.='<option value="'.$key->id_paket.'">'.$key->nm_paket.'</option>';
+		$data['paket'] = $paket;
+		$this->parser->parse('v-laporan-LKS-pdf.php',$data);
+
 	}
-	echo json_encode($op_paket);
-}
+
+	public function get_paket($value='')
+	{
+		$arr_paket=$this->custom_model->get_paket();
+	// var_dump($arr_paket)
+		$op_paket='<option value="all" selected >Semua</option>';
+		foreach ($arr_paket as $key) {
+			$op_paket.='<option value="'.$key->id_paket.'">'.$key->nm_paket.'</option>';
+		}
+		echo json_encode($op_paket);
+	}
 
 
 	

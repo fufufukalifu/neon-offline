@@ -237,7 +237,13 @@ function insert_paket(datas){
       swal("Berhasil!", message, "success");
     },
     error : function(error) {
-      sweetAlert("Oops...", "Gagal mensinkronisasi paket!", "error");
+            $('.indicator').removeClass('show');
+      $('.indicator').addClass('hide');
+      if (error.status==500) {
+      sweetAlert("Oops...", "Anda sudah melakukan sinkronisasi paket", "error");
+      }else{
+      sweetAlert("Oops...", "Gagal mensinkronisasi paket!", "error");   
+      }
     }
   });
 }

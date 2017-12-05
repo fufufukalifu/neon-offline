@@ -41,7 +41,7 @@ class Toback extends MX_Controller{
 	public function listTO(){
 		$data['files'] = array(
 			APPPATH . 'modules/toback/views/v-list-to.php',
-			);
+		);
 		$data['judul_halaman'] = "Daftar Try Out";
 		$hakAkses=$this->session->userdata['HAKAKSES'];
 		if ($hakAkses=='adminOffline') {
@@ -94,7 +94,7 @@ class Toback extends MX_Controller{
 			
 			<a class="btn btn-sm btn-primary"  title="Sinkron Soal" onclick="download_soal('."'".$list_to['id_tryout']."'".')">
 			<i class="ico-question-sign"></i></a>';
-		
+
 			$row[] = '<a class="btn btn-sm btn-primary"  title="Ubah" onclick="edit_TO('."'".$list_to['id_tryout']."'".')">
 			<i class="ico-pencil"></i></a>
 
@@ -110,7 +110,7 @@ class Toback extends MX_Controller{
 		}
 		$output = array(
 			"data"=>$data,
-			);
+		);
 		echo json_encode( $output );
 	}
 
@@ -126,12 +126,12 @@ class Toback extends MX_Controller{
 			$data['daftar_peserta'] =$this->Mtoback->get_report_peserta_to($id_to);
 			$data['files'] = array(
 				APPPATH . 'modules/toback/views/v-list-peserta.php',
-				);
+			);
 			$data['judul_halaman'] = "Laporan Untuk TO : ".$data['tryout'][0]['nm_tryout'];
 		} else {
 			$data['files'] = array(
 				APPPATH . 'modules/templating/views/v-data-notfound.php',
-				);
+			);
 			$data['judul_halaman'] = "Daftar Peserta";
 			$this->load->view('templating/v-data-notfound');
 		}
@@ -158,7 +158,7 @@ class Toback extends MX_Controller{
 		$data['reportPaket']=$this->Mtoback->get_report_paket($data);
 		$data['files'] = array(
 			APPPATH . 'modules/toback/views/v-report-paket-siswa.php',
-			);
+		);
 		$data['judul_halaman'] = "Report Siswa Perpaket";
 		$this->load->view('templating/index-b-guru', $data);
 	}
@@ -169,7 +169,7 @@ class Toback extends MX_Controller{
 		$data['report']=$this->Mtoback->get_all_report_paket($idpaket);
 		$data['files'] = array(
 			APPPATH . 'modules/paketsoal/views/v-report-paket.php',
-			);
+		);
 		$data['judul_halaman'] = "Report Siswa Perpaket";
 		$this->load->view('templating/index-b-guru', $data);
 	}
@@ -185,7 +185,7 @@ class Toback extends MX_Controller{
 		$data['judul_halaman'] = "Report Siswa";
 		$data['files'] = array(
 			APPPATH . 'modules/siswa/views/v-report-paket.php',
-			);
+		);
 
 		$hakAkses=$this->session->userdata['HAKAKSES'];
 		
@@ -213,7 +213,7 @@ class Toback extends MX_Controller{
 			'wkt_berakhir'=>$post['wkt_berakhir'],	
 			'publish'=>$post['publish'],
 			'UUID' =>$post['UUID'],
-			);
+		);
 
 		$validate = $this->Mtoback->validate_to($post['id_tryout']);
 
@@ -246,12 +246,12 @@ class Toback extends MX_Controller{
 
 	// compare array kalo ada yang sama.
 	function my_array_diff($arraya, $arrayb){
-	    foreach ($arraya as $keya => $valuea){
-	        if (in_array($valuea, $arrayb)){
-	            unset($arraya[$keya]);
-	        }
-	    }
-	    return $arraya;
+		foreach ($arraya as $keya => $valuea){
+			if (in_array($valuea, $arrayb)){
+				unset($arraya[$keya]);
+			}
+		}
+		return $arraya;
 	}
 
 	// insert paket dan mm tryout
@@ -263,6 +263,7 @@ class Toback extends MX_Controller{
 		$data_paket['service'] = $this->get_paket_from_service($url)['paket']->PilihanJawaban;
 		$data_paket['lokal'] = $this->get_paket_local()['paket'];
 		$data_paket['insert'] = $this->my_array_diff($data_paket['service'], $data_paket['lokal']);
+
 		
 		// get mm
 		$data_paket['mm_to_service'] = $this->get_paket_from_service($url)['mm_to']->TryoutPengguna;
@@ -277,7 +278,7 @@ class Toback extends MX_Controller{
 			$this->Mtoback->insert_batch($data_paket['insert'], 'tb_paket');			
 		}
 
-		if ($jumlah_mm>0) {
+		if($jumlah_mm>0) {
 			$this->Mtoback->insert_batch($data_paket['mm_insert'], 'tb_mm-tryoutpaket');			
 			# code...
 		}
@@ -395,7 +396,7 @@ class Toback extends MX_Controller{
 		$soal['insert_mm'] = $this->my_array_diff($soal['mmsoal_paket_service'],$soal['mmsoal_paket_local']);
 
 		if (count($soal['insert'])>0) {
-			$this->Mtoback->insert_batch($soal['mmsoal_paket_service'], 'tb_mm-paketbank');	
+			$this->Mtoback->insert_batch($soal['insert_mm'], 'tb_mm-paketbank');	
 		}
 
 		$this->copy_files($soal['insert']);
@@ -406,144 +407,144 @@ class Toback extends MX_Controller{
 	}
 
 
-		function copy_files($soal){
-			foreach ($soal as $item) {
+	function copy_files($soal){
+		foreach ($soal as $item) {
 
-				$gambar = $item->gambar_soal;
+			$gambar = $item->gambar_soal;
 				// COPY GAMBAR
-				if ($gambar!="") {
-					$copy_image = ['namaFile'=>$gambar,
-					'url'=>	$this->project_host.'/assets/image/soal/'.$gambar,
-					'target'=>$this->doc_root.'assets/image/soal/'
-					];
-					$this->copy_gambar($copy_image);
-				}
+			if ($gambar!="") {
+				$copy_image = ['namaFile'=>$gambar,
+				'url'=>	$this->project_host.'/assets/image/soal/'.$gambar,
+				'target'=>$this->doc_root.'assets/image/soal/'
+			];
+			$this->copy_gambar($copy_image);
+		}
 
 
 				//copy audio
-				$audio = $item->audio;
-				if ($audio!="") {
-					$copy_audio = ['namaFile'=>$audio,
-					'url'=> $this->project_host.'/assets/audio/soal/'.$audio,
-					'target'=>$this->doc_root.'assets/audio/soal/'
-					];
-					$this->copy_audio($copy_audio);
-				}
+		$audio = $item->audio;
+		if ($audio!="") {
+			$copy_audio = ['namaFile'=>$audio,
+			'url'=> $this->project_host.'/assets/audio/soal/'.$audio,
+			'target'=>$this->doc_root.'assets/audio/soal/'
+		];
+		$this->copy_audio($copy_audio);
+	}
 
 				// COPY GAMBAR PEMBAHASAN
 
-				$gambar_pembahasan = $item->gambar_pembahasan;
-				if ($gambar_pembahasan!="") {
-					$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
-					'url'=> $this->project_host.'/assets/image/pembahasan/'.$gambar_pembahasan,
-					'target'=>$this->doc_root.'assets/image/pembahasan/'
-					];
-					$this->copy_gambar($copy_pembahasan);
-				}
+	$gambar_pembahasan = $item->gambar_pembahasan;
+	if ($gambar_pembahasan!="") {
+		$copy_pembahasan = ['namaFile'=>$gambar_pembahasan,
+		'url'=> $this->project_host.'/assets/image/pembahasan/'.$gambar_pembahasan,
+		'target'=>$this->doc_root.'assets/image/pembahasan/'
+	];
+	$this->copy_gambar($copy_pembahasan);
+}
 
-			}	
-		}
+}	
+}
 
 	## masukin mm paket soal akses ke local db
-	public function insert_mm($id){
+public function insert_mm($id){
 
-		$json = file_get_contents($url);
-		$data_mm = json_decode($json);
+	$json = file_get_contents($url);
+	$data_mm = json_decode($json);
 
-		foreach ($data_mm->MMPaket as $item) {
-			$validate_data = ['id'=>$item->id,'tabel'=>'tb_mm-paketbank','key'=>'id'];
-			$validate = $this->Mtoback->validate($validate_data);
-			if (!$validate) {
-				$this->Mtoback->insert_mm($item);			
-			}
+	foreach ($data_mm->MMPaket as $item) {
+		$validate_data = ['id'=>$item->id,'tabel'=>'tb_mm-paketbank','key'=>'id'];
+		$validate = $this->Mtoback->validate($validate_data);
+		if (!$validate) {
+			$this->Mtoback->insert_mm($item);			
 		}
-
 	}
+
+}
 
 	## masukin pilihan jawaban
 
-	function get_pil_jawaban_webservice($id_tryout){
-		$url = $this->web_link.'get_pilihan_jawaban/?id_tryout='.$id_tryout;
-		$json = file_get_contents($url);
-		$data_pilihan_jawaban = json_decode($json);
-		return $data_pilihan_jawaban->PilihanJawaban;
-	}
+function get_pil_jawaban_webservice($id_tryout){
+	$url = $this->web_link.'get_pilihan_jawaban/?id_tryout='.$id_tryout;
+	$json = file_get_contents($url);
+	$data_pilihan_jawaban = json_decode($json);
+	return $data_pilihan_jawaban->PilihanJawaban;
+}
 
 	//select siswa dan pengguna di db
-	function get_pil_jawaban_local($id_tryout){
-		$data_pilihan_jawaban = $this->mbanksoal->get_pilihan_jawaban($id_tryout);
-		return $data_pilihan_jawaban;
-	}
+function get_pil_jawaban_local($id_tryout){
+	$data_pilihan_jawaban = $this->mbanksoal->get_pilihan_jawaban($id_tryout);
+	return $data_pilihan_jawaban;
+}
 
-	public function insert_pil_jawaban($id){
-		$data_pilihan_jawaban['service'] = $this->get_pil_jawaban_webservice($id);
-		$data_pilihan_jawaban['lokal'] = $this->get_pil_jawaban_local($id);
-		$data_pilihan_jawaban['insert'] = $this->my_array_diff($data_pilihan_jawaban['service'],$data_pilihan_jawaban['lokal']);
+public function insert_pil_jawaban($id){
+	$data_pilihan_jawaban['service'] = $this->get_pil_jawaban_webservice($id);
+	$data_pilihan_jawaban['lokal'] = $this->get_pil_jawaban_local($id);
+	$data_pilihan_jawaban['insert'] = $this->my_array_diff($data_pilihan_jawaban['service'],$data_pilihan_jawaban['lokal']);
 
 		//copy image dari pilihan jawaban
-		foreach ($data_pilihan_jawaban['insert'] as $item) {				
-			if ($item->gambar!="") {
+	foreach ($data_pilihan_jawaban['insert'] as $item) {				
+		if ($item->gambar!="") {
 				// panggil untuk ngopi pilihan jawaban
-				$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
-				'url'=>'http://soc.neonjogja.com/assets/image/jawaban/'.$item->gambar,
-				'target'=>$this->doc_root.'assets/image/jawaban/'
-				];
-				$this->copy_gambar($copy_image_pilihan_jawaban);
-			}
+			$copy_image_pilihan_jawaban = ['namaFile'=>$item->gambar,
+			'url'=>'http://soc.neonjogja.com/assets/image/jawaban/'.$item->gambar,
+			'target'=>$this->doc_root.'assets/image/jawaban/'
+		];
+		$this->copy_gambar($copy_image_pilihan_jawaban);
+	}
 
-	}
-	if (count($data_pilihan_jawaban['insert'])>0) {
-		$this->Mtoback->insert_batch($data_pilihan_jawaban['insert'],'tb_piljawaban');
-	}
+}
+if (count($data_pilihan_jawaban['insert'])>0) {
+	$this->Mtoback->insert_batch($data_pilihan_jawaban['insert'],'tb_piljawaban');
+}
 
 }
 // ------------------------------------- SINKRONISASI SOAL
 
 
 	## cacah untuk di datatable
-	function data_table_all_to(){
-		$url = $this->web_link.'get_all_to/?penggunaID='.$this->session->userdata('id');
+function data_table_all_to(){
+	$url = $this->web_link.'get_all_to/?penggunaID='.$this->session->userdata('id');
 
-		$json = file_get_contents($url);
-		$data_to = json_decode($json);
+	$json = file_get_contents($url);
+	$data_to = json_decode($json);
 
-		$data = array();
+	$data = array();
 
-		$baseurl = base_url();
-		foreach ( $data_to->TryoutPengguna as $list_to ) {
+	$baseurl = base_url();
+	foreach ( $data_to->TryoutPengguna as $list_to ) {
 			// $no++;
-			if ($list_to->publish=='1') {
-				$publish='Publish';
-			} else {
-				$publish='Tidak Publish';
-			}
-			$penggunaID = $list_to->penggunaID;
-
-			$row = array();
-			$row[] = $list_to->id_tryout;
-			$row[] = $list_to->nm_tryout;
-			$row[] = $list_to->tgl_mulai;
-			$row[] = $list_to->wkt_mulai;
-			$row[] = $list_to->tgl_berhenti;
-			$row[] = $list_to->wkt_berakhir;
-			$row[] = $publish;
-			$row[] = '
-			<a class="btn btn-sm btn-primary"  title="Downnload Tryout" onclick="download_tryout('."'".$list_to->id_tryout."'".')">
-			<i class="ico-file5"></i></a>
-			';
-
-			$data[] = $row;
+		if ($list_to->publish=='1') {
+			$publish='Publish';
+		} else {
+			$publish='Tidak Publish';
 		}
-		$output = array(
-			"data"=>$data,
-			);
-		echo json_encode( $output );
+		$penggunaID = $list_to->penggunaID;
+
+		$row = array();
+		$row[] = $list_to->id_tryout;
+		$row[] = $list_to->nm_tryout;
+		$row[] = $list_to->tgl_mulai;
+		$row[] = $list_to->wkt_mulai;
+		$row[] = $list_to->tgl_berhenti;
+		$row[] = $list_to->wkt_berakhir;
+		$row[] = $publish;
+		$row[] = '
+		<a class="btn btn-sm btn-primary"  title="Downnload Tryout" onclick="download_tryout('."'".$list_to->id_tryout."'".')">
+		<i class="ico-file5"></i></a>
+		';
+
+		$data[] = $row;
 	}
+	$output = array(
+		"data"=>$data,
+	);
+	echo json_encode( $output );
+}
 
 	## COPY IMAGE DARI SERVER LAIN
-	function copy_gambar($data){
-		$url = $data['url'];
-		$destination_folder = $data['target'];
+function copy_gambar($data){
+	$url = $data['url'];
+	$destination_folder = $data['target'];
     	$newfname = $destination_folder .$data['namaFile']; //set your file ext
 
     	// check filenya ada atau enggak
@@ -634,7 +635,7 @@ class Toback extends MX_Controller{
 	public function list_paket($id){
 		$data['files'] = array(
 			APPPATH . 'modules/toback/views/v-daftar-paket.php',
-			);
+		);
 		$data['judul_halaman'] = "List Paket";
 
 		// get daftar paket
@@ -662,17 +663,17 @@ class Toback extends MX_Controller{
 
 	// function view halaman report siswa
 	public function report_tryout(){
-        $data['judul_halaman'] = "Report Nilai Tryout";
-        $data['files'] = array(
-            APPPATH . 'modules/toback/views/v-laporan-siswa.php',
-            );
+		$data['judul_halaman'] = "Report Nilai Tryout";
+		$data['files'] = array(
+			APPPATH . 'modules/toback/views/v-laporan-siswa.php',
+		);
 
         # get to
 		$data['to'] = $this->Mtoback->get_To();
 
-        $hakAkses = $this->session->userdata['HAKAKSES'];
+		$hakAkses = $this->session->userdata['HAKAKSES'];
 
-        if ($hakAkses=='adminOffline') {
+		if ($hakAkses=='adminOffline') {
         // jika admin
 			$this->parser->parse('admin/v-index-admin', $data);
 		} elseif($hakAkses=='guru'){
@@ -687,104 +688,105 @@ class Toback extends MX_Controller{
             // jika siswa redirect ke welcome
 			redirect(site_url('welcome'));
 		}
-    }
+	}
 
     // ajax untuk report siswa
-    function ajax_report_tryout($id_to="all", $id_paket="all"){
-    	$data = ['id_to'=>$id_to,'id_paket'=>$id_paket];
-	    $datas = $this->Mtoback->get_report_paket_siswa($data);
+	function ajax_report_tryout($id_to="all", $id_paket="all"){
+		$data = ['id_to'=>$id_to,'id_paket'=>$id_paket];
+		$datas = $this->Mtoback->get_report_paket_siswa($data);
 
-	    $list = array();
-	    $no = 0;
+		$list = array();
+		$no = 0;
 	        //mengambil nilai list
-	    $baseurl = base_url();
-	    foreach ($datas as $list_item) {
-	        $no++;
-	        $row = array();
-	        $sumBenar=$list_item ['jmlh_benar'];
-	        $sumSalah=$list_item ['jmlh_salah'];
-	        $sumKosong=$list_item ['jmlh_kosong'];
+		$baseurl = base_url();
+		foreach ($datas as $list_item) {
+			$no++;
+			$row = array();
+			$sumBenar=$list_item ['jmlh_benar'];
+			$sumSalah=$list_item ['jmlh_salah'];
+			$sumKosong=$list_item ['jmlh_kosong'];
 	            //hitung jumlah soal
-	        $jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
+			$jumlahSoal=$sumBenar+$sumSalah+$sumKosong;
 
-	        $nilai=0;
+			$nilai=0;
 	            // cek jika pembagi 0
-	        if ($jumlahSoal != 0) {
+			if ($jumlahSoal != 0) {
 	            //hitung nilai
 	            // cek jenis penilaian
-	        	if ($list_item ['jenis_penilaian']=='SBMPTN') {
-	        		$nilai= (($sumBenar * 4) + ($sumSalah * (-1)) + ($sumKosong * 0)) * 100 / ($jumlahSoal * 4);
-	        	} else {
-	        		$nilai=$sumBenar/$jumlahSoal*100;
-	        	}
-	            
-	        }
-	        $row[] = $no;
-	        $row[] = $list_item['namaDepan'];
-	        $row[] = $list_item['nm_paket'];
-	        $row[] = $list_item['jenis_penilaian'];
+				if ($list_item ['jenis_penilaian']=='SBMPTN') {
+					$nilai= (($sumBenar * 4) + ($sumSalah * (-1)) + ($sumKosong * 0)) * 100 / ($list_item['jumlah_soal'] * 4);
+				} else {
+					$nilai=$sumBenar/$list_item['jumlah_soal']*100;
+				}
+
+			}
+			$row[] = $no;
+			$row[] = $list_item['namaDepan'];
+			$row[] = $list_item['nm_paket'];
+			$row[] = $list_item['jenis_penilaian'];
 	        //kondisi jika orang tua yang login maka akan ditampikan nama tryout
-	        $row[] = $list_item['nm_tryout'];
-	        $row[] = $jumlahSoal;
-	        $row[] = $list_item['jmlh_benar'];
-	        $row[] = $list_item['jmlh_salah'];
-	        $row[] = $list_item['jmlh_kosong'];
-	        $row[] = $nilai;
+			$row[] = $list_item['nm_tryout'];
+			$row[] = $list_item['jumlah_soal'];
+			$row[] = $list_item['jmlh_benar'];
+			$row[] = $list_item['jmlh_salah'];
+			$row[] = $list_item['jumlah_soal'] - ($list_item['jmlh_benar'] + $list_item['jmlh_salah']);
+			$row[] = $nilai;
 
-	        $array = array("id_tryout"=>$list_item['id_tryout'],
-	            "id_mm_tryout_paket"=>$list_item['id_mm-tryout-paket'],
-	            "id_paket"=>$list_item['id_mm-tryout-paket']);
+			$array = array("id_tryout"=>$list_item['id_tryout'],
+				"id_mm_tryout_paket"=>$list_item['id_mm-tryout-paket'],
+				"id_paket"=>$list_item['id_mm-tryout-paket']);
+
+			$row[] ='<a class="btn btn-sm btn-danger  modal-on'.$list_item['id_report'].'" 
+			data-todo='.htmlspecialchars(json_encode($array)).' 
+
+			title="Hapus Report" onclick="delete_report('."'".$list_item['id_report']."'".')"><i class="ico-remove"></i></a> ';
 
 
+			$list[] = $row;   
 
-	        $row[] ='<a class="btn btn-sm btn-danger  modal-on'.$list_item['id_report'].'" 
-	        data-todo='.htmlspecialchars(json_encode($array)).' 
+		}
 
-	        title="Hapus Report" onclick="delete_report('."'".$list_item['id_report']."'".')"><i class="ico-remove"></i></a> ';
-	        
-
-	        $list[] = $row;   
-
-	    }
-
-	    $output = array(
-	        "data" => $list,
-	        );
-	    echo json_encode($output);
+		$output = array(
+			"data" => $list,
+		);
+		echo json_encode($output);
 
 	}
 
 	// function untuk delete report
 	function dropreporttry($id ) {
-        $this->Mtoback->dropreport_t( $id );
-    }
+		$this->Mtoback->dropreport_t( $id );
+	}
 
-    public function ajax_edit( $id_tryout) {
+	public function ajax_edit( $id_tryout) {
 		$data = $this->Mtoback->get_TO_by_id( $id_tryout );
 		echo json_encode( $data );
 	}
 
 	public function editTryout(){
-			$data['id_tryout']=htmlspecialchars($this->input->post('id_tryout'));
-			$nm_tryout=htmlspecialchars($this->input->post('nama_tryout'));
-			$tglMulai=htmlspecialchars($this->input->post('tgl_mulai'));
-			$tglAkhir=htmlspecialchars($this->input->post('tgl_berhenti'));
-			$publish=htmlspecialchars($this->input->post('publish'));
+		$data['id_tryout']=htmlspecialchars($this->input->post('id_tryout'));
+		$nm_tryout=htmlspecialchars($this->input->post('nama_tryout'));
+		$tglMulai=htmlspecialchars($this->input->post('tgl_mulai'));
+		$tglAkhir=htmlspecialchars($this->input->post('tgl_berhenti'));
+		$publish=htmlspecialchars($this->input->post('publish'));
 
-			$wktMulai=htmlspecialchars($this->input->post('wkt_mulai'));
-			$wktAkhir=htmlspecialchars($this->input->post('wkt_akhir'));
+		$wktMulai=htmlspecialchars($this->input->post('wkt_mulai'));
+		$wktAkhir=htmlspecialchars($this->input->post('wkt_akhir'));
 
-			$data['tryout']=array(
-				'nm_tryout'=>$nm_tryout,
-				'tgl_mulai'=>$tglMulai,
-				'tgl_berhenti'=>$tglAkhir,
-				'wkt_mulai'=>$wktMulai,
-				'wkt_berakhir'=>$wktAkhir,
-				'publish'=>$publish,
-				);
+		$data['tryout']=array(
+			'nm_tryout'=>$nm_tryout,
+			'tgl_mulai'=>$tglMulai,
+			'tgl_berhenti'=>$tglAkhir,
+			'wkt_mulai'=>$wktMulai,
+			'wkt_berakhir'=>$wktAkhir,
+			'publish'=>$publish,
+		);
 
-			$this->Mtoback->ch_To($data);
-		}
+		$this->Mtoback->ch_To($data);
+	}
 	
+	function test(){
+		var_dump($this->doc_root.'assets/image/jawaban/');
+	}
 }
 ?>

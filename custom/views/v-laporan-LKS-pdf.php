@@ -44,19 +44,6 @@ class MYPDF extends TCPDF {
 			//Get current number of pages.
 			$num_pages = $this->getNumPages();
 
-
-// 'no'=>$no,
-// 			'namaDepan'=>$item['namaDepan'],
-// 			'namaBelakang'=>$item['namaBelakang'],
-// 			'nm_paket'=>$item['nm_paket'],
-// 			'jumlah_soal'=>$item['jumlah_soal'],
-// 			'jmlh_salah'=>$item['jmlh_salah'],
-// 			'jmlh_benar'=>$item['jmlh_benar'],
-// 			'nilai_praktek'=>$item['nilai_praktek'],
-// 			'nilai'=>$item['nilai'],
-// 			'nilai_akhir'=>$item['nilai_akhir'],
-
-
       $this->startTransaction();
 			$this->Cell($w[0], 9, $row['no'], 'LR', 0, 'L', $fill);
 			$this->Cell($w[1], 9, ($row['namaDepan']." ".$row['namaBelakang']), 'LR', 0, 'LR', $fill);
@@ -157,7 +144,7 @@ $header = array('No','Nama ', 'Nama Paket','Jumlah'."\n".'Soal','Salah','Benar',
 // data loading
 //judul tabel
 $nameTbl='<h1>Laporan Nilai Akhir Peserta LKS</h1><br>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam :<p/>';
+		<p>Dibawah ini adalah daftar nilai akhir untuk test CBT untuk paket.<p/>';
 
 $pdf->writeHTML($nameTbl,false, false, false, false, '');
 // print colored table
@@ -166,7 +153,7 @@ $pdf->ColoredTable($header, $all_report);
 // ---------------------------------------------------------
 $kesimpulan='<br><h1>Kesimpulan</h1>
 ';
-$pengeantar_kesimpulan=" Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam yaitu : <br> <br>";
+$pengeantar_kesimpulan="dibawah ini hasil rekap adari test hasil CBT dan Test Praktek yaitu : <br> <br>";
 $pdf->writeHTML($kesimpulan,false, false, false, false, '');
 $pdf->writeHTML($pengeantar_kesimpulan,false, false, false, false, '');
 

@@ -146,27 +146,33 @@ class Mtryout extends MX_Controller {
         return $query->result();
     }
 
+    public function get_pilihan_soal($data){
+        $this->db->select('*,id_paket as idpak, soal as soal, pil.id_soal as pilid,soal.id_soal as soalid, pil.pilihan as pilpil, pil.jawaban as piljaw, pil.gambar as pilgam');
+        $this->db->from('tb_mm-paketbank as paban');
+        $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal');
+        $this->db->join('tb_piljawaban as pil', 'soal.id_soal = pil.id_soal');
+        $this->db->where_in('pil.id_soal', $data);
+
+        $query = $this->db->get();
+        $pil = $query->result_array();
+        return $pil;
+
+    }
+
+
     public function get_soal($id_paket,$limit) {
         $this->db->select('id_paket as idpak, soal as soal, soal.id_soal as soalid, audio, soal.judul_soal as judul, soal.gambar_soal as gambar');
         // $this->db->from('tb_mm-paketbank as paban');
         $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal');
         $this->db->where('paban.id_paket', $id_paket);
+        $this->db->order_by('rand()');
+        
         $query = $this->db->get('tb_mm-paketbank as paban',$limit);
         $soal = $query->result_array();
 
-        $this->db->order_by('rand()');
-        $this->db->select('*,id_paket as idpak, soal as soal, pil.id_soal as pilid,soal.id_soal as soalid, pil.pilihan as pilpil, pil.jawaban as piljaw, pil.gambar as pilgam');
-        $this->db->from('tb_mm-paketbank as paban');
-        $this->db->join('tb_banksoal as soal', 'paban.id_soal = soal.id_soal');
-        $this->db->join('tb_piljawaban as pil', 'soal.id_soal = pil.id_soal');
-        $this->db->where('paban.id_paket', $id_paket);
-        $query = $this->db->get();
-        $pil = $query->result_array();
-
         return array(
             'soal' => $soal,
-            'pil' => $pil,
-            );
+        );
     }
 
     public function get_pembahasan($id_paket) {
@@ -188,7 +194,7 @@ class Mtryout extends MX_Controller {
         return array(
             'soal' => $soal,
             'pil' => $pil,
-            );
+        );
     }
 
 
@@ -202,11 +208,13 @@ class Mtryout extends MX_Controller {
         return $query->result_array();
     }
 
-    public function jawabansoal($id) {
+    public function jawabansoal($data) {
         $this->db->select('soal.id_soal as soalid, soal.jawaban as jawaban');
         $this->db->from('tb_mm-paketbank as paban');
         $this->db->join('tb_banksoal as soal', 'soal.id_soal = paban.id_soal');
-        $this->db->where('paban.id_paket', $id);
+        // $this->db->where('paban.id_paket', $id);
+        $this->db->where_in('soal.id_soal', $data);
+        
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -251,7 +259,7 @@ class Mtryout extends MX_Controller {
         return array( 
             'soal' => $soal, 
             'pil' => $pil, 
-            ); 
+        ); 
     } 
     public function dataPaketRandom($id) { 
         $this->db->select('random'); 
@@ -315,25 +323,25 @@ class Mtryout extends MX_Controller {
 
     // update log trytout
     public function update_log_tryout($data){
-       $this->db->set($data['update']);
-       $this->db->where($data['where']);
-       $this->db->update('tb_log_pengerjaan_to');
-    }
+     $this->db->set($data['update']);
+     $this->db->where($data['where']);
+     $this->db->update('tb_log_pengerjaan_to');
+ }
 
-    public function get_info_perserta(){
-        
-    }
+ public function get_info_perserta(){
+
+ }
 
     # get paket by token did by siswa.
-    function get_info_to($token){
-        $this->db->select('p.token, mm.`id` AS mm_id, p.id_paket, t.id_tryout, nm_paket, deskripsi, 
-            jumlah_soal, durasi, token, t.`nm_tryout`, t.`tgl_berhenti`, t.`tgl_mulai`,p.durasi,t.wkt_mulai, jenis_penilaian');
-        $this->db->from('(SELECT * FROM tb_paket WHERE token= "'.$token.'") AS p');
-        $this->db->join('`tb_mm-tryoutpaket` mm','p.id_paket = mm.`id_paket`'); 
-        $this->db->join('tb_tryout t','t.`id_tryout` = mm.`id_tryout`'); 
-        $query = $this->db->get();
-        return $query->result();
-    }
+ function get_info_to($token){
+    $this->db->select('p.token, mm.`id` AS mm_id, p.id_paket, t.id_tryout, nm_paket, deskripsi, 
+        jumlah_soal, durasi, token, t.`nm_tryout`, t.`tgl_berhenti`, t.`tgl_mulai`,p.durasi,t.wkt_mulai, jenis_penilaian');
+    $this->db->from('(SELECT * FROM tb_paket WHERE token= "'.$token.'") AS p');
+    $this->db->join('`tb_mm-tryoutpaket` mm','p.id_paket = mm.`id_paket`'); 
+    $this->db->join('tb_tryout t','t.`id_tryout` = mm.`id_tryout`'); 
+    $query = $this->db->get();
+    return $query->result();
+}
 }
 
 ?>

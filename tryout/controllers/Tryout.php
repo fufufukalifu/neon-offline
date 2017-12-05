@@ -41,14 +41,14 @@ class Tryout extends MX_Controller {
             'judul_halaman' => 'SEMOET - Tryout',
             'judul_header' => 'Daftar Tryout',
             'judul_tingkat' => '',
-            );
+        );
 
         $konten = 'modules/tryout/views/v-form-input-tokenpaket.php';
 
         $data['files'] = array(
             APPPATH . 'modules/homepage/views/v-header-login.php',
             APPPATH . $konten,
-            );
+        );
 
         $this->parser->parse('templating/index', $data);
     }
@@ -59,7 +59,7 @@ class Tryout extends MX_Controller {
             'judul_halaman' => 'Neon - Tryout',
             'judul_header' => 'Daftar Tryout',
             'judul_tingkat' => '',
-            );
+        );
 
         $konten = 'modules/tryout/views/v-daftar-to.php';
 
@@ -68,7 +68,7 @@ class Tryout extends MX_Controller {
             APPPATH . 'modules/templating/views/t-f-pagetitle.php',
             APPPATH . $konten,
             APPPATH . 'modules/testimoni/views/v-footer.php',
-            );
+        );
 
         $datas['id_siswa'] = $this->Mtryout->get_id_siswa();
         $data['tryout'] = $this->Mtryout->get_tryout_akses($datas);
@@ -120,7 +120,7 @@ class Tryout extends MX_Controller {
                 'judul_header' => 'Tryout : ' . $data['nama_to'],
                 'judul_tingkat' => '',
                 'nama_to' => $data_to['nm_tryout'],
-                );
+            );
 
             // FILES
             $konten = 'modules/tryout/views/v-daftar-paket.php';
@@ -130,7 +130,7 @@ class Tryout extends MX_Controller {
                 APPPATH . $konten,
                 // APPPATH . 'modules/homepage/views/v-footer.php',
                 // APPPATH . 'modules/testimoni/views/v-footer.php',
-                );
+            );
             // DAFTAR PAKET
             $data['paket_dikerjakan'] = $this->Mtryout->get_paket_reported($datas);
             $data['paket'] = $this->Mtryout->get_paket_undo($datas);
@@ -167,7 +167,7 @@ class Tryout extends MX_Controller {
             'judul_header' => 'Daftar Nilai Paket Tryout '.$data['nama_to'],
             'judul_tingkat' => '',
             // 'nama_to' => 'Daftar Nilai Paket Tryout '.$data['nama_to'],
-            );
+        );
 
             // FILES
         $konten = 'modules/tryout/views/v-daftar-paket.php';
@@ -177,7 +177,7 @@ class Tryout extends MX_Controller {
             APPPATH . 'modules/homepage/views/v-header-login.php',
             APPPATH . 'modules/templating/views/t-f-pagetitle.php',
             APPPATH . $konten,
-            );
+        );
 
         $this->parser->parse('templating/index', $data);
         // } else {
@@ -190,14 +190,14 @@ class Tryout extends MX_Controller {
         $data = array("id_paket" => $this->input->post('id_paket'),
             "id_tryout" => $this->input->post('id_tryout'),
             "id_mm-tryoutpaket" => $this->input->post('id_mm_tryoutpaket'),
-            );
+        );
         $this->session->set_userdata('id_paket', $data['id_paket']);
         $this->session->set_userdata('id_tryout', $data['id_tryout']);
         $this->session->set_userdata('id_mm-tryoutpaket', $data['id_mm-tryoutpaket']);
         $insert = array("siswa_id" => $this->msiswa->get_siswaid(),
             "mm_tryout_paket_id" => $this->session->userdata('id_mm-tryoutpaket'),
             "status_pengerjaan" => '2'
-            );
+        );
         $this->Mtryout->insert_log_tryout($insert);
     }
 
@@ -205,7 +205,7 @@ class Tryout extends MX_Controller {
         $data = array("id_paket" => $this->input->post('id_paket'),
             "id_tryout" => $this->input->post('id_tryout'),
             "id_mm-tryoutpaket" => $this->input->post('id_mm_tryoutpaket'),
-            );
+        );
         $this->session->set_userdata('id_paketpembahasan', $data['id_paket']);
         $this->session->set_userdata('id_tryoutpembahasan', $data['id_tryout']);
         $this->session->set_userdata('id_mm-tryoutpaketpembahasan', $data['id_mm-tryoutpaket']);
@@ -213,8 +213,13 @@ class Tryout extends MX_Controller {
 
     //# fungsi indeks
 
-    function test2() {
-        var_dump($this->session->userdata());
+    function get_id_soal_terpilih($data){
+        $temp = [];
+        foreach ($data as $rekap_item) {
+            // echo $rekap_item['soalid'];
+            $temp [] = $rekap_item['soalid'];
+        }
+        return $temp;
     }
 
     public function mulaitest() { 
@@ -228,12 +233,14 @@ class Tryout extends MX_Controller {
             $data['paket'] = $this->Mtryout->durasipaket($id_paket); 
             $this->load->view('templating/t-headerto'); 
             if ($random == 0) { 
-                $query = $this->load->Mtryout->get_soalnorandom($id_paket); 
+                $query = $this->load->Mtryout->get_soalnorandom($id_paket, $data['topaket'][0]['jumlah_soal']);               
             }else{ 
                 $query = $this->load->Mtryout->get_soal($id_paket, $data['topaket'][0]['jumlah_soal']); 
             } 
-            $data['soal'] = $query['soal']; 
-            $data['pil'] = $query['pil']; 
+            $data['soal'] = $query['soal'];
+            $soal_terpilih = $this->get_id_soal_terpilih($data['soal']);
+            $this->session->set_userdata('soal_terpilih',$soal_terpilih);
+            $data['pil'] = $this->Mtryout->get_pilihan_soal($soal_terpilih);
 
             $this->load->view('vHalamanTo.php', $data); 
             $this->load->view('templating/t-footerto', $data); 
@@ -250,12 +257,11 @@ class Tryout extends MX_Controller {
     public function cekJawaban() {
         if ($this->input->post()) {
             $data = $this->input->post('pil');
-
             $id = $this->session->userdata['id_mm-tryoutpaket'];
             $id_paket = $this->Mtryout->datapaket($id)[0]->id_paket;
 
-            $result = $this->Mtryout->jawabansoal($id_paket);
-
+            $soal_terpilih = $this->session->userdata('soal_terpilih');
+            $result = $this->Mtryout->jawabansoal($soal_terpilih);
             $benar = 0;
             $salah = 0;
             $kosong = 0;
@@ -315,7 +321,6 @@ class Tryout extends MX_Controller {
             'mm_tryout_paket_id'=>$hasil['id_mm-tryout-paket']];
             $this->Mtryout->update_log_tryout($data);
             // update tb log tryout
-            
             redirect(base_url('index.php/tryout/selesaitryout'));
         }else{
             redirect(base_url('index.php/tryout/selesaitryout'));
@@ -383,8 +388,8 @@ class Tryout extends MX_Controller {
                 echo json_encode(['status'=>'false']);
             }else{
                 $data['param'] = [
-                'id_mm'=>$data['paket'][0]->mm_id,
-                'id_pengguna'=>$this->session->userdata('id')
+                    'id_mm'=>$data['paket'][0]->mm_id,
+                    'id_pengguna'=>$this->session->userdata('id')
                 ];
 
                 $paket = $this->Mtryout->get_paket_by_token($data['post'])[0];
@@ -444,14 +449,14 @@ class Tryout extends MX_Controller {
                 'judul_halaman' => 'Neon - Tryout',
                 'judul_header' => 'Daftar Tryout',
                 'judul_tingkat' => '',
-                );
+            );
 
             $konten = 'modules/tryout/views/v-konfirmasi-tes.php';
 
             $data['files'] = array(
                 APPPATH . 'modules/homepage/views/v-header-login.php',
                 APPPATH . $konten,
-                );
+            );
 
             // get info tes
             $data['tryout'] = $this->Mtryout->get_info_to($token);
@@ -464,9 +469,9 @@ class Tryout extends MX_Controller {
     // tampung kode token
     public function next()
     {   
-            $token = $this->input->post('token');
-            $this->session->set_userdata('kode_token', $token);
-            echo json_encode($token);
+        $token = $this->input->post('token');
+        $this->session->set_userdata('kode_token', $token);
+        echo json_encode($token);
         
     }
 
